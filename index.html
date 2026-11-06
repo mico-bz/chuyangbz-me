@@ -455,6 +455,7 @@ html.js .reveal.in{opacity:1;transform:none}
   color:var(--dim);backdrop-filter:blur(10px);
 }
 .card-badge.play{color:var(--g);border-color:rgba(52,211,153,.34)}
+.card-badge.ai{left:auto;right:11px;color:#c4b5fd;border-color:rgba(167,139,250,.38)}
 .card-body{padding:17px 18px 19px;display:flex;flex-direction:column;flex:1;position:relative;z-index:2}
 .card-body h3{
   font-size:15.5px;font-weight:700;letter-spacing:-.015em;margin-bottom:7px;
@@ -820,12 +821,12 @@ footer .mono{font-size:11px}
       </div>
       <p class="proof-lead">这一页上没有<strong>任何不属于我的素材</strong>。下面每一条都可以自己核实 —— 打开开发者工具查看网络请求和源文件就能对上。</p>
       <div class="proof">
-        <div class="proof-item"><div class="proof-num">0</div><div class="proof-txt">张他人图片素材<br>截图出自本人工程，画面由代码绘制</div></div>
+        <div class="proof-item"><div class="proof-num">0</div><div class="proof-txt">张他人图片素材<br>11 张截自本人工程，3 张 AI 概念图已标注</div></div>
         <div class="proof-item"><div class="proof-num">0</div><div class="proof-txt">个外部请求<br>加载页面不访问任何第三方</div></div>
         <div class="proof-item"><div class="proof-num">0</div><div class="proof-txt">个商业字体<br>全部使用系统自带字体栈</div></div>
         <div class="proof-item"><div class="proof-num">141</div><div class="proof-txt">个机甲部件<br>按自定规范程序化生成</div></div>
       </div>
-      <p class="proof-foot">唯一的第三方代码是 <strong>Three.js</strong>（MIT 协议），许可声明原样保留在源文件里。除此之外没有素材包、没有模型库、没有音频文件、没有图标字体。</p>
+      <p class="proof-foot">唯一的第三方代码是 <strong>Three.js</strong>（MIT 协议），许可声明原样保留在源文件里。除此之外没有素材包、没有模型库、没有音频文件、没有图标字体。<br>卡片右上角标了 <strong>AI 概念图</strong> 的 3 张，是我给自己的项目做的界面／角色概念示意，不是第三方作品截图，也不是运行画面。</p>
     </div>
 
     <div class="disclaimer reveal">
@@ -836,7 +837,7 @@ footer .mono{font-size:11px}
       <p>本站展示的所有项目均为<strong>个人学习与技术练习作品</strong>，非商业性质，不售卖、不提供付费下载、不含任何广告或内购。</p>
       <ol>
         <li>部分作品的<strong>题材类型</strong>（如地牢探索、机甲拼装、废土射击、物理沙盒）属于游戏行业的既有品类，这类玩法规则与方法本身不适用著作权保护。但每件作品的<strong>代码、美术、音效与界面均为独立实现</strong>，不包含任何他方作品的资源文件或程序集，也未与之建立任何关联、授权或合作关系。</li>
-        <li>站内作品的代码均自行编写；美术资源为原创设计或程序化实时生成，<strong>未提取、未复用任何商业作品的原始素材文件</strong>（贴图、模型、音频、字体）。页面引用的开源库（如 Three.js）保留其原始许可声明，遵循 MIT 协议。</li>
+        <li>站内作品的代码均自行编写；美术资源为原创设计、程序化实时生成，或由生成模型产出的概念示意（已在卡片标注），<strong>未提取、未复用任何商业作品的原始素材文件</strong>（贴图、模型、音频、字体）。页面引用的开源库（如 Three.js）保留其原始许可声明，遵循 MIT 协议。</li>
         <li>如相关权利人认为某一作品存在侵权嫌疑，请通过页面下方邮箱联系我。我会在核实后<strong>立即下架</strong>相关内容，无需走法律程序。</li>
         <li>请勿将本站作品用于任何商业用途；如需引用或二次分发，请先取得联系。</li>
       </ol>
@@ -895,8 +896,9 @@ footer .mono{font-size:11px}
       </article>
 
       <article class="card reveal" data-cat="android" data-key="墨词 wordmemorizer 背单词 sm-2 词库 cosyvoice 离线">
-        <div class="card-media"><img src="assets/shots/wordmem.webp" alt="墨词 App 界面设计" loading="lazy"></div>
+        <div class="card-media"><img src="assets/shots/wordmem.webp" alt="墨词 App 界面概念图" loading="lazy"></div>
         <span class="card-badge">Android</span>
+        <span class="card-badge ai">AI 概念图</span>
         <div class="card-body">
           <h3>墨词 <span class="en">WordMemorizer</span></h3>
           <p>纯单机离线背单词：SM-2 间隔重复算法，8 本词库共 21709 词，TTS 用阿里云 CosyVoice 配音。没有服务器、没有账号、没有云同步。</p>
@@ -976,8 +978,9 @@ footer .mono{font-size:11px}
       </article>
 
       <article class="card reveal" data-cat="ai" data-key="雨停之前 animeshort 动画 短片 ai 生成 分镜">
-        <div class="card-media"><img src="assets/shots/animeshort.webp" alt="雨停之前画面" loading="lazy"></div>
+        <div class="card-media"><img src="assets/shots/animeshort.webp" alt="雨停之前 概念图" loading="lazy"></div>
         <span class="card-badge">AI 创作</span>
+        <span class="card-badge ai">AI 概念图</span>
         <div class="card-body">
           <h3>雨停之前 <span class="en">BEFORE THE RAIN ENDS</span></h3>
           <p>一部 AI 生成的动画短片。分镜、运镜、光影全部用提示词控制，两千多个生成帧里挑出能用的。</p>
@@ -1098,8 +1101,9 @@ footer .mono{font-size:11px}
       </article>
 
       <article class="card reveal" data-cat="desktop" data-key="咚咚 bongbongpet 桌面 宠物 狐狸 精灵 透明 置顶">
-        <div class="card-media"><img src="assets/shots/bongbong.webp" alt="咚咚宠物角色设定" loading="lazy"></div>
+        <div class="card-media"><img src="assets/shots/bongbong.webp" alt="咚咚宠物角色概念图" loading="lazy"></div>
         <span class="card-badge">Windows</span>
+        <span class="card-badge ai">AI 概念图</span>
         <div class="card-body">
           <h3>咚咚宠物 <span class="en">BongBongPet</span></h3>
           <p>一只橘白小狐狸精灵。透明背景、置顶、不抢焦点、可以拖着走，会自己在桌面上散步，也会说话。</p>
