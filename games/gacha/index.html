@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>没意思救济所 · 无聊扭蛋机</title>
+<style>
+:root{
+  --paper:#faf6ee; --card:#ffffff; --ink:#243450; --muted:#8892a4;
+  --line:rgba(36,52,80,.12); --coral:#e8735b; --mint:#63b79b;
+  --gold:#e0ad45; --violet:#8b7bd8; --blue:#5f8fc7;
+  --shadow:0 10px 30px rgba(36,52,80,.09);
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0; color:var(--ink); background:var(--paper);
+  font-family:"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Noto Sans SC",system-ui,sans-serif;
+  -webkit-font-smoothing:antialiased;
+  background-image:radial-gradient(rgba(36,52,80,.055) 1px,transparent 1px);
+  background-size:22px 22px;
+}
+button{font:inherit;cursor:pointer;border:0;background:none;color:inherit}
+button:disabled{cursor:default}
+.wrap{max-width:960px;margin:0 auto;padding:36px 24px 48px}
+.top{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:12px}
+.mark{width:38px;height:38px;border-radius:12px;background:var(--ink);color:#fff;
+  display:grid;place-items:center;font-size:19px;font-weight:600;letter-spacing:-1px}
+h1{margin:0;font-size:22px;font-weight:600;letter-spacing:.5px}
+.sub{margin:5px 0 0;font-size:13px;color:var(--muted);line-height:1.6}
+.stat{display:flex;gap:8px}
+.pill{background:var(--card);border:1px solid var(--line);border-radius:999px;
+  padding:7px 13px;font-size:12px;color:var(--muted);white-space:nowrap}
+.pill b{color:var(--ink);font-weight:600;font-variant-numeric:tabular-nums}
+
+.stage{display:grid;grid-template-columns:270px 1fr;gap:24px;margin-top:28px;align-items:stretch}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:22px;box-shadow:var(--shadow)}
+
+.machine{padding:18px;display:flex;flex-direction:column;align-items:center;position:relative;overflow:hidden}
+.machine-svg{width:100%;max-width:210px;height:auto;display:block}
+.ball{transform-origin:center}
+.cranking .ball{animation:jitter .12s infinite alternate}
+.cranking .crank{animation:spin .5s linear infinite;transform-origin:110px 178px}
+@keyframes jitter{from{transform:translate(-1px,0)}to{transform:translate(1px,-2px)}}
+@keyframes spin{to{transform:rotate(360deg)}}
+.capsule{position:absolute;width:46px;height:46px;border-radius:50%;left:50%;top:196px;
+  margin-left:-23px;opacity:0;pointer-events:none;z-index:5;
+  background:linear-gradient(180deg,var(--cap-a,#f3a58f) 0 48%,#f7f2e8 48% 52%,var(--cap-b,#f7d9a0) 52% 100%);
+  box-shadow:inset -5px -6px 10px rgba(0,0,0,.12),0 6px 14px rgba(36,52,80,.18)}
+.capsule.drop{animation:drop .72s cubic-bezier(.3,1.4,.5,1) forwards}
+@keyframes drop{0%{opacity:1;transform:translateY(-70px) scale(.7) rotate(-25deg)}
+  70%{opacity:1;transform:translateY(30px) scale(1.05) rotate(8deg)}
+  100%{opacity:0;transform:translateY(36px) scale(.85) rotate(0)}}
+
+.clerk{display:flex;align-items:center;gap:10px;width:100%;margin-top:2px}
+.clerk svg{width:56px;height:56px;flex:0 0 auto}
+.bubble{flex:1;background:#f4f1ea;border-radius:14px 14px 14px 4px;padding:9px 11px;
+  font-size:12px;line-height:1.55;color:#5b677d;min-height:44px;display:flex;align-items:center}
+.mouth{display:none}
+.mood-idle .m-idle,.mood-n .m-n,.mood-r .m-r,.mood-sr .m-sr,.mood-ssr .m-ssr{display:block}
+.eye{transition:transform .25s;transform-box:fill-box;transform-origin:center}
+.mood-sr .eye,.mood-ssr .eye{transform:scaleY(1.35)}
+
+.go{margin-top:14px;width:100%;border-radius:14px;padding:13px 18px;
+  background:var(--ink);color:#fff;font-size:15px;font-weight:600;letter-spacing:2px;
+  transition:transform .15s,background .2s;box-shadow:0 6px 16px rgba(36,52,80,.2)}
+.go:hover:not(:disabled){transform:translateY(-2px);background:#31466b}
+.go:disabled{opacity:.55}
+.hint{margin:9px 0 0;font-size:11px;color:var(--muted);text-align:center;line-height:1.6}
+
+.result{padding:26px 28px;display:flex;flex-direction:column;min-height:330px;position:relative}
+.r-empty{margin:auto;text-align:center;color:var(--muted)}
+.r-empty .ghost{width:76px;height:76px;margin:0 auto 16px;border-radius:50%;
+  border:2px dashed rgba(36,52,80,.18);display:grid;place-items:center;font-size:27px;color:rgba(36,52,80,.25)}
+.r-empty p{margin:0;font-size:13px;line-height:1.8}
+.card{display:none;flex-direction:column;height:100%;animation:flip .5s cubic-bezier(.2,.9,.3,1) both}
+.card.show{display:flex}
+@keyframes flip{from{opacity:0;transform:rotateY(-14deg) translateY(12px)}to{opacity:1;transform:none}}
+.card-top{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.rarity{font-size:11px;font-weight:700;letter-spacing:2px;padding:5px 11px;border-radius:8px;color:#fff}
+.rarity.N{background:#9aa6b8}.rarity.R{background:var(--blue)}
+.rarity.SR{background:var(--violet)}.rarity.SSR{background:var(--gold)}
+.no{font-size:11px;color:var(--muted);font-variant-numeric:tabular-nums;letter-spacing:1px}
+.card-body{margin:26px 0 20px}
+.tag{display:inline-block;font-size:11px;color:var(--muted);border:1px solid var(--line);
+  border-radius:999px;padding:4px 10px;margin-bottom:16px}
+.title{font-size:25px;line-height:1.5;font-weight:600;margin:0;letter-spacing:.3px}
+.note{font-size:13px;color:var(--muted);margin:12px 0 0;line-height:1.7}
+.card-foot{margin-top:auto;display:flex;gap:9px;flex-wrap:wrap;padding-top:16px;border-top:1px dashed var(--line)}
+.act{border:1px solid var(--line);border-radius:11px;padding:9px 15px;font-size:12.5px;
+  background:var(--card);transition:.18s}
+.act:hover{border-color:var(--ink);transform:translateY(-1px)}
+.act.primary{background:var(--coral);color:#fff;border-color:var(--coral)}
+.act.primary:hover{background:#d9614a}
+.act.done{background:var(--mint);color:#fff;border-color:var(--mint)}
+
+.bar{margin-top:20px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.bar-label{font-size:12px;color:var(--muted);margin-right:4px}
+.chip{border:1px solid var(--line);background:var(--card);border-radius:999px;
+  padding:7px 14px;font-size:12px;color:var(--muted);transition:.18s}
+.chip.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+.chip:hover{transform:translateY(-1px)}
+.spacer{flex:1}
+.link{font-size:12px;color:var(--coral);text-decoration:underline;text-underline-offset:3px}
+.footnote{margin:22px 0 0;font-size:12px;color:var(--muted);text-align:center;line-height:1.8}
+
+.mask{position:fixed;inset:0;background:rgba(28,40,62,.42);display:none;z-index:30;
+  align-items:center;justify-content:center;padding:20px}
+.mask.open{display:flex}
+.sheet{background:var(--paper);border-radius:22px;width:min(680px,100%);max-height:82vh;
+  overflow:auto;padding:24px;box-shadow:0 24px 60px rgba(0,0,0,.2)}
+.sheet-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
+.sheet h2{margin:0;font-size:17px;font-weight:600}
+.progress{height:7px;border-radius:99px;background:rgba(36,52,80,.09);overflow:hidden;margin:14px 0 20px}
+.progress i{display:block;height:100%;background:var(--mint);border-radius:99px;transition:width .4s}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:9px}
+.item{border:1px solid var(--line);border-radius:12px;padding:11px 12px;background:var(--card);font-size:12px;line-height:1.55}
+.item.locked{color:var(--muted);background:transparent;border-style:dashed;text-align:center;padding:18px 10px}
+.item .k{display:block;font-size:10px;letter-spacing:1px;color:var(--muted);margin-bottom:5px}
+.item.finished{border-color:var(--mint)}
+.confetti{position:fixed;width:8px;height:13px;top:-20px;z-index:40;pointer-events:none;
+  animation:fall 1.9s ease-in forwards}
+@keyframes fall{to{transform:translateY(105vh) rotate(720deg);opacity:.15}}
+.toast{position:fixed;left:50%;bottom:28px;transform:translateX(-50%) translateY(20px);
+  background:var(--ink);color:#fff;padding:10px 18px;border-radius:999px;font-size:12.5px;
+  opacity:0;transition:.25s;z-index:50;pointer-events:none}
+.toast.on{opacity:1;transform:translateX(-50%)}
+@media(max-width:720px){
+  .wrap{padding:24px 16px 36px}
+  .stage{grid-template-columns:1fr;gap:16px}
+  .machine-svg{max-width:180px}
+  .capsule{top:172px}
+  .result{padding:22px 18px;min-height:290px}
+  .title{font-size:21px}
+  h1{font-size:19px}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top">
+    <div class="brand">
+      <div class="mark">?</div>
+      <div>
+        <h1>没意思救济所</h1>
+        <p class="sub">一台专门对付「不知道干啥」的扭蛋机。抽到什么就做什么，做完可以立刻忘掉。</p>
+      </div>
+    </div>
+    <div class="stat">
+      <div class="pill">今天抽了 <b id="cToday">0</b> 次</div>
+      <div class="pill">做完了 <b id="cDone">0</b> 件</div>
+      <div class="pill">图鉴 <b id="cSeen">0</b>/<b id="cAll">0</b></div>
+    </div>
+  </div>
+
+  <div class="stage">
+    <div class="panel machine" id="machine">
+      <svg class="machine-svg" viewBox="0 0 220 280" aria-label="扭蛋机">
+        <ellipse cx="110" cy="262" rx="82" ry="9" fill="rgba(36,52,80,.08)"/>
+        <rect x="42" y="150" width="136" height="106" rx="16" fill="#fff" stroke="rgba(36,52,80,.16)" stroke-width="1.5"/>
+        <rect x="42" y="150" width="136" height="30" rx="10" fill="#f2ede2"/>
+        <rect x="52" y="20" width="116" height="132" rx="56" fill="#eaf3f8" stroke="rgba(36,52,80,.18)" stroke-width="2"/>
+        <path d="M62 34 Q110 12 158 34" fill="none" stroke="rgba(255,255,255,.85)" stroke-width="6" stroke-linecap="round"/>
+        <g>
+          <circle class="ball" cx="76" cy="118" r="15" fill="#ef9a85"/>
+          <circle class="ball" cx="108" cy="126" r="15" fill="#f0cf82"/>
+          <circle class="ball" cx="140" cy="116" r="15" fill="#8fc9b4"/>
+          <circle class="ball" cx="88" cy="92" r="15" fill="#a99ae0"/>
+          <circle class="ball" cx="124" cy="90" r="15" fill="#86b3de"/>
+          <circle class="ball" cx="108" cy="62" r="14" fill="#f0a9bd"/>
+          <circle class="ball" cx="74" cy="64" r="13" fill="#f0cf82"/>
+          <circle class="ball" cx="143" cy="65" r="13" fill="#8fc9b4"/>
+        </g>
+        <rect x="86" y="196" width="48" height="34" rx="8" fill="#31446a"/>
+        <rect x="92" y="202" width="36" height="22" rx="5" fill="#1c2942"/>
+        <g class="crank">
+          <circle cx="110" cy="178" r="13" fill="#e8735b" stroke="#fff" stroke-width="3"/>
+          <rect x="106" y="164" width="8" height="15" rx="4" fill="#e8735b"/>
+        </g>
+        <rect x="58" y="236" width="104" height="14" rx="7" fill="#f2ede2"/>
+        <text x="110" y="169" text-anchor="middle" font-size="10" letter-spacing="3" fill="#8892a4" font-family="sans-serif">BOREDOM GACHA</text>
+      </svg>
+      <div class="capsule" id="capsule"></div>
+
+      <div class="clerk">
+        <svg id="clerkSvg" viewBox="0 0 96 96" aria-hidden="true">
+          <path d="M20 38 L24 14 L42 28 Z" fill="#31446a"/>
+          <path d="M76 38 L72 14 L54 28 Z" fill="#31446a"/>
+          <circle cx="48" cy="54" r="31" fill="#fff" stroke="#31446a" stroke-width="2.5"/>
+          <ellipse class="eye" cx="37" cy="51" rx="3.4" ry="4.6" fill="#31446a"/>
+          <ellipse class="eye" cx="59" cy="51" rx="3.4" ry="4.6" fill="#31446a"/>
+          <path class="mouth m-idle" d="M42 66 Q48 69 54 66" fill="none" stroke="#31446a" stroke-width="2" stroke-linecap="round"/>
+          <path class="mouth m-n" d="M42 67 Q48 71 54 67" fill="none" stroke="#31446a" stroke-width="2" stroke-linecap="round"/>
+          <path class="mouth m-r" d="M41 65 Q48 73 55 65" fill="none" stroke="#31446a" stroke-width="2" stroke-linecap="round"/>
+          <path class="mouth m-sr" d="M40 64 Q48 76 56 64 Z" fill="#e8735b"/>
+          <path class="mouth m-ssr" d="M38 63 Q48 80 58 63 Z" fill="#e8735b"/>
+          <circle cx="27" cy="62" r="4" fill="#f4b8ae" opacity=".8"/>
+          <circle cx="69" cy="62" r="4" fill="#f4b8ae" opacity=".8"/>
+        </svg>
+        <div class="bubble" id="bubble">今天不安排正事。摇一下，随便领件小事。</div>
+      </div>
+      <button class="go" id="go">摇 一 下</button>
+      <p class="hint" id="pityHint">连摇 10 次必出 SR 以上 · 所有数据只存在这台设备</p>
+    </div>
+
+    <div class="panel result" id="result">
+      <div class="r-empty" id="empty">
+        <div class="ghost">?</div>
+        <p>蛋还没掉下来。<br>不用有收获，不用发朋友圈，也不用坚持。</p>
+      </div>
+      <div class="card" id="card" aria-live="polite">
+        <div class="card-top">
+          <span class="rarity N" id="rarity">N</span>
+          <span class="no" id="no">NO.000</span>
+        </div>
+        <div class="card-body">
+          <span class="tag" id="tag">躺着就能做</span>
+          <h2 class="title" id="title"></h2>
+          <p class="note" id="note"></p>
+        </div>
+        <div class="card-foot">
+          <button class="act" id="again">换一个</button>
+          <button class="act" id="copy">抄下来</button>
+          <button class="act" id="openBook">看图鉴</button>
+          <button class="act primary" id="finish">做完了</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="bar">
+    <span class="bar-label">今天想动多少</span>
+    <button class="chip on" data-tier="0">躺着</button>
+    <button class="chip on" data-tier="1">坐着</button>
+    <button class="chip on" data-tier="2">出门</button>
+    <span class="spacer"></span>
+    <button class="link" id="openBook2">打开图鉴 →</button>
+  </div>
+  <p class="footnote">纯本地单文件，不联网、不上传、不花钱。没抽到想做的就一直摇，机器不会生气。</p>
+</div>
+
+<div class="mask" id="mask">
+  <div class="sheet">
+    <div class="sheet-head">
+      <h2>收集图鉴</h2>
+      <button class="act" id="closeBook">关掉</button>
+    </div>
+    <p class="sub" id="bookSub">抽到过的才会亮起来。打过卡的会有一圈绿边。</p>
+    <div class="progress"><i id="progressBar" style="width:0%"></i></div>
+    <div class="grid" id="grid"></div>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+const TIERS=['躺着就能做','坐着能做','得出趟门'];
+const RAR=['N','R','SR','SSR'];
+const POOL=[
+["把相册翻到第 100 张，给它配一句电影旁白","不用真的发给谁",0,0],
+["给你家路由器写一份三句话的人物小传","第二句要有转折",0,0],
+["查一下今天的天气，把它翻译成一种心情","不许用「还行」",0,0],
+["闭眼听 60 秒环境音，给这段声音取个名字","要像专辑名那样",0,0],
+["给最常打开的那个 App 颁个奖","奖项名要具体到离谱",0,0],
+["把最近一条搜索记录当成书名，写一句腰封推荐语","越像真的越好",0,0],
+["窗外能看到的三样东西，编成一句毫无逻辑的诗","不通顺才对",0,0],
+["录一段 5 秒的「咔」，当作今天的片尾曲","什么发出声音都行",0,0],
+["给三年后的自己发一条 20 字弹幕","不许写「加油」",0,0],
+["把今天说过的一句废话翻译成文言文，念出来","念出声才算数",0,0],
+["翻出一个很久没点开的文件夹，只看文件名猜它当时的心情","别打开",0,0],
+["给手机里最丑的一张截图想一个展览标题","要装作很严肃",0,0],
+["用三个 emoji 描述今天，再删掉一个","看剩下两个还成不成立",0,0],
+["把一首歌的歌词倒着读，挑出最像人话的一句","会有点上头",0,1],
+["给今天最无聊的 10 分钟写一份事故报告","格式必须正式",0,1],
+["想一个只属于今天的节日，写三条规矩","三条，不多不少",0,1],
+["给一个从没用过的功能写一条差评，再写一条好评","两条都要真诚",0,1],
+["把最近一段代码或笔记里最丑的变量名，改成一把武器的名字","改完可以改回去",0,1],
+["给三个月没联系的人发一句完全没有上下文的话","不解释，也不必等回复",0,2],
+["用一晚上给自己做一张虚构专辑的封面","专辑名比封面重要",0,2],
+["写一份「今天的我」用户手册，只写故障排除那一章","别写优点",0,2],
+["把桌面图标按颜色重排一遍","不许多想",1,0],
+["打开一个随机维基词条，认真读三分钟，写一句反驳","反驳可以没道理",1,0],
+["找一张老照片，只改它的文件名，改成一句台词","照片本身不动",1,0],
+["用系统自带的画图工具画「今天的我」，限时 90 秒","超时就直接交卷",1,0],
+["打开地图，随机放大一个陌生街区，给某条路取个新名字","别查那儿的真实故事",1,0],
+["把通讯录里某个备注改成一句台词","明天再改回来",1,0],
+["用 10 张截图拼一条 15 秒的「今日预告片」","不用真的剪出来",1,0],
+["给家里三件东西换个位置，拍一张「案发现场」","拍完可以复位",1,0],
+["把最近写的一条笔记，用播音腔念一遍并录下来","忍住别笑",1,0],
+["发明一个只有一条规则的小游戏，自己玩三局","规则要能一句话说完",1,1],
+["给「无聊」写一份百科词条","要有「争议」章节",1,1],
+["用三个不相干的词造一个成语，给出释义和例句","例句必须一本正经",1,1],
+["把今天的时间线画成一条地铁线路图","站名自己起",1,1],
+["打开一个从没用过的系统自带工具，随便按五个按钮，报告发现","报告写给明天的自己",1,1],
+["用纯文本给自己画一张人生技能树，只点已经点亮的","允许有废技能",1,2],
+["给一个不存在的 App 写完整的商店介绍页","截图也要用文字描述",1,2],
+["写一封给十年前自己的邮件，只写当时还不懂的一件小事","不写大道理",1,2],
+["花一小时做一个「只给一个人看」的网页","那个人可以是你自己",1,3],
+["走到最近的便利店，只看不买，给最奇怪的商品拍张照","别买",2,0],
+["在同一条路上，故意走平时不走的那一侧","就这么一次",2,0],
+["找一棵树，给它取个名字，然后回家","名字别太正经",2,0],
+["拍下今天天空的颜色，回来给它取一个色号名","像油漆店那样",2,0],
+["坐一趟没坐过的公交或地铁，只坐一站就下来","一站就好",2,0],
+["数一路上遇到的红色东西，凑够七个就回","凑不够也算完成",2,0],
+["去一个从没进过的小店，问一个不需要答案的问题","语气自然一点",2,1],
+["找一个从没坐过的地方，坐五分钟，不看手机","第五分钟最难受",2,1],
+["给街上一个看起来很认真的东西写一句颁奖词","招牌、长椅、井盖都行",2,1],
+["带一张纸出门，只画你听到的声音","画得烂正好",2,2],
+["走一条能到家但从没走过的路线，路上不查地图","迷路了算支线",2,2],
+["出门拍 9 张照片，回来排成一条 30 秒的「城市今日」","不加音乐也行",2,3]
+];
+
+const KEY='boredom-gacha-v1';
+const S=Object.assign({seen:[],done:[],today:0,day:'',pity:0,draws:0},load());
+function load(){try{return JSON.parse(localStorage.getItem(KEY))||{}}catch(e){return {}}}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
+const _d=new Date();
+const today=_d.getFullYear()+'-'+String(_d.getMonth()+1).padStart(2,'0')+'-'+String(_d.getDate()).padStart(2,'0');
+if(S.day!==today){S.day=today;S.today=0;save()}
+
+const $=id=>document.getElementById(id);
+const tiers=new Set([0,1,2]);
+let current=-1, busy=false;
+
+const CLERK={
+ idle:'今天不安排正事。摇一下，随便领件小事。',
+ cranking:'转起来了…别抱期待，反正也不重要。',
+ N:'喏，一件很小的事。做不做都行。',
+ R:'这个稍微有点意思，我多看了两眼。',
+ SR:'哦？这张我收着了，你要是做了记得回来打卡。',
+ SSR:'等等…机器卡了一下。这张不常见，随你。',
+ done:'记下了。今天可以就这么结束了。',
+ pity:'下一张会好一点，我盯着呢。'
+};
+function mood(m){$('clerkSvg').parentElement.className='clerk mood-'+m}
+function say(k){$('bubble').textContent=CLERK[k]||k}
+mood('idle');
+
+function toast(t){const el=$('toast');el.textContent=t;el.classList.add('on');
+ clearTimeout(el._t);el._t=setTimeout(()=>el.classList.remove('on'),1700)}
+
+function sync(){
+ $('cToday').textContent=S.today;
+ $('cDone').textContent=S.done.length;
+ $('cSeen').textContent=S.seen.length;
+ $('cAll').textContent=POOL.length;
+ $('pityHint').textContent=`再摇 ${10-S.pity} 次必出 SR 以上 · 所有数据只存在这台设备`;
+ renderBook();
+}
+function renderBook(){
+ const g=$('grid');g.innerHTML='';
+ POOL.forEach((p,i)=>{
+  const d=document.createElement('div');
+  const seen=S.seen.includes(i), fin=S.done.includes(i);
+  d.className='item'+(seen?'':' locked')+(fin?' finished':'');
+  d.innerHTML=seen
+    ? `<span class="k">${RAR[p[3]]} · NO.${String(i+1).padStart(3,'0')}${fin?' · 已完成':''}</span>${esc(p[0])}`
+    : `NO.${String(i+1).padStart(3,'0')} · 还没抽到`;
+  g.appendChild(d);
+ });
+ $('progressBar').style.width=(S.seen.length/POOL.length*100).toFixed(1)+'%';
+ $('bookSub').textContent=`已收集 ${S.seen.length} / ${POOL.length} 件，打过卡的会有一圈绿边。`;
+}
+function esc(s){return s.replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))}
+
+function pick(){
+ let pool=POOL.map((p,i)=>({p,i})).filter(x=>tiers.has(x.p[2]));
+ if(!pool.length){tiers.add(0);pool=POOL.map((p,i)=>({p,i})).filter(x=>x.p[2]===0)}
+ const force=S.pity>=9;
+ const w=force?[0,0,72,28]:[62,26,10,2];
+ let r=Math.random()*100, rar=0;
+ for(let k=0;k<4;k++){if(r<w[k]){rar=k;break}r-=w[k]}
+ let bucket=pool.filter(x=>x.p[3]===rar);
+ if(!bucket.length)bucket=pool.filter(x=>x.p[3]<=rar);
+ if(!bucket.length)bucket=pool;
+ return bucket[Math.floor(Math.random()*bucket.length)];
+}
+
+function confetti(){
+ const cs=['#e8735b','#e0ad45','#63b79b','#8b7bd8','#5f8fc7'];
+ for(let i=0;i<26;i++){
+  const c=document.createElement('div');c.className='confetti';
+  c.style.left=Math.random()*100+'vw';
+  c.style.background=cs[i%cs.length];
+  c.style.animationDelay=(Math.random()*.5)+'s';
+  c.style.opacity=.9;
+  document.body.appendChild(c);
+  setTimeout(()=>c.remove(),2600);
+ }
+}
+
+function draw(){
+ if(busy)return;
+ busy=true;
+ const btn=$('go');btn.disabled=true;btn.textContent='摇 啊 摇 …';
+ $('machine').classList.add('cranking');say('cranking');mood('idle');
+ const hit=pick();
+ const isSSR=hit.p[3]===3;
+ const caps=$('capsule');
+ const colors=[['#ef9a85','#f7d9a0'],['#a99ae0','#eaf3f8'],['#8fc9b4','#f0cf82']][Math.floor(Math.random()*3)];
+ caps.style.setProperty('--cap-a',colors[0]);caps.style.setProperty('--cap-b',colors[1]);
+ caps.classList.remove('drop');void caps.offsetWidth;caps.classList.add('drop');
+
+ setTimeout(()=>{
+  $('machine').classList.remove('cranking');
+  current=hit.i;
+  S.draws++;S.today++;
+  if(!S.seen.includes(hit.i))S.seen.push(hit.i);
+  S.pity=(hit.p[3]>=2)?0:Math.min(10,S.pity+1);
+  save();
+
+  $('rarity').className='rarity '+RAR[hit.p[3]];
+  $('rarity').textContent=RAR[hit.p[3]];
+  $('no').textContent='NO.'+String(hit.i+1).padStart(3,'0');
+  $('tag').textContent=TIERS[hit.p[2]];
+  $('title').textContent=hit.p[0];
+  $('note').textContent=hit.p[1];
+  $('empty').style.display='none';
+  const card=$('card');card.classList.remove('show');void card.offsetWidth;card.classList.add('show');
+  $('finish').textContent=S.done.includes(hit.i)?'已经打过卡啦':'做完了';
+  $('finish').classList.toggle('done',S.done.includes(hit.i));
+  $('finish').classList.toggle('primary',!S.done.includes(hit.i));
+  say(RAR[hit.p[3]]);mood(['n','r','sr','ssr'][hit.p[3]]);
+  if(isSSR)confetti();
+  btn.disabled=false;btn.textContent='再 摇 一 下';
+  busy=false;sync();
+ },isSSR?1150:760);
+}
+
+$('go').addEventListener('click',draw);
+$('again').addEventListener('click',draw);
+$('copy').addEventListener('click',()=>{
+ if(current<0)return;
+ const t=`【${TIERS[POOL[current][2]]}】${POOL[current][0]}（${POOL[current][1]}）`;
+ if(navigator.clipboard&&navigator.clipboard.writeText){
+  navigator.clipboard.writeText(t).then(()=>toast('抄好了，贴哪儿都行')).catch(()=>fallbackCopy(t));
+ }else fallbackCopy(t);
+});
+function fallbackCopy(t){
+ const a=document.createElement('textarea');a.value=t;document.body.appendChild(a);
+ a.select();try{document.execCommand('copy');toast('抄好了，贴哪儿都行')}catch(e){toast('复制没成功，手动记一下吧')}
+ a.remove();
+}
+$('finish').addEventListener('click',()=>{
+ if(current<0)return;
+ if(!S.done.includes(current)){S.done.push(current);save();toast('记下了 · 今天可以就这么结束')}
+ else toast('这张已经打过卡啦');
+ $('finish').textContent='已经打过卡啦';
+ $('finish').classList.add('done');$('finish').classList.remove('primary');
+ say('done');sync();
+});
+document.querySelectorAll('.chip').forEach(b=>b.addEventListener('click',()=>{
+ const t=+b.dataset.tier;
+ if(tiers.has(t)){if(tiers.size===1){toast('至少留一档，不然机器没得吐');return}tiers.delete(t);b.classList.remove('on')}
+ else{tiers.add(t);b.classList.add('on')}
+}));
+function openBook(){$('mask').classList.add('open');renderBook()}
+$('openBook').addEventListener('click',openBook);
+$('openBook2').addEventListener('click',openBook);
+$('closeBook').addEventListener('click',()=>$('mask').classList.remove('open'));
+$('mask').addEventListener('click',e=>{if(e.target===$('mask'))$('mask').classList.remove('open')});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')$('mask').classList.remove('open')});
+sync();
+</script>
+</body>
+</html>

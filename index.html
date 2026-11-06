@@ -1,0 +1,1658 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>chuyangBZ · 把想法做成能跑的东西</title>
+<meta name="description" content="chuyangBZ 的作品集 —— 33 个项目：Android 应用、Unity 游戏、Three.js 网页游戏、桌面精灵、AI 剪辑引擎。靠 AI 把想法做成能跑的东西。">
+<meta name="theme-color" content="#05060a">
+<link rel="canonical" href="https://chuyangbz.me/">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://chuyangbz.me/">
+<meta property="og:title" content="chuyangBZ · 把想法做成能跑的东西">
+<meta property="og:description" content="33 个项目，6 个能在浏览器里直接玩。Android、Unity、Three.js、AI 剪辑。">
+<meta property="og:site_name" content="chuyangBZ">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="chuyangBZ · 把想法做成能跑的东西">
+<meta name="twitter:description" content="33 个项目，6 个能在浏览器里直接玩。">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><defs><linearGradient id='g' x1='0' y1='0' x2='1' y2='1'><stop offset='0' stop-color='%237c5cff'/><stop offset='1' stop-color='%2322d3ee'/></linearGradient></defs><rect width='100' height='100' rx='24' fill='url(%23g)'/><text x='50' y='68' font-size='52' font-weight='800' fill='%23fff' text-anchor='middle' font-family='sans-serif'>c</text></svg>">
+<style>
+/* ============================================================
+   基础
+   ============================================================ */
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#05060a;
+  --bg-2:#0a0c12;
+  --card:rgba(255,255,255,.028);
+  --card-h:rgba(255,255,255,.055);
+  --line:rgba(255,255,255,.07);
+  --line-h:rgba(124,92,255,.38);
+  --txt:#e8ecf4;
+  --dim:#8b93a3;
+  --dim2:#5a6274;
+  --v:#7c5cff;
+  --c:#22d3ee;
+  --p:#f472b6;
+  --g:#34d399;
+  --r:18px;
+  --ease:cubic-bezier(.22,1,.36,1);
+}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{
+  background:var(--bg);
+  color:var(--txt);
+  font-family:-apple-system,BlinkMacSystemFont,"SF Pro SC","PingFang SC","Microsoft YaHei",system-ui,sans-serif;
+  line-height:1.65;
+  overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+}
+.mono{font-family:ui-monospace,SFMono-Regular,"SF Mono","Cascadia Code",Consolas,monospace}
+::selection{background:rgba(124,92,255,.4);color:#fff}
+a{color:inherit;text-decoration:none}
+img{display:block;max-width:100%}
+button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
+
+/* ============================================================
+   背景层
+   ============================================================ */
+.bg-layer{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+.bg-grid{
+  position:absolute;inset:-50%;
+  background-image:
+    linear-gradient(rgba(124,92,255,.055) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(124,92,255,.055) 1px,transparent 1px);
+  background-size:56px 56px;
+  transform:perspective(560px) rotateX(58deg) translateY(-18%);
+  mask-image:radial-gradient(ellipse 70% 55% at 50% 0%,#000 10%,transparent 75%);
+  -webkit-mask-image:radial-gradient(ellipse 70% 55% at 50% 0%,#000 10%,transparent 75%);
+  animation:gridDrift 22s linear infinite;
+}
+@keyframes gridDrift{to{background-position:0 56px,56px 0}}
+.bg-glow{position:absolute;border-radius:50%;filter:blur(120px);will-change:transform}
+.g1{width:640px;height:640px;background:var(--v);opacity:.17;top:-220px;left:-180px;animation:float1 17s ease-in-out infinite}
+.g2{width:540px;height:540px;background:var(--c);opacity:.12;top:22%;right:-200px;animation:float2 21s ease-in-out infinite}
+.g3{width:480px;height:480px;background:var(--p);opacity:.075;bottom:6%;left:26%;animation:float3 25s ease-in-out infinite}
+@keyframes float1{50%{transform:translate(70px,60px) scale(1.1)}}
+@keyframes float2{50%{transform:translate(-70px,90px) scale(1.14)}}
+@keyframes float3{50%{transform:translate(50px,-70px) scale(.92)}}
+#particles{position:absolute;inset:0;width:100%;height:100%;opacity:.55}
+.cursor-glow{
+  position:absolute;width:520px;height:520px;border-radius:50%;
+  background:radial-gradient(circle,rgba(124,92,255,.11) 0%,rgba(34,211,238,.05) 40%,transparent 68%);
+  transform:translate(-50%,-50%);left:-999px;top:-999px;
+  transition:opacity .4s;will-change:left,top;
+}
+
+/* 滚动进度 */
+.progress{position:fixed;top:0;left:0;height:2px;width:0;z-index:100;
+  background:linear-gradient(90deg,var(--v),var(--c) 60%,var(--p));
+  box-shadow:0 0 14px rgba(124,92,255,.75)}
+
+/* ============================================================
+   导航
+   ============================================================ */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:60;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:20px clamp(20px,5vw,56px);
+  transition:padding .4s var(--ease),background .4s,border-color .4s;
+  border-bottom:1px solid transparent;
+}
+nav.scrolled{
+  padding:13px clamp(20px,5vw,56px);
+  background:rgba(5,6,10,.76);
+  backdrop-filter:blur(20px) saturate(150%);
+  -webkit-backdrop-filter:blur(20px) saturate(150%);
+  border-bottom-color:var(--line);
+}
+.logo{display:flex;align-items:center;gap:10px;font-weight:750;font-size:16px;letter-spacing:-.02em}
+.logo-mark{
+  width:28px;height:28px;border-radius:9px;
+  background:linear-gradient(135deg,var(--v),var(--c));
+  display:grid;place-items:center;font-size:15px;font-weight:800;color:#fff;
+  box-shadow:0 4px 16px rgba(124,92,255,.45);
+}
+.nav-links{display:flex;gap:clamp(16px,3vw,34px);font-size:14px;color:var(--dim)}
+.nav-links a{position:relative;padding:4px 0;transition:color .25s}
+.nav-links a::after{
+  content:"";position:absolute;left:0;bottom:0;height:1.5px;width:0;
+  background:linear-gradient(90deg,var(--v),var(--c));transition:width .3s var(--ease);
+}
+.nav-links a:hover{color:var(--txt)}
+.nav-links a:hover::after{width:100%}
+
+/* ============================================================
+   Hero
+   ============================================================ */
+.hero{
+  position:relative;z-index:1;
+  min-height:100svh;display:flex;flex-direction:column;justify-content:center;align-items:center;
+  text-align:center;padding:120px clamp(20px,5vw,40px) 80px;
+}
+.hero-badge{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:7px 15px;border-radius:999px;font-size:12.5px;color:var(--dim);
+  border:1px solid var(--line);background:rgba(255,255,255,.025);
+  backdrop-filter:blur(8px);margin-bottom:30px;
+  opacity:0;transform:translateY(14px);animation:fadeUp .8s var(--ease) .1s forwards;
+}
+.dot-live{width:6px;height:6px;border-radius:50%;background:var(--g);box-shadow:0 0 0 0 rgba(52,211,153,.7);animation:pulse 2.2s infinite}
+@keyframes pulse{70%{box-shadow:0 0 0 7px rgba(52,211,153,0)}}
+h1{
+  font-size:clamp(52px,13vw,132px);font-weight:800;line-height:.92;
+  letter-spacing:-.055em;margin-bottom:26px;
+  opacity:0;transform:translateY(20px);animation:fadeUp .9s var(--ease) .18s forwards;
+}
+.grad{
+  background:linear-gradient(102deg,#fff 0%,#c4b5fd 32%,var(--v) 52%,var(--c) 76%,#67e8f9 100%);
+  background-size:220% 100%;
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+  animation:shimmer 7s ease-in-out infinite;
+}
+@keyframes shimmer{50%{background-position:100% 0}}
+.hero-sub{
+  font-size:clamp(15px,2.1vw,19px);color:var(--dim);max-width:660px;
+  line-height:1.75;margin-bottom:34px;
+  opacity:0;transform:translateY(16px);animation:fadeUp .9s var(--ease) .3s forwards;
+}
+.hero-sub b{color:var(--txt);font-weight:600}
+.hero-stack{
+  display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-bottom:42px;
+  opacity:0;animation:fadeUp .9s var(--ease) .42s forwards;max-width:720px;
+}
+.chip{
+  font-family:ui-monospace,SFMono-Regular,Consolas,monospace;
+  font-size:11.5px;padding:5px 11px;border-radius:7px;
+  color:var(--dim);border:1px solid var(--line);background:rgba(255,255,255,.022);
+}
+.hero-cta{display:flex;gap:13px;flex-wrap:wrap;justify-content:center;
+  opacity:0;animation:fadeUp .9s var(--ease) .54s forwards}
+.btn{
+  display:inline-flex;align-items:center;gap:9px;
+  padding:14px 28px;border-radius:999px;font-size:14.5px;font-weight:600;
+  transition:transform .3s var(--ease),box-shadow .3s,background .3s,border-color .3s;
+  will-change:transform;
+}
+.btn-primary{
+  background:linear-gradient(135deg,var(--v),#6d4bff 55%,#4f46e5);
+  color:#fff;box-shadow:0 8px 30px rgba(124,92,255,.34);
+}
+.btn-primary:hover{transform:translateY(-2.5px);box-shadow:0 14px 40px rgba(124,92,255,.5)}
+.btn-ghost{
+  border:1px solid var(--line);color:var(--txt);background:rgba(255,255,255,.025);
+  backdrop-filter:blur(8px);
+}
+.btn-ghost:hover{transform:translateY(-2.5px);border-color:var(--line-h);background:rgba(124,92,255,.09)}
+.btn svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2.1;stroke-linecap:round;stroke-linejoin:round}
+.btn kbd{
+  font-family:inherit;font-size:11px;padding:2px 6px;border-radius:5px;
+  background:rgba(255,255,255,.12);margin-left:2px;
+}
+@keyframes fadeUp{to{opacity:1;transform:translateY(0)}}
+
+.scroll-hint{
+  position:absolute;bottom:34px;left:50%;transform:translateX(-50%);
+  display:flex;flex-direction:column;align-items:center;gap:8px;
+  font-size:11px;color:var(--dim2);letter-spacing:.14em;text-transform:uppercase;
+  opacity:0;animation:fadeUp 1s var(--ease) 1.2s forwards;
+}
+.scroll-hint .line{width:1px;height:34px;background:linear-gradient(var(--dim2),transparent);animation:scrollLine 2s ease-in-out infinite}
+@keyframes scrollLine{0%,100%{opacity:.3;transform:scaleY(.6)}50%{opacity:1;transform:scaleY(1)}}
+
+/* ============================================================
+   数字条
+   ============================================================ */
+.stats{
+  position:relative;z-index:1;
+  display:grid;grid-template-columns:repeat(4,1fr);
+  gap:1px;background:var(--line);
+  border-top:1px solid var(--line);border-bottom:1px solid var(--line);
+  max-width:1180px;margin:0 auto;
+}
+.stat{
+  background:var(--bg);padding:36px 22px;text-align:center;
+  transition:background .35s;
+}
+.stat:hover{background:rgba(124,92,255,.045)}
+.stat-num{
+  font-size:clamp(30px,4.6vw,46px);font-weight:800;letter-spacing:-.04em;line-height:1;
+  background:linear-gradient(160deg,#fff,var(--v) 120%);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+  font-variant-numeric:tabular-nums;
+}
+.stat-label{font-size:12.5px;color:var(--dim2);margin-top:9px;letter-spacing:.05em}
+
+/* ============================================================
+   区块通用
+   ============================================================ */
+section{position:relative;z-index:1}
+.wrap{max-width:1180px;margin:0 auto;padding:clamp(72px,10vw,124px) clamp(20px,5vw,40px)}
+.sec-head{margin-bottom:52px}
+.sec-eyebrow{
+  display:inline-flex;align-items:center;gap:9px;
+  font-family:ui-monospace,Consolas,monospace;font-size:12px;color:var(--v);
+  letter-spacing:.1em;text-transform:uppercase;margin-bottom:16px;
+}
+.sec-eyebrow::before{content:"";width:22px;height:1px;background:var(--v);opacity:.6}
+h2{
+  font-size:clamp(28px,4.6vw,46px);font-weight:750;letter-spacing:-.035em;line-height:1.14;
+  margin-bottom:16px;
+}
+.sec-desc{color:var(--dim);font-size:15.5px;max-width:620px;line-height:1.75}
+
+/* reveal —— 只有 JS 正常运行时才隐藏，避免脚本失效导致整页空白 */
+.reveal{transition:opacity .75s var(--ease),transform .75s var(--ease)}
+html.js .reveal{opacity:0;transform:translateY(26px)}
+html.js .reveal.in{opacity:1;transform:none}
+
+/* ============================================================
+   试玩区
+   ============================================================ */
+.play-grid{
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));
+  gap:20px;
+}
+.play-card{
+  position:relative;border-radius:var(--r);overflow:hidden;
+  border:1px solid var(--line);background:var(--card);
+  cursor:pointer;transition:transform .45s var(--ease),border-color .35s,box-shadow .45s;
+  will-change:transform;
+}
+.play-card:hover{
+  border-color:var(--line-h);
+  box-shadow:0 22px 60px -16px rgba(124,92,255,.4);
+  transform:translateY(-6px);
+}
+.play-media{position:relative;aspect-ratio:16/9;overflow:hidden;background:#0b0d14}
+.play-media img{width:100%;height:100%;object-fit:cover;transition:transform .7s var(--ease),filter .4s}
+.play-card:hover .play-media img{transform:scale(1.055);filter:brightness(1.08)}
+.play-media::after{
+  content:"";position:absolute;inset:0;
+  background:linear-gradient(to top,rgba(5,6,10,.92) 0%,rgba(5,6,10,.25) 42%,transparent 70%);
+}
+.play-overlay{
+  position:absolute;inset:0;display:grid;place-items:center;z-index:2;
+  opacity:0;transition:opacity .35s;background:rgba(5,6,10,.35);
+  backdrop-filter:blur(2px);
+}
+.play-card:hover .play-overlay{opacity:1}
+.play-btn-circle{
+  width:62px;height:62px;border-radius:50%;
+  background:linear-gradient(135deg,var(--v),var(--c));
+  display:grid;place-items:center;
+  box-shadow:0 10px 36px rgba(124,92,255,.55);
+  transform:scale(.88);transition:transform .4s var(--ease);
+}
+.play-card:hover .play-btn-circle{transform:scale(1)}
+.play-btn-circle svg{width:24px;height:24px;fill:#fff;margin-left:3px}
+.play-info{position:absolute;left:0;right:0;bottom:0;padding:20px 22px;z-index:2}
+.play-info h3{font-size:17.5px;font-weight:700;letter-spacing:-.02em;margin-bottom:5px}
+.play-info p{font-size:12.5px;color:var(--dim);line-height:1.5;
+  display:-webkit-box;-webkit-line-clamp:1;-webkit-box-orient:vertical;overflow:hidden}
+.play-live{
+  position:absolute;top:14px;right:14px;z-index:3;
+  display:inline-flex;align-items:center;gap:6px;
+  padding:5px 11px;border-radius:999px;font-size:11px;font-weight:600;
+  background:rgba(5,6,10,.72);border:1px solid rgba(52,211,153,.4);
+  color:var(--g);backdrop-filter:blur(10px);
+}
+.note{
+  display:flex;align-items:flex-start;gap:9px;
+  margin-top:22px;padding:13px 17px;border-radius:12px;
+  background:rgba(34,211,238,.045);border:1px solid rgba(34,211,238,.16);
+  font-size:12.5px;color:var(--dim);line-height:1.6;
+}
+.note svg{width:15px;height:15px;stroke:var(--c);fill:none;stroke-width:2;flex-shrink:0;margin-top:2px}
+
+/* 素材来源实证 */
+.proof-box{
+  margin-top:26px;padding:24px 26px;border-radius:14px;
+  border:1px solid var(--line);border-left:2px solid var(--c);
+  background:linear-gradient(160deg,rgba(34,211,238,.035),rgba(255,255,255,.012));
+}
+.proof-box .disc-head svg{stroke:var(--c)}
+.proof-lead{font-size:12.8px;color:var(--dim);line-height:1.78;margin:0 0 16px}
+.proof-lead strong{color:var(--txt);font-weight:600}
+.proof{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(142px,1fr));
+  gap:10px;margin:0 0 15px;
+}
+.proof-item{
+  padding:13px 14px;border-radius:10px;
+  border:1px solid rgba(34,211,238,.14);
+  background:rgba(34,211,238,.032);
+}
+.proof-num{
+  font-family:ui-monospace,SFMono-Regular,Consolas,monospace;
+  font-size:18px;font-weight:700;color:var(--c);line-height:1.15;
+}
+.proof-txt{font-size:11.5px;color:var(--dim);margin-top:4px;line-height:1.55}
+.proof-foot{font-size:12px;color:var(--dim2);line-height:1.72;margin:0}
+.proof-foot strong{color:var(--txt);font-weight:600}
+
+/* 免责声明 */
+.disclaimer{
+  margin-top:26px;padding:24px 26px;border-radius:14px;
+  border:1px solid var(--line);border-left:2px solid var(--dim2);
+  background:rgba(255,255,255,.018);
+}
+.disc-head{
+  display:flex;align-items:center;gap:9px;
+  font-size:13px;font-weight:650;color:var(--txt);margin-bottom:13px;
+  letter-spacing:.02em;
+}
+.disc-head svg{width:15px;height:15px;stroke:var(--dim);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.disclaimer p{
+  font-size:12.8px;color:var(--dim);line-height:1.78;margin-bottom:9px;
+}
+.disclaimer p:last-child{margin-bottom:0}
+.disclaimer strong{color:var(--txt);font-weight:600}
+.disclaimer a{color:var(--c);border-bottom:1px solid rgba(34,211,238,.3);transition:border-color .25s}
+.disclaimer a:hover{border-bottom-color:var(--c)}
+.disclaimer ol{
+  margin:0 0 10px 0;padding-left:18px;
+  font-size:12.8px;color:var(--dim);line-height:1.78;
+}
+.disclaimer li{margin-bottom:5px}
+.disclaimer li::marker{color:var(--dim2)}
+
+/* ============================================================
+   筛选 + 搜索
+   ============================================================ */
+.filter-bar{
+  display:flex;flex-wrap:wrap;gap:10px;align-items:center;
+  justify-content:space-between;margin-bottom:32px;
+}
+.filters{display:flex;flex-wrap:wrap;gap:8px}
+.filter{
+  padding:8px 17px;border-radius:999px;font-size:13px;color:var(--dim);
+  border:1px solid var(--line);background:rgba(255,255,255,.022);
+  transition:all .28s var(--ease);white-space:nowrap;
+}
+.filter:hover{color:var(--txt);border-color:rgba(255,255,255,.16)}
+.filter.active{
+  color:#fff;border-color:transparent;
+  background:linear-gradient(135deg,var(--v),#5b3df5);
+  box-shadow:0 5px 20px rgba(124,92,255,.34);
+}
+.filter .cnt{opacity:.55;font-size:11px;margin-left:5px;font-variant-numeric:tabular-nums}
+.search-box{
+  display:flex;align-items:center;gap:9px;
+  padding:9px 15px;border-radius:999px;min-width:210px;
+  border:1px solid var(--line);background:rgba(255,255,255,.022);
+  transition:border-color .3s,background .3s;
+}
+.search-box:focus-within{border-color:var(--line-h);background:rgba(124,92,255,.06)}
+.search-box svg{width:15px;height:15px;stroke:var(--dim2);fill:none;stroke-width:2;flex-shrink:0}
+.search-box input{
+  background:none;border:none;outline:none;color:var(--txt);
+  font-size:13.5px;width:100%;font-family:inherit;
+}
+.search-box input::placeholder{color:var(--dim2)}
+
+/* ============================================================
+   项目卡片
+   ============================================================ */
+.proj-grid{
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));
+  gap:18px;
+}
+.card{
+  position:relative;border-radius:var(--r);overflow:hidden;
+  border:1px solid var(--line);background:var(--card);
+  transition:transform .45s var(--ease),border-color .35s,box-shadow .45s,opacity .3s;
+  will-change:transform;display:flex;flex-direction:column;
+}
+.card:hover{
+  border-color:var(--line-h);
+  box-shadow:0 20px 52px -18px rgba(124,92,255,.36);
+}
+.card::before{
+  content:"";position:absolute;inset:0;border-radius:var(--r);pointer-events:none;
+  background:radial-gradient(560px circle at var(--mx,50%) var(--my,0%),rgba(124,92,255,.13),transparent 42%);
+  opacity:0;transition:opacity .4s;z-index:1;
+}
+.card:hover::before{opacity:1}
+.card-media{
+  position:relative;aspect-ratio:16/10;overflow:hidden;background:#0b0d14;flex-shrink:0;
+}
+.card-media img{width:100%;height:100%;object-fit:cover;transition:transform .65s var(--ease),filter .4s}
+.card:hover .card-media img{transform:scale(1.06)}
+.card-media::after{
+  content:"";position:absolute;inset:0;
+  background:linear-gradient(to top,rgba(5,6,10,.5),transparent 46%);
+}
+/* 无截图占位 */
+.card-media.ph{
+  display:grid;place-items:center;
+  background:
+    radial-gradient(ellipse 80% 70% at 30% 20%,hsl(var(--h,260) 78% 24% / .5),transparent 62%),
+    linear-gradient(150deg,hsl(var(--h,260) 30% 11%),hsl(var(--h,260) 24% 6%));
+}
+.card-media.ph::before{
+  content:"";position:absolute;inset:0;
+  background-image:linear-gradient(hsl(var(--h,260) 60% 60% / .07) 1px,transparent 1px),
+                   linear-gradient(90deg,hsl(var(--h,260) 60% 60% / .07) 1px,transparent 1px);
+  background-size:26px 26px;
+  mask-image:radial-gradient(circle at 50% 50%,#000,transparent 82%);
+  -webkit-mask-image:radial-gradient(circle at 50% 50%,#000,transparent 82%);
+}
+.ph-letter{
+  position:relative;z-index:1;
+  font-size:clamp(38px,5vw,54px);font-weight:800;letter-spacing:-.05em;
+  color:hsl(var(--h,260) 90% 78%);opacity:.85;
+  text-shadow:0 0 44px hsl(var(--h,260) 90% 60% / .55);
+  transition:transform .5s var(--ease);
+}
+.card:hover .ph-letter{transform:scale(1.08)}
+.card-badge{
+  position:absolute;top:11px;left:11px;z-index:2;
+  font-family:ui-monospace,Consolas,monospace;font-size:10px;letter-spacing:.06em;
+  padding:4px 9px;border-radius:6px;text-transform:uppercase;
+  background:rgba(5,6,10,.76);border:1px solid var(--line);
+  color:var(--dim);backdrop-filter:blur(10px);
+}
+.card-badge.play{color:var(--g);border-color:rgba(52,211,153,.34)}
+.card-body{padding:17px 18px 19px;display:flex;flex-direction:column;flex:1;position:relative;z-index:2}
+.card-body h3{
+  font-size:15.5px;font-weight:700;letter-spacing:-.015em;margin-bottom:7px;
+  display:flex;align-items:center;gap:7px;flex-wrap:wrap;
+}
+.card-body h3 .en{
+  font-family:ui-monospace,Consolas,monospace;font-size:10.5px;font-weight:400;
+  color:var(--dim2);letter-spacing:0;
+}
+.card-body p{
+  font-size:12.8px;color:var(--dim);line-height:1.62;flex:1;
+  display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;
+}
+.tags{display:flex;flex-wrap:wrap;gap:5px;margin-top:13px}
+.tag{
+  font-family:ui-monospace,Consolas,monospace;font-size:10px;
+  padding:3px 7px;border-radius:5px;color:var(--dim2);
+  background:rgba(255,255,255,.032);border:1px solid rgba(255,255,255,.05);
+}
+.card-link{
+  display:inline-flex;align-items:center;gap:6px;margin-top:13px;
+  font-size:12px;font-weight:600;color:var(--c);
+  transition:gap .3s var(--ease);
+}
+.card-link:hover{gap:10px}
+.card-link svg{width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:2.2}
+
+/* ============================================================
+   技术栈
+   ============================================================ */
+.stack-groups{display:grid;gap:26px}
+.stack-row{
+  display:grid;grid-template-columns:130px 1fr;gap:20px;align-items:start;
+  padding-bottom:26px;border-bottom:1px solid var(--line);
+}
+.stack-row:last-child{border-bottom:none;padding-bottom:0}
+.stack-cat{
+  font-family:ui-monospace,Consolas,monospace;font-size:11.5px;color:var(--v);
+  letter-spacing:.08em;text-transform:uppercase;padding-top:6px;
+}
+.stack-items{display:flex;flex-wrap:wrap;gap:8px}
+.stack-item{
+  padding:7px 15px;border-radius:9px;font-size:13px;color:var(--dim);
+  border:1px solid var(--line);background:rgba(255,255,255,.022);
+  transition:all .28s var(--ease);
+}
+.stack-item:hover{
+  color:var(--txt);border-color:var(--line-h);
+  background:rgba(124,92,255,.09);transform:translateY(-2px);
+}
+
+/* ============================================================
+   关于
+   ============================================================ */
+.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:44px;align-items:start}
+.about-text p{color:var(--dim);font-size:15px;line-height:1.85;margin-bottom:18px}
+.about-text p:last-child{margin-bottom:0}
+.about-text strong{color:var(--txt);font-weight:600}
+.about-quote{
+  padding:22px 24px;border-radius:14px;
+  border:1px solid var(--line);background:rgba(255,255,255,.022);
+  border-left:2px solid var(--v);
+  font-size:14.5px;color:var(--txt);line-height:1.75;font-style:italic;
+}
+.about-points{display:grid;gap:14px}
+.point{
+  display:flex;gap:14px;padding:17px 19px;border-radius:13px;
+  background:rgba(255,255,255,.022);border:1px solid var(--line);
+  transition:all .3s var(--ease);
+}
+.point:hover{border-color:var(--line-h);background:rgba(124,92,255,.06);transform:translateX(3px)}
+.point-icon{
+  width:34px;height:34px;border-radius:10px;flex-shrink:0;
+  display:grid;place-items:center;
+  background:linear-gradient(135deg,rgba(124,92,255,.2),rgba(34,211,238,.14));
+  border:1px solid rgba(124,92,255,.2);
+}
+.point-icon svg{width:16px;height:16px;stroke:var(--v);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.point h4{font-size:13.5px;font-weight:650;margin-bottom:3px}
+.point p{font-size:12.5px;color:var(--dim);line-height:1.55}
+
+/* ============================================================
+   联系
+   ============================================================ */
+.contact{
+  text-align:center;padding:clamp(80px,11vw,140px) clamp(20px,5vw,40px);
+  border-top:1px solid var(--line);position:relative;overflow:hidden;
+}
+.contact::before{
+  content:"";position:absolute;width:700px;height:700px;border-radius:50%;
+  background:radial-gradient(circle,rgba(124,92,255,.14),transparent 68%);
+  top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none;
+}
+.contact-inner{position:relative;max-width:720px;margin:0 auto}
+.contact h2{
+  font-size:clamp(30px,5.4vw,52px);line-height:1.18;margin-bottom:20px;letter-spacing:-.04em;
+}
+.contact p{color:var(--dim);font-size:15.5px;margin-bottom:38px}
+.contact-links{display:flex;gap:13px;justify-content:center;flex-wrap:wrap}
+
+/* ============================================================
+   页脚
+   ============================================================ */
+footer{
+  border-top:1px solid var(--line);padding:30px clamp(20px,5vw,40px);
+  display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;
+  font-size:12.5px;color:var(--dim2);position:relative;z-index:1;
+}
+footer .mono{font-size:11px}
+
+/* ============================================================
+   回到顶部
+   ============================================================ */
+.to-top{
+  position:fixed;right:24px;bottom:24px;z-index:55;
+  width:44px;height:44px;border-radius:50%;
+  display:grid;place-items:center;
+  background:rgba(10,12,18,.82);border:1px solid var(--line);
+  backdrop-filter:blur(14px);
+  opacity:0;pointer-events:none;transform:translateY(10px);
+  transition:all .35s var(--ease);
+}
+.to-top.show{opacity:1;pointer-events:auto;transform:none}
+.to-top:hover{border-color:var(--line-h);background:rgba(124,92,255,.16)}
+.to-top svg{width:16px;height:16px;stroke:var(--txt);fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+
+/* ============================================================
+   游戏弹窗
+   ============================================================ */
+.modal{
+  position:fixed;inset:0;z-index:200;
+  background:rgba(3,4,7,.93);backdrop-filter:blur(12px);
+  display:flex;flex-direction:column;
+  opacity:0;pointer-events:none;transition:opacity .35s var(--ease);
+}
+.modal.open{opacity:1;pointer-events:auto}
+.modal-bar{
+  display:flex;align-items:center;justify-content:space-between;gap:16px;
+  padding:13px 20px;border-bottom:1px solid var(--line);flex-shrink:0;
+}
+.modal-title{font-size:14px;font-weight:650;display:flex;align-items:center;gap:9px}
+.modal-title .en{font-family:ui-monospace,Consolas,monospace;font-size:11px;color:var(--dim2);font-weight:400}
+.modal-actions{display:flex;align-items:center;gap:9px}
+.modal-btn{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:7px 14px;border-radius:8px;font-size:12.5px;color:var(--dim);
+  border:1px solid var(--line);background:rgba(255,255,255,.03);
+  transition:all .25s;
+}
+.modal-btn:hover{color:var(--txt);border-color:var(--line-h);background:rgba(124,92,255,.12)}
+.modal-btn svg{width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:2}
+.modal-frame{flex:1;border:none;width:100%;background:#05060a}
+.modal-tip{
+  position:absolute;bottom:18px;left:50%;transform:translateX(-50%);
+  padding:9px 18px;border-radius:999px;font-size:12px;color:var(--dim);
+  background:rgba(10,12,18,.9);border:1px solid var(--line);
+  backdrop-filter:blur(10px);pointer-events:none;
+  opacity:0;transition:opacity .4s;
+}
+.modal-tip.show{opacity:1}
+
+/* ============================================================
+   响应式
+   ============================================================ */
+@media (max-width:900px){
+  .about-grid{grid-template-columns:1fr;gap:34px}
+  .stack-row{grid-template-columns:1fr;gap:11px}
+  .stack-cat{padding-top:0}
+}
+@media (max-width:760px){
+  .nav-links{display:none}
+  .stats{grid-template-columns:repeat(2,1fr)}
+  .play-grid{grid-template-columns:1fr}
+  .proj-grid{grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px}
+  .hero{min-height:92svh;padding-top:104px}
+  .scroll-hint{display:none}
+  .filter-bar{gap:14px}
+  .search-box{width:100%;min-width:0}
+  .filters{gap:6px}
+  .filter{padding:7px 13px;font-size:12px}
+  .modal-bar{padding:10px 14px}
+  .modal-title .en{display:none}
+}
+@media (max-width:420px){
+  .proj-grid{grid-template-columns:1fr}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
+  html{scroll-behavior:auto}
+}
+</style>
+</head>
+<body>
+
+<!-- 背景层 -->
+<div class="bg-layer" aria-hidden="true">
+  <div class="bg-grid"></div>
+  <div class="bg-glow g1"></div>
+  <div class="bg-glow g2"></div>
+  <div class="bg-glow g3"></div>
+  <canvas id="particles"></canvas>
+  <div class="cursor-glow" id="cursorGlow"></div>
+</div>
+
+<div class="progress" id="progress"></div>
+
+<!-- 导航 -->
+<nav id="nav">
+  <a class="logo" href="#top">
+    <span class="logo-mark">c</span>
+    <span>chuyangBZ</span>
+  </a>
+  <div class="nav-links">
+    <a href="#play">试玩</a>
+    <a href="#projects">项目</a>
+    <a href="#stack">技术</a>
+    <a href="#about">关于</a>
+    <a href="#contact">联系</a>
+  </div>
+</nav>
+
+<!-- Hero -->
+<header class="hero" id="top">
+  <div class="hero-badge">
+    <span class="dot-live"></span>
+    现在在线 · 33 个项目在跑
+  </div>
+  <h1><span class="grad">chuyangBZ</span></h1>
+  <p class="hero-sub">
+    我用 <b>AI</b> 把想法做成能跑的东西 —— 从 Android 应用到 3D 网页游戏，<br class="br-desk">
+    从桌面小狐狸到本地优先的 AI 剪辑引擎。
+  </p>
+  <div class="hero-stack">
+    <span class="chip">Kotlin</span>
+    <span class="chip">Jetpack Compose</span>
+    <span class="chip">Unity</span>
+    <span class="chip">Three.js</span>
+    <span class="chip">Godot</span>
+    <span class="chip">Fastify</span>
+    <span class="chip">Python</span>
+    <span class="chip">.NET / WPF</span>
+    <span class="chip">Blender</span>
+    <span class="chip">LLM</span>
+  </div>
+  <div class="hero-cta">
+    <a class="btn btn-primary" href="#play">
+      <svg viewBox="0 0 24 24"><path d="M6 4l14 8-14 8V4z"/></svg>
+      直接玩 <kbd>6</kbd>
+    </a>
+    <a class="btn btn-ghost" href="#projects">
+      <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
+      全部 33 个项目
+    </a>
+  </div>
+  <div class="scroll-hint">
+    <span>Scroll</span>
+    <span class="line"></span>
+  </div>
+</header>
+
+<!-- 数字 -->
+<div class="stats">
+  <div class="stat"><div class="stat-num" data-count="33">0</div><div class="stat-label">个作品</div></div>
+  <div class="stat"><div class="stat-num" data-count="8">0</div><div class="stat-label">个 Android 应用</div></div>
+  <div class="stat"><div class="stat-num" data-count="10">0</div><div class="stat-label">个游戏</div></div>
+  <div class="stat"><div class="stat-num" data-count="6">0</div><div class="stat-label">个可在线试玩</div></div>
+</div>
+
+<!-- 试玩 -->
+<section id="play">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div class="sec-eyebrow">Playground</div>
+      <h2>不用下载，点开就能玩</h2>
+      <p class="sec-desc">六个自己做的游戏，全部打包成单个 HTML 文件塞进浏览器里跑。没有服务器，没有账号，点了就进。</p>
+    </div>
+
+    <div class="play-grid">
+      <article class="play-card reveal" data-game="abyss" data-title="深渊回廊" data-en="ABYSS CORRIDOR">
+        <div class="play-media">
+          <img src="assets/shots/game_abyss.webp" alt="深渊回廊游戏画面" loading="lazy">
+          <div class="play-overlay"><div class="play-btn-circle"><svg viewBox="0 0 24 24"><path d="M6 4l14 8-14 8V4z"/></svg></div></div>
+          <span class="play-live"><span class="dot-live"></span>可玩</span>
+        </div>
+        <div class="play-info">
+          <h3>深渊回廊 <span class="en">ABYSS CORRIDOR</span></h3>
+          <p>程序化生成地牢 · 剑击 / 闪避 / 疾跑 · 死亡即终结</p>
+        </div>
+      </article>
+
+      <article class="play-card reveal" data-game="wasteland" data-title="废土前线" data-en="WASTELAND FPS">
+        <div class="play-media">
+          <img src="assets/shots/wastelandfps.webp" alt="废土前线游戏画面" loading="lazy">
+          <div class="play-overlay"><div class="play-btn-circle"><svg viewBox="0 0 24 24"><path d="M6 4l14 8-14 8V4z"/></svg></div></div>
+          <span class="play-live"><span class="dot-live"></span>可玩</span>
+        </div>
+        <div class="play-info">
+          <h3>废土前线 <span class="en">WASTELAND FPS</span></h3>
+          <p>像素化第一人称射击 · 波次生存 · 12 个 Blender 模型全塞进一个文件</p>
+        </div>
+      </article>
+
+      <article class="play-card reveal" data-game="openworld" data-title="野地" data-en="OPEN SANDBOX">
+        <div class="play-media">
+          <img src="assets/shots/game_openworld.webp" alt="野地开放沙盒画面" loading="lazy">
+          <div class="play-overlay"><div class="play-btn-circle"><svg viewBox="0 0 24 24"><path d="M6 4l14 8-14 8V4z"/></svg></div></div>
+          <span class="play-live"><span class="dot-live"></span>可玩</span>
+        </div>
+        <div class="play-info">
+          <h3>野地 <span class="en">OPEN SANDBOX</span></h3>
+          <p>开放世界沙盒 · 地形与物理全程序化</p>
+        </div>
+      </article>
+
+      <article class="play-card reveal" data-game="scenic" data-title="山河入镜" data-en="SCENIC WORLD">
+        <div class="play-media">
+          <div style="position:absolute;inset:0;display:grid;place-items:center;background:radial-gradient(ellipse 85% 75% at 32% 22%,hsl(168 76% 26% / .55),transparent 64%),linear-gradient(150deg,hsl(168 32% 12%),hsl(168 26% 6%))">
+            <span class="ph-letter" style="color:hsl(168 88% 76%);font-size:clamp(42px,6vw,64px)">山</span>
+          </div>
+          <div class="play-overlay"><div class="play-btn-circle"><svg viewBox="0 0 24 24"><path d="M6 4l14 8-14 8V4z"/></svg></div></div>
+          <span class="play-live"><span class="dot-live"></span>可玩</span>
+        </div>
+        <div class="play-info">
+          <h3>山河入镜 <span class="en">SCENIC WORLD</span></h3>
+          <p>东方山水场景 · 1.4 MB 单文件实时渲染</p>
+        </div>
+      </article>
+
+      <article class="play-card reveal" data-game="codearena" data-title="CODE ARENA" data-en="自演化观测台">
+        <div class="play-media">
+          <img src="assets/shots/game_codearena.webp" alt="CODE ARENA 画面" loading="lazy">
+          <div class="play-overlay"><div class="play-btn-circle"><svg viewBox="0 0 24 24"><path d="M6 4l14 8-14 8V4z"/></svg></div></div>
+          <span class="play-live"><span class="dot-live"></span>可玩</span>
+        </div>
+        <div class="play-info">
+          <h3>CODE ARENA <span class="en">自演化观测台</span></h3>
+          <p>写一段策略，看它在竞技场里自己打</p>
+        </div>
+      </article>
+
+      <article class="play-card reveal" data-game="gacha" data-title="没意思救济所" data-en="无聊扭蛋机">
+        <div class="play-media">
+          <img src="assets/shots/game_gacha.webp" alt="没意思救济所画面" loading="lazy">
+          <div class="play-overlay"><div class="play-btn-circle"><svg viewBox="0 0 24 24"><path d="M6 4l14 8-14 8V4z"/></svg></div></div>
+          <span class="play-live"><span class="dot-live"></span>可玩</span>
+        </div>
+        <div class="play-info">
+          <h3>没意思救济所 <span class="en">无聊扭蛋机</span></h3>
+          <p>无聊的时候扭一下，看看能抽到什么</p>
+        </div>
+      </article>
+    </div>
+
+    <div class="note">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16.5v.01"/></svg>
+      <span>建议用电脑玩 —— 这几个游戏都要键鼠操作（WASD + 鼠标）。手机上能打开，但没有虚拟摇杆，体验会打折。关掉弹窗按 <b>ESC</b> 或点右上角。</span>
+    </div>
+
+    <div class="proof-box reveal">
+      <div class="disc-head">
+        <svg viewBox="0 0 24 24"><path d="M20.5 6.5L9.5 17.5 4 12"/></svg>
+        素材与代码来源
+      </div>
+      <p class="proof-lead">这一页上没有<strong>任何不属于我的素材</strong>。下面每一条都可以自己核实 —— 打开开发者工具查看网络请求和源文件就能对上。</p>
+      <div class="proof">
+        <div class="proof-item"><div class="proof-num">0</div><div class="proof-txt">张他人图片素材<br>截图出自本人工程，画面由代码绘制</div></div>
+        <div class="proof-item"><div class="proof-num">0</div><div class="proof-txt">个外部请求<br>加载页面不访问任何第三方</div></div>
+        <div class="proof-item"><div class="proof-num">0</div><div class="proof-txt">个商业字体<br>全部使用系统自带字体栈</div></div>
+        <div class="proof-item"><div class="proof-num">141</div><div class="proof-txt">个机甲部件<br>按自定规范程序化生成</div></div>
+      </div>
+      <p class="proof-foot">唯一的第三方代码是 <strong>Three.js</strong>（MIT 协议），许可声明原样保留在源文件里。除此之外没有素材包、没有模型库、没有音频文件、没有图标字体。</p>
+    </div>
+
+    <div class="disclaimer reveal">
+      <div class="disc-head">
+        <svg viewBox="0 0 24 24"><path d="M12 3l8 4v5c0 5-3.4 8.2-8 9-4.6-.8-8-4-8-9V7l8-4z"/><path d="M12 9v4M12 16.5v.01"/></svg>
+        免责声明
+      </div>
+      <p>本站展示的所有项目均为<strong>个人学习与技术练习作品</strong>，非商业性质，不售卖、不提供付费下载、不含任何广告或内购。</p>
+      <ol>
+        <li>部分作品的<strong>题材类型</strong>（如地牢探索、机甲拼装、废土射击、物理沙盒）属于游戏行业的既有品类，这类玩法规则与方法本身不适用著作权保护。但每件作品的<strong>代码、美术、音效与界面均为独立实现</strong>，不包含任何他方作品的资源文件或程序集，也未与之建立任何关联、授权或合作关系。</li>
+        <li>站内作品的代码均自行编写；美术资源为原创设计或程序化实时生成，<strong>未提取、未复用任何商业作品的原始素材文件</strong>（贴图、模型、音频、字体）。页面引用的开源库（如 Three.js）保留其原始许可声明，遵循 MIT 协议。</li>
+        <li>如相关权利人认为某一作品存在侵权嫌疑，请通过页面下方邮箱联系我。我会在核实后<strong>立即下架</strong>相关内容，无需走法律程序。</li>
+        <li>请勿将本站作品用于任何商业用途；如需引用或二次分发，请先取得联系。</li>
+      </ol>
+      <p>写这些东西的出发点很简单：想知道某个玩法是怎么实现的，就自己动手做一个出来。做完了觉得有意思，就放在这里。</p>
+    </div>
+  </div>
+</section>
+
+<!-- 项目 -->
+<section id="projects">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div class="sec-eyebrow">Works</div>
+      <h2>做过的东西全在这</h2>
+      <p class="sec-desc">33 个项目，按类型分好了。大部分是我一边跟 AI 讨论一边写出来的 —— 有些跑通了，有些还在路上，但都真实存在。</p>
+    </div>
+
+    <div class="filter-bar reveal">
+      <div class="filters" id="filters">
+        <button class="filter active" data-filter="all">全部 <span class="cnt">33</span></button>
+        <button class="filter" data-filter="play">可试玩 <span class="cnt">6</span></button>
+        <button class="filter" data-filter="android">Android <span class="cnt">8</span></button>
+        <button class="filter" data-filter="game">游戏 <span class="cnt">10</span></button>
+        <button class="filter" data-filter="ai">创作 <span class="cnt">3</span></button>
+        <button class="filter" data-filter="desktop">桌面 <span class="cnt">4</span></button>
+        <button class="filter" data-filter="tool">工具 <span class="cnt">8</span></button>
+      </div>
+      <label class="search-box">
+        <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+        <input type="search" id="search" placeholder="搜项目、技术栈…" autocomplete="off">
+      </label>
+    </div>
+
+    <div class="proj-grid" id="grid">
+
+      <!-- ========== Android ========== -->
+      <article class="card reveal" data-cat="android" data-key="喵盒 meowbox kotlin compose ai 对话 百炼 api 工具箱">
+        <div class="card-media ph" style="--h:265"><span class="ph-letter">喵</span></div>
+        <span class="card-badge">Android</span>
+        <div class="card-body">
+          <h3>喵盒 <span class="en">MeowBox</span></h3>
+          <p>手机上用的 AI 工具箱：接阿里云百炼的对话（支持联网搜索），外加 123 个免注册公开 API 开箱即用。</p>
+          <div class="tags"><span class="tag">Kotlin</span><span class="tag">Compose</span><span class="tag">Material 3</span></div>
+        </div>
+      </article>
+
+      <article class="card reveal" data-cat="android" data-key="喵屋 meowhub 聊天 房间 创意工坊 联机 kotlin fastify">
+        <div class="card-media ph" style="--h:200"><span class="ph-letter">屋</span></div>
+        <span class="card-badge">Android</span>
+        <div class="card-body">
+          <h3>喵屋 <span class="en">MeowHub</span></h3>
+          <p>146 个源文件的完整社区 App：聊天房间、创意工坊、联机小游戏，配了一整套 Fastify 后端。</p>
+          <div class="tags"><span class="tag">Kotlin</span><span class="tag">Compose</span><span class="tag">Fastify</span></div>
+          <a class="card-link" href="#stack">看后端 <svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        </div>
+      </article>
+
+      <article class="card reveal" data-cat="android" data-key="墨词 wordmemorizer 背单词 sm-2 词库 cosyvoice 离线">
+        <div class="card-media"><img src="assets/shots/wordmem.webp" alt="墨词 App 界面设计" loading="lazy"></div>
+        <span class="card-badge">Android</span>
+        <div class="card-body">
+          <h3>墨词 <span class="en">WordMemorizer</span></h3>
+          <p>纯单机离线背单词：SM-2 间隔重复算法，8 本词库共 21709 词，TTS 用阿里云 CosyVoice 配音。没有服务器、没有账号、没有云同步。</p>
+          <div class="tags"><span class="tag">Kotlin</span><span class="tag">Room</span><span class="tag">SM-2</span><span class="tag">CosyVoice</span></div>
+        </div>
+      </article>
+
+      <article class="card reveal" data-cat="android" data-key="全景 panomaker 360 全景 校园 传感器 camera2 opengl ai 补洞 百炼">
+        <div class="card-media ph" style="--h:190"><span class="ph-letter">全</span></div>
+        <span class="card-badge">Android</span>
+        <div class="card-body">
+          <h3>全景工坊 <span class="en">PanoMaker</span></h3>
+          <p>给校园参观 App 生产 360° 全景素材：传感器实时引导转圈拍摄，每 15° 抓一帧，再用百炼 imageedit 做 AI 补洞，最后导出标准等距柱状全景包。</p>
+          <div class="tags"><span class="tag">Kotlin</span><span class="tag">CameraX</span><span class="tag">OpenCV</span><span class="tag">wanx</span></div>
+        </div>
+      </article>
+
+      <article class="card reveal" data-cat="android" data-key="漫画 小说 阅读器 comicnovelreader mvvm kotlin compose">
+        <div class="card-media ph" style="--h:340"><span class="ph-letter">漫</span></div>
+        <span class="card-badge">Android</span>
+        <div class="card-body">
+          <h3>漫画小说阅读器 <span class="en">ComicNovelReader</span></h3>
+          <p>Kotlin + Compose + MVVM 架构的本地阅读器，漫画和小说两种模式。</p>
+          <div class="tags"><span class="tag">Kotlin</span><span class="tag">Compose</span><span class="tag">MVVM</span></div>
+        </div>
+      </article>
+
+      <article class="card reveal" data-cat="android" data-key="幻壁 animewallpaper 动态壁纸 media3 视频">
+        <div class="card-media ph" style="--h:300"><span class="ph-letter">幻</span></div>
+        <span class="card-badge">Android</span>
+        <div class="card-body">
+          <h3>幻壁 <span class="en">AnimeWallpaper</span></h3>
+          <p>动态壁纸 App，用 Media3 解码视频，列表里用同色调渐变占位避免滚动白屏。</p>
+          <div class="tags"><span class="tag">Kotlin</span><span class="tag">Media3</span><span class="tag">Compose</span></div>
+        </div>
+      </article>
+
+      <article class="card reveal" data-cat="android" data-key="nova 超新星 ai 助手 android apk">
+        <div class="card-media ph" style="--h:250"><span class="ph-letter">N</span></div>
+        <span class="card-badge">Android</span>
+        <div class="card-body">
+          <h3>NOVA 超新星 <span class="en">NovaAI</span></h3>
+          <p>一个 AI 助手 App，从 v1.0 迭代到 v1.2，三个版本的 debug APK 都在。</p>
+          <div class="tags"><span class="tag">Kotlin</span><span class="tag">Compose</span><span class="tag">LLM</span></div>
+        </div>
+      </article>
+
+      <article class="card reveal" data-cat="android" data-key="剪灵 aicut ai 剪辑 视频 android">
+        <div class="card-media ph" style="--h:280"><span class="ph-letter">剪</span></div>
+        <span class="card-badge">Android</span>
+        <div class="card-body">
+          <h3>剪灵 AI <span class="en">AICut</span></h3>
+          <p>手机上的 AI 剪辑尝试，从桌面版墨剪延展到移动端的一步。</p>
+          <div class="tags"><span class="tag">Kotlin</span><span class="tag">Compose</span><span class="tag">Media3</span></div>
+        </div>
+      </article>
+
+      <!-- ========== 创作 / AI ========== -->
+      <article class="card reveal" data-cat="ai" data-key="墨剪 mocut ai 剪辑 ffmpeg 本地 渲染 抠像 配音 卡点">
+        <div class="card-media"><img src="assets/shots/mocut.webp" alt="墨剪界面" loading="lazy"></div>
+        <span class="card-badge">AI 创作</span>
+        <div class="card-body">
+          <h3>墨剪 <span class="en">MoCut</span></h3>
+          <p>本地优先的 AI 剪辑工坊：特效动画、AI 导演、AI 写文案、AI 配音与音轨分离、抠像换背景、节拍卡点，全功能手动剪辑。FFmpeg 本地渲染，<strong>视频不出本机</strong>。</p>
+          <div class="tags"><span class="tag">FFmpeg</span><span class="tag">Electron</span><span class="tag">LLM</span><span class="tag">Python</span></div>
+        </div>
+      </article>
+
+      <article class="card reveal" data-cat="ai" data-key="墨剪 studio mocutstudio 剪辑 工作台 json 动词 electron">
+        <div class="card-media"><img src="assets/shots/mocutstudio.webp" alt="墨剪 Studio 界面" loading="lazy"></div>
+        <span class="card-badge">AI 创作</span>
+        <div class="card-body">
+          <h3>墨剪 Studio <span class="en">MoCutStudio</span></h3>
+          <p>AI 原生剪辑引擎 —— 工程是一份 JSON，剪辑是一组可校验的「动词」，界面只是其中一个消费者。意思是：人和 AI 改的是同一份东西。</p>
+          <div class="tags"><span class="tag">Electron</span><span class="tag">Node</span><span class="tag">JSON IR</span></div>
+        </div>
+      </article>
+
+      <article class="card reveal" data-cat="ai" data-key="雨停之前 animeshort 动画 短片 ai 生成 分镜">
+        <div class="card-media"><img src="assets/shots/animeshort.webp" alt="雨停之前画面" loading="lazy"></div>
+        <span class="card-badge">AI 创作</span>
+        <div class="card-body">
+          <h3>雨停之前 <span class="en">BEFORE THE RAIN ENDS</span></h3>
+          <p>一部 AI 生成的动画短片。分镜、运镜、光影全部用提示词控制，两千多个生成帧里挑出能用的。</p>
+          <div class="tags"><span class="tag">AIGC</span><span class="tag">分镜</span><span class="tag">视频生成</span></div>
+        </div>
+      </article>
+
+      <!-- ========== 游戏 ========== -->
+      <article class="card reveal" data-cat="game" data-key="钢铁熔炉 mechforge 载具 拼装 机甲 unity 物理 断裂">
+        <div class="card-media"><img src="assets/shots/mechforge.webp" alt="MechForge 载具拼装游戏画面" loading="lazy"></div>
+        <span class="card-badge">Unity</span>
+        <div class="card-body">
+          <h3>钢铁熔炉 <span class="en">MechForge</span></h3>
+          <p>机甲拼装对战沙盒。拼装编辑器、驾驶物理、战斗、结构断裂全部自己实现，141 个 GLB 部件按自定规范程序化生成，882 项自测通过。</p>
+          <div class="tags"><span class="tag">Unity</span><span class="tag">C#</span><span class="tag">141 GLB</span></div>
+        </div>
+      </article>
+
+      <article class="card reveal" data-cat="game" data-key="载具工坊 vehicleforge unity 零件 装配">
+        <div class="card-media"><img src="assets/shots/vehicleforge.webp" alt="VehicleForge 零件展示" loading="lazy"></div>
+        <span class="card-badge">Unity</span>
+        <div class="card-body">
+          <h3>载具工坊 <span class="en">VehicleForge</span></h3>
+          <p>载具零件库与装配沙盒，钢铁熔炉的零件生产线。</p>
+          <div class="tags"><span class="tag">Unity</span><span class="tag">C#</span><span class="tag">程序化</span></div>
+        </div>
+      </article>
+
+      <article class="card reveal" data-cat="game" data-key="玩具箱 toybox 物理 沙盒 约束 关节 unity">
+        <div class="card-media ph" style="--h:40"><span class="ph-letter">玩</span></div>
+        <span class="card-badge">Unity</span>
+        <div class="card-body">
+          <h3>玩具箱 <span class="en">ToyBox</span></h3>
+          <p>物理沙盒，852 个源文件。摆东西、连约束、看它们按物理规律互相折磨。</p>
+          <div class="tags"><span class="tag">Unity</span><span class="tag">物理</span><span class="tag">沙盒</span></div>
+        </div>
+      </article>
+
+      <article class="card reveal" data-cat="game" data-key="生存 survivalgame 地形 采集 合成 建造 昼夜 天气 饥饿 口渴 体温">
+        <div class="card-media"><img src="assets/shots/survivalgame.webp" alt="生存游戏画面" loading="lazy"></div>
+        <span class="card-badge">Unity</span>
+        <div class="card-body">
+          <h3>生存 <span class="en">SurvivalGame</span></h3>
+          <p>地形生成、采集、合成、建造全部打通，昼夜与天气循环，饥饿、口渴、体温三条生存线同时在跑。</p>
+          <div class="tags"><span class="tag">Unity</span><span class="tag">地形</span><span class="tag">生存系统</span></div>
+        </div>
+      </article>
+
+      <article class="card reveal" data-cat="game" data-key="丧尸 生存 zombiesurvival unity 波次">
+        <div class="card-media ph" style="--h:120"><span class="ph-letter">尸</span></div>
+        <span class="card-badge">Unity</span>
+        <div class="card-body">
+          <h3>丧尸生存 <span class="en">ZombieSurvival</span></h3>
+          <p>142 个源文件的丧尸生存项目，配了一整套 Blender 模型资产（440 张素材图）。</p>
+          <div class="tags"><span class="tag">Unity</span><span class="tag">Blender</span><span class="tag">波次</span></div>
+        </div>
+      </article>
+
+      <article class="card reveal" data-cat="game" data-key="灰烬 生存 ashensurvival godot blender mcp">
+        <div class="card-media ph" style="--h:20"><span class="ph-letter">灰</span></div>
+        <span class="card-badge">Godot</span>
+        <div class="card-body">
+          <h3>灰烬生存 <span class="en">AshenSurvival</span></h3>
+          <p>换到 Godot 引擎重做生存玩法。Blender 5.2 LTS 通过 MCP 直接连进来做模型，13 个插件全开。</p>
+          <div class="tags"><span class="tag">Godot</span><span class="tag">Blender MCP</span><span class="tag">GDScript</span></div>
+        </div>
+      </article>
+
+      <article class="card reveal" data-cat="game" data-key="九宫格 ninegrid unity 启动器 wpf">
+        <div class="card-media ph" style="--h:280"><span class="ph-letter">格</span></div>
+        <span class="card-badge">Unity</span>
+        <div class="card-body">
+          <h3>九宫格 <span class="en">NineGrid</span></h3>
+          <p>Unity 游戏加一个 .NET 写的启动器，双击 exe 就能进。</p>
+          <div class="tags"><span class="tag">Unity</span><span class="tag">.NET</span><span class="tag">启动器</span></div>
+        </div>
+      </article>
+
+      <article class="card reveal" data-cat="game" data-key="apex line 赛车 漂移 three.js 赛道">
+        <div class="card-media ph" style="--h:15"><span class="ph-letter">A</span></div>
+        <span class="card-badge">Web 3D</span>
+        <div class="card-body">
+          <h3>APEX LINE <span class="en">写实赛道日</span></h3>
+          <p>Three.js 做的写实赛道驾驶，漂移会实时计分，参数能在页面上实时调。</p>
+          <div class="tags"><span class="tag">Three.js</span><span class="tag">WebGL</span><span class="tag">物理</span></div>
+        </div>
+      </article>
+
+      <article class="card reveal" data-cat="game" data-key="neon pass 霓虹山道 赛车 three.js 夜赛">
+        <div class="card-media"><img src="assets/shots/neonracer.webp" alt="霓虹山道画面" loading="lazy"></div>
+        <span class="card-badge">Web 3D</span>
+        <div class="card-body">
+          <h3>霓虹山道 <span class="en">NEON PASS</span></h3>
+          <p>夜里的山路，霓虹铺满赛道，500 多个源文件的 Three.js 赛车项目。</p>
+          <div class="tags"><span class="tag">Three.js</span><span class="tag">Vite</span><span class="tag">WebGL</span></div>
+        </div>
+      </article>
+
+      <article class="card reveal" data-cat="game" data-key="赛车 racergame unity unity project">
+        <div class="card-media ph" style="--h:210"><span class="ph-letter">赛</span></div>
+        <span class="card-badge">Unity</span>
+        <div class="card-body">
+          <h3>赛道日 <span class="en">RacerGame</span></h3>
+          <p>Unity 里的写实赛道实验，用了 PBR 沥青纹理和 glb 车模。</p>
+          <div class="tags"><span class="tag">Unity</span><span class="tag">PBR</span><span class="tag">GLB</span></div>
+        </div>
+      </article>
+
+      <!-- ========== 桌面 ========== -->
+      <article class="card reveal" data-cat="desktop" data-key="winisland windows 灵动岛 桌面 wpf 皮肤 和纸 霓虹 樱花">
+        <div class="card-media ph" style="--h:210"><span class="ph-letter">岛</span></div>
+        <span class="card-badge">Windows</span>
+        <div class="card-body">
+          <h3>WinIsland <span class="en">Windows 灵动岛</span></h3>
+          <p>把 iPhone 的灵动岛搬到 Windows 桌面：常驻置顶、随状态展开，配了霓虹、樱花、和纸三套皮肤。</p>
+          <div class="tags"><span class="tag">.NET</span><span class="tag">WPF</span><span class="tag">Win32</span></div>
+        </div>
+      </article>
+
+      <article class="card reveal" data-cat="desktop" data-key="咚咚 bongbongpet 桌面 宠物 狐狸 精灵 透明 置顶">
+        <div class="card-media"><img src="assets/shots/bongbong.webp" alt="咚咚宠物角色设定" loading="lazy"></div>
+        <span class="card-badge">Windows</span>
+        <div class="card-body">
+          <h3>咚咚宠物 <span class="en">BongBongPet</span></h3>
+          <p>一只橘白小狐狸精灵。透明背景、置顶、不抢焦点、可以拖着走，会自己在桌面上散步，也会说话。</p>
+          <div class="tags"><span class="tag">Unity</span><span class="tag">透明窗口</span><span class="tag">桌面宠物</span></div>
+        </div>
+      </article>
+
+      <article class="card reveal" data-cat="desktop" data-key="desktophub 桌面 工具 聚合 分类 密钥">
+        <div class="card-media ph" style="--h:230"><span class="ph-letter">D</span></div>
+        <span class="card-badge">Windows</span>
+        <div class="card-body">
+          <h3>DesktopHub <span class="en">桌面工具台</span></h3>
+          <p>把桌面上一堆工具按用途归好类：AI 助手、AI 编程、娱乐游戏、密钥、工具软件、开发工具。</p>
+          <div class="tags"><span class="tag">桌面</span><span class="tag">聚合</span><span class="tag">快捷启动</span></div>
+        </div>
+      </article>
+
+      <article class="card reveal" data-cat="desktop" data-key="winislandshot 截图 工具 windows">
+        <div class="card-media ph" style="--h:200"><span class="ph-letter">截</span></div>
+        <span class="card-badge">Windows</span>
+        <div class="card-body">
+          <h3>WinIslandShot <span class="en">截图工具</span></h3>
+          <p>给 WinIsland 配的截图小工具，一个 exe 解决。</p>
+          <div class="tags"><span class="tag">.NET</span><span class="tag">Win32</span></div>
+        </div>
+      </article>
+
+      <!-- ========== 工具 ========== -->
+      <article class="card reveal" data-cat="tool" data-key="tokenhub 免费 额度 聚合 openai 兼容 端点 key 本地">
+        <div class="card-media ph" style="--h:190"><span class="ph-letter">钥</span></div>
+        <span class="card-badge">工具</span>
+        <div class="card-body">
+          <h3>TokenHub <span class="en">额度聚合器</span></h3>
+          <p>把各家官方免费额度聚合成一个 OpenAI 兼容端点，本地后台跑，<strong>key 不出本机</strong>。</p>
+          <div class="tags"><span class="tag">Python</span><span class="tag">OpenAI 兼容</span><span class="tag">本地</span></div>
+        </div>
+      </article>
+
+      <article class="card reveal" data-cat="tool" data-key="codexbridge codex siliconflow 硅基流动 协议 桥接 responses api">
+        <div class="card-media ph" style="--h:275"><span class="ph-letter">C</span></div>
+        <span class="card-badge">工具</span>
+        <div class="card-body">
+          <h3>CodexBridge <span class="en">协议桥</span></h3>
+          <p>Codex 只认 Responses API，硅基流动只给 chat/completions。这个进程把两边的请求和流式 chunk 互相翻译，让它们能说上话。</p>
+          <div class="tags"><span class="tag">Python</span><span class="tag">SSE</span><span class="tag">协议翻译</span></div>
+        </div>
+      </article>
+
+      <article class="card reveal" data-cat="tool" data-key="gh-push github 热门 开源 推送 邮件 定时">
+        <div class="card-media ph" style="--h:255"><span class="ph-letter">G</span></div>
+        <span class="card-badge">工具</span>
+        <div class="card-body">
+          <h3>gh-push <span class="en">开源精选推送</span></h3>
+          <p>定期抓 GitHub 热门和快速增长项目，按实用类别筛好，生成带亮点说明的推送内容发到邮箱。内置去重，不重复推。</p>
+          <div class="tags"><span class="tag">Python</span><span class="tag">标准库</span><span class="tag">定时任务</span></div>
+        </div>
+      </article>
+
+      <article class="card reveal" data-cat="tool" data-key="meowhubserver 喵屋 后端 fastify api 聊天 房间">
+        <div class="card-media ph" style="--h:205"><span class="ph-letter">M</span></div>
+        <span class="card-badge">后端</span>
+        <div class="card-body">
+          <h3>喵屋服务端 <span class="en">MeowHubServer</span></h3>
+          <p>喵屋 App 的后端：聊天房间、创意工坊、联机游戏，Fastify v5 + PostgreSQL。</p>
+          <div class="tags"><span class="tag">Fastify</span><span class="tag">TypeScript</span><span class="tag">PostgreSQL</span></div>
+        </div>
+      </article>
+
+      <article class="card reveal" data-cat="tool" data-key="neon breach server 联机 后端 丧尸 末日 co-op">
+        <div class="card-media ph" style="--h:150"><span class="ph-letter">N</span></div>
+        <span class="card-badge">后端</span>
+        <div class="card-body">
+          <h3>neon-breach <span class="en">联机后端</span></h3>
+          <p>丧尸末日生存的 co-op 联机服务端，Fastify 写的房间与状态同步。</p>
+          <div class="tags"><span class="tag">Fastify</span><span class="tag">WebSocket</span><span class="tag">联机</span></div>
+        </div>
+      </article>
+
+      <article class="card reveal" data-cat="tool" data-key="booruhot safebooru 热门 榜单 爬虫 python">
+        <div class="card-media ph" style="--h:320"><span class="ph-letter">B</span></div>
+        <span class="card-badge">工具</span>
+        <div class="card-body">
+          <h3>BooruHot <span class="en">热门榜单</span></h3>
+          <p>抓 Safebooru 全站热门 Top 20，一次 GET 落盘缓存，重跑直接复用。</p>
+          <div class="tags"><span class="tag">Python</span><span class="tag">爬虫</span><span class="tag">缓存</span></div>
+        </div>
+      </article>
+
+      <article class="card reveal" data-cat="tool" data-key="artsource 素材 源 渲染 html 单文件">
+        <div class="card-media ph" style="--h:35"><span class="ph-letter">A</span></div>
+        <span class="card-badge">工具</span>
+        <div class="card-body">
+          <h3>ArtSource <span class="en">素材源</span></h3>
+          <p>把一堆素材源 JSON 渲染成单文件 HTML，双击就能看，不用起服务。</p>
+          <div class="tags"><span class="tag">Python</span><span class="tag">单文件 HTML</span></div>
+        </div>
+      </article>
+
+      <article class="card reveal" data-cat="tool" data-key="ai 视频 免费 额度 清单 2026">
+        <div class="card-media ph" style="--h:310"><span class="ph-letter">V</span></div>
+        <span class="card-badge">工具</span>
+        <div class="card-body">
+          <h3>免费 AI 生视频清单 <span class="en">2026-11</span></h3>
+          <p>把各家能白嫖的 AI 视频生成额度整理成一页，随时更新。</p>
+          <div class="tags"><span class="tag">单文件</span><span class="tag">清单</span></div>
+        </div>
+      </article>
+
+    </div>
+
+    <p class="empty-hint" id="emptyHint" style="display:none;text-align:center;color:var(--dim2);padding:56px 0;font-size:14px">
+      没找到匹配的项目，换个词试试
+    </p>
+  </div>
+</section>
+
+<!-- 技术栈 -->
+<section id="stack">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div class="sec-eyebrow">Toolbox</div>
+      <h2>手边常用的</h2>
+      <p class="sec-desc">不是"精通清单"，是真正在这些项目里用过的。</p>
+    </div>
+    <div class="stack-groups">
+      <div class="stack-row reveal">
+        <div class="stack-cat">移动端</div>
+        <div class="stack-items">
+          <span class="stack-item">Kotlin</span><span class="stack-item">Jetpack Compose</span>
+          <span class="stack-item">Material 3</span><span class="stack-item">Room</span>
+          <span class="stack-item">CameraX</span><span class="stack-item">Media3</span>
+          <span class="stack-item">MVVM</span><span class="stack-item">Gradle</span>
+        </div>
+      </div>
+      <div class="stack-row reveal">
+        <div class="stack-cat">游戏</div>
+        <div class="stack-items">
+          <span class="stack-item">Unity 2022 LTS</span><span class="stack-item">C#</span>
+          <span class="stack-item">Godot</span><span class="stack-item">GDScript</span>
+          <span class="stack-item">Three.js</span><span class="stack-item">WebGL</span>
+          <span class="stack-item">Blender</span><span class="stack-item">物理引擎</span>
+        </div>
+      </div>
+      <div class="stack-row reveal">
+        <div class="stack-cat">后端 / 桌面</div>
+        <div class="stack-items">
+          <span class="stack-item">Fastify</span><span class="stack-item">TypeScript</span>
+          <span class="stack-item">Node</span><span class="stack-item">PostgreSQL</span>
+          <span class="stack-item">.NET</span><span class="stack-item">WPF</span>
+          <span class="stack-item">Python</span><span class="stack-item">Electron</span>
+        </div>
+      </div>
+      <div class="stack-row reveal">
+        <div class="stack-cat">AI / 媒体</div>
+        <div class="stack-items">
+          <span class="stack-item">阿里云百炼</span><span class="stack-item">DeepSeek</span>
+          <span class="stack-item">CosyVoice</span><span class="stack-item">Wanx 图像</span>
+          <span class="stack-item">FFmpeg</span><span class="stack-item">OpenCV</span>
+          <span class="stack-item">AIGC 视频</span><span class="stack-item">MCP</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 关于 -->
+<section id="about">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div class="sec-eyebrow">About</div>
+      <h2>关于我</h2>
+    </div>
+    <div class="about-grid">
+      <div class="about-text reveal">
+        <p>我叫 <strong>chuyangBZ</strong>，学生，写代码的方式比较特别 —— <strong>基本上都是靠 AI 做</strong>。</p>
+        <p>不是让 AI 替我写一段就完事，而是把想法拆开、跟它来回讨论、让它写、我来跑、跑崩了再一起看日志。这个页面上的 41 个项目，绝大多数都是这么长出来的。</p>
+        <p>所以你会看到一些奇怪的东西：一个能在线玩的地牢游戏、一只会在桌面上散步的小狐狸、一个把视频留在本机不往外传的剪辑工具，还有个把各大厂免费额度缝起来的服务。</p>
+        <p>它们不一定都很成熟，但都是<strong>真的能跑</strong>的。</p>
+        <div class="about-quote" style="margin-top:22px">
+          「做东西的门槛，现在不是会不会写代码，是想不想得清楚要做什么。」
+        </div>
+      </div>
+      <div class="about-points reveal">
+        <div class="point">
+          <div class="point-icon"><svg viewBox="0 0 24 24"><path d="M12 2v4M12 18v4M4.9 4.9l2.8 2.8M16.3 16.3l2.8 2.8M2 12h4M18 12h4M4.9 19.1l2.8-2.8M16.3 7.7l2.8-2.8"/></svg></div>
+          <div><h4>先跑起来，再谈优雅</h4><p>能双击打开的 exe，比架构图重要。</p></div>
+        </div>
+        <div class="point">
+          <div class="point-icon"><svg viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="14" rx="2"/><path d="M8 21h8M12 18v3"/></svg></div>
+          <div><h4>本地优先</h4><p>能放本机的数据不放云上，剪辑、词库、key 都是这么处理的。</p></div>
+        </div>
+        <div class="point">
+          <div class="point-icon"><svg viewBox="0 0 24 24"><path d="M12 3l8 4.5v9L12 21l-8-4.5v-9L12 3z"/><path d="M12 12l8-4.5M12 12v9M12 12L4 7.5"/></svg></div>
+          <div><h4>单文件癖</h4><p>能塞进一个 HTML 的就不拆成十个文件，分享和存档都方便。</p></div>
+        </div>
+        <div class="point">
+          <div class="point-icon"><svg viewBox="0 0 24 24"><path d="M4 17l6-6-6-6M12 19h8"/></svg></div>
+          <div><h4>用 AI 也较真</h4><p>AI 写的东西一定自己跑一遍，跑不通就接着改，不靠它自己说"完成了"。</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 联系 -->
+<section class="contact" id="contact">
+  <div class="contact-inner reveal">
+    <h2>有想法，<br>就一起把它做出来。</h2>
+    <p>想聊技术、想合作、或者只是发现了某个 bug，都欢迎。</p>
+    <div class="contact-links">
+      <a class="btn btn-primary" href="mailto:chuyang0466@agent.qq.com">
+        <svg viewBox="0 0 24 24"><rect x="3" y="5.5" width="18" height="13" rx="2.5"/><path d="M4 7l8 6 8-6"/></svg>
+        发邮件
+      </a>
+      <a class="btn btn-ghost" href="https://github.com/yang200808" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24"><path d="M9 19c-4 1.5-4-2.5-6-3m12 6v-3.9a3.4 3.4 0 0 0-.9-2.6c3-.3 6.2-1.5 6.2-6.7A5.2 5.2 0 0 0 18.9 4 4.9 4.9 0 0 0 18.8.5S17.6.1 15 1.9a12.6 12.6 0 0 0-6 0C6.4.1 5.2.5 5.2.5A4.9 4.9 0 0 0 5.1 4 5.2 5.2 0 0 0 3.7 7.8c0 5.2 3.2 6.4 6.2 6.7a3.4 3.4 0 0 0-.9 2.6V22"/></svg>
+        GitHub
+      </a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <span>© <span id="year"></span> chuyangBZ · 用 HTML 手写的，没有框架</span>
+  <span class="mono">个人学习作品 · 非商业用途 · 侵权联系即删</span>
+</footer>
+
+<button class="to-top" id="toTop" aria-label="回到顶部">
+  <svg viewBox="0 0 24 24"><path d="M12 19V5M6 11l6-6 6 6"/></svg>
+</button>
+
+<!-- 游戏弹窗 -->
+<div class="modal" id="modal">
+  <div class="modal-bar">
+    <div class="modal-title">
+      <span id="modalTitle">游戏</span>
+      <span class="en" id="modalEn"></span>
+    </div>
+    <div class="modal-actions">
+      <a class="modal-btn" id="modalOpen" href="#" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><path d="M15 3h6v6M10 14L21 3"/></svg>
+        新窗口
+      </a>
+      <button class="modal-btn" id="modalClose">
+        <svg viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg>
+        关闭
+      </button>
+    </div>
+  </div>
+  <iframe class="modal-frame" id="modalFrame" title="游戏" allowfullscreen></iframe>
+  <div class="modal-tip" id="modalTip">点一下画面让游戏接管键盘</div>
+</div>
+
+<script>
+(function(){
+  'use strict';
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  document.documentElement.classList.add('js');
+
+  /* ---------- 年份 ---------- */
+  document.getElementById('year').textContent = new Date().getFullYear();
+
+  /* ---------- 滚动进度 + 导航 ---------- */
+  var nav = document.getElementById('nav');
+  var progress = document.getElementById('progress');
+  var toTop = document.getElementById('toTop');
+  var ticking = false;
+
+  function onScroll(){
+    var st = window.scrollY || document.documentElement.scrollTop;
+    var h = document.documentElement.scrollHeight - window.innerHeight;
+    progress.style.width = (h > 0 ? (st / h) * 100 : 0) + '%';
+    nav.classList.toggle('scrolled', st > 30);
+    toTop.classList.toggle('show', st > 600);
+    ticking = false;
+  }
+  window.addEventListener('scroll', function(){
+    if (!ticking){ requestAnimationFrame(onScroll); ticking = true; }
+  }, {passive:true});
+  onScroll();
+
+  toTop.addEventListener('click', function(){
+    window.scrollTo({top:0, behavior: reduce ? 'auto' : 'smooth'});
+  });
+
+  /* ---------- 滚动显现 ---------- */
+  var revealEls = document.querySelectorAll('.reveal');
+  var revealedAny = false;
+  if ('IntersectionObserver' in window && !reduce){
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if (e.isIntersecting){
+          revealedAny = true;
+          // 同屏元素错开一点
+          var idx = Array.prototype.indexOf.call(revealEls, e.target);
+          e.target.style.transitionDelay = (Math.min(idx % 6, 5) * 55) + 'ms';
+          e.target.classList.add('in');
+          io.unobserve(e.target);
+        }
+      });
+    }, {threshold:.08, rootMargin:'0px 0px -8% 0px'});
+    revealEls.forEach(function(el){ io.observe(el); });
+  } else {
+    revealedAny = true;
+    revealEls.forEach(function(el){ el.classList.add('in'); });
+  }
+
+  /* 兜底：观察器没反应时别让内容一直藏着 */
+  setTimeout(function(){
+    if (!revealedAny){
+      revealEls.forEach(function(el){
+        el.style.transitionDelay = '0ms';
+        el.classList.add('in');
+      });
+    }
+    document.querySelectorAll('.stat-num').forEach(function(el){
+      if (el.textContent.trim() === '0') el.textContent = el.dataset.count || '0';
+    });
+  }, 2400);
+
+  /* ---------- 数字滚动 ---------- */
+  var nums = document.querySelectorAll('.stat-num');
+  function runCount(el){
+    var target = parseInt(el.dataset.count, 10) || 0;
+    if (reduce){ el.textContent = target; return; }
+    var start = performance.now(), dur = 1400;
+    function step(now){
+      var p = Math.min((now - start) / dur, 1);
+      var eased = 1 - Math.pow(1 - p, 3);
+      el.textContent = Math.round(target * eased);
+      if (p < 1) requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+  }
+  if ('IntersectionObserver' in window){
+    var ioNum = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if (e.isIntersecting){ runCount(e.target); ioNum.unobserve(e.target); }
+      });
+    }, {threshold:.4});
+    nums.forEach(function(n){ ioNum.observe(n); });
+  } else {
+    nums.forEach(runCount);
+  }
+
+  /* ---------- 筛选 + 搜索 ---------- */
+  var grid = document.getElementById('grid');
+  var cards = Array.prototype.slice.call(grid.querySelectorAll('.card'));
+  var filterBtns = Array.prototype.slice.call(document.querySelectorAll('.filter'));
+  var searchInput = document.getElementById('search');
+  var emptyHint = document.getElementById('emptyHint');
+  var curFilter = 'all';
+  var curQuery = '';
+
+  function applyFilter(){
+    var shown = 0;
+    cards.forEach(function(card){
+      var okCat = curFilter === 'all' || card.dataset.cat === curFilter;
+      var key = (card.dataset.key || '') + ' ' + card.textContent.toLowerCase();
+      var okQ = !curQuery || key.indexOf(curQuery) !== -1;
+      var show = okCat && okQ;
+      if (show){
+        card.style.display = '';
+        card.style.opacity = '0';
+        card.style.transform = 'translateY(14px)';
+        requestAnimationFrame(function(){
+          card.style.opacity = '1';
+          card.style.transform = 'none';
+        });
+        shown++;
+      } else {
+        card.style.display = 'none';
+      }
+    });
+    emptyHint.style.display = shown ? 'none' : 'block';
+  }
+
+  filterBtns.forEach(function(btn){
+    btn.addEventListener('click', function(){
+      filterBtns.forEach(function(b){ b.classList.remove('active'); });
+      btn.classList.add('active');
+      curFilter = btn.dataset.filter;
+      applyFilter();
+    });
+  });
+
+  var searchTimer;
+  searchInput.addEventListener('input', function(){
+    clearTimeout(searchTimer);
+    searchTimer = setTimeout(function(){
+      curQuery = searchInput.value.trim().toLowerCase();
+      applyFilter();
+    }, 160);
+  });
+
+  /* ---------- 卡片光斑跟随 ---------- */
+  if (!reduce && window.matchMedia('(hover:hover)').matches){
+    cards.forEach(function(card){
+      card.addEventListener('mousemove', function(ev){
+        var r = card.getBoundingClientRect();
+        card.style.setProperty('--mx', (ev.clientX - r.left) + 'px');
+        card.style.setProperty('--my', (ev.clientY - r.top) + 'px');
+      });
+    });
+  }
+
+  /* ---------- 游戏弹窗 ---------- */
+  var modal = document.getElementById('modal');
+  var frame = document.getElementById('modalFrame');
+  var modalTitle = document.getElementById('modalTitle');
+  var modalEn = document.getElementById('modalEn');
+  var modalOpen = document.getElementById('modalOpen');
+  var modalTip = document.getElementById('modalTip');
+  var tipTimer;
+
+  function openGame(slug, title, en){
+    var url = 'games/' + slug + '/';
+    modalTitle.textContent = title;
+    modalEn.textContent = en || '';
+    modalOpen.href = url;
+    frame.src = url;
+    modal.classList.add('open');
+    document.body.style.overflow = 'hidden';
+    modalTip.classList.add('show');
+    clearTimeout(tipTimer);
+    tipTimer = setTimeout(function(){ modalTip.classList.remove('show'); }, 3200);
+  }
+  function closeGame(){
+    modal.classList.remove('open');
+    document.body.style.overflow = '';
+    setTimeout(function(){ frame.src = 'about:blank'; }, 320);
+  }
+
+  document.querySelectorAll('.play-card').forEach(function(card){
+    card.addEventListener('click', function(){
+      openGame(card.dataset.game, card.dataset.title, card.dataset.en);
+    });
+  });
+  document.getElementById('modalClose').addEventListener('click', closeGame);
+  document.addEventListener('keydown', function(e){
+    if (e.key === 'Escape' && modal.classList.contains('open')) closeGame();
+  });
+  modal.addEventListener('click', function(e){
+    if (e.target === modal) closeGame();
+  });
+
+  /* ---------- 鼠标光晕 ---------- */
+  var glow = document.getElementById('cursorGlow');
+  if (!reduce && window.matchMedia('(hover:hover) and (pointer:fine)').matches){
+    var gx = 0, gy = 0, cx = 0, cy = 0, glowOn = false;
+    document.addEventListener('mousemove', function(e){
+      gx = e.clientX; gy = e.clientY;
+      if (!glowOn){ glowOn = true; glow.style.left = gx + 'px'; glow.style.top = gy + 'px'; }
+    }, {passive:true});
+    (function loop(){
+      cx += (gx - cx) * 0.09;
+      cy += (gy - cy) * 0.09;
+      glow.style.left = cx + 'px';
+      glow.style.top = cy + 'px';
+      requestAnimationFrame(loop);
+    })();
+  } else {
+    glow.style.display = 'none';
+  }
+
+  /* ---------- 粒子网络 ---------- */
+  var canvas = document.getElementById('particles');
+  if (canvas && !reduce){
+    var ctx = canvas.getContext('2d');
+    var W = 0, H = 0, DPR = Math.min(window.devicePixelRatio || 1, 2);
+    var pts = [];
+    var mouse = {x:-9999, y:-9999};
+
+    function resize(){
+      W = canvas.clientWidth; H = canvas.clientHeight;
+      canvas.width = W * DPR; canvas.height = H * DPR;
+      ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+      var target = Math.min(Math.round((W * H) / 26000), W < 640 ? 26 : 62);
+      pts = [];
+      for (var i = 0; i < target; i++){
+        pts.push({
+          x: Math.random() * W,
+          y: Math.random() * H,
+          vx: (Math.random() - .5) * .28,
+          vy: (Math.random() - .5) * .28,
+          r: Math.random() * 1.5 + .7
+        });
+      }
+    }
+    resize();
+
+    var rt;
+    window.addEventListener('resize', function(){
+      clearTimeout(rt); rt = setTimeout(resize, 220);
+    });
+    window.addEventListener('mousemove', function(e){
+      mouse.x = e.clientX; mouse.y = e.clientY;
+    }, {passive:true});
+    window.addEventListener('mouseleave', function(){ mouse.x = -9999; mouse.y = -9999; });
+
+    var LINK = 132, LINK2 = LINK * LINK;
+    function draw(){
+      ctx.clearRect(0, 0, W, H);
+      for (var i = 0; i < pts.length; i++){
+        var p = pts[i];
+        p.x += p.vx; p.y += p.vy;
+        if (p.x < 0 || p.x > W) p.vx *= -1;
+        if (p.y < 0 || p.y > H) p.vy *= -1;
+        // 鼠标轻微吸引
+        var dx = mouse.x - p.x, dy = mouse.y - p.y;
+        var d2 = dx * dx + dy * dy;
+        if (d2 < 26000 && d2 > 1){
+          var d = Math.sqrt(d2);
+          p.x += (dx / d) * .42;
+          p.y += (dy / d) * .42;
+        }
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r, 0, 6.2832);
+        ctx.fillStyle = 'rgba(140,120,255,.5)';
+        ctx.fill();
+      }
+      for (var a = 0; a < pts.length; a++){
+        for (var b = a + 1; b < pts.length; b++){
+          var ddx = pts[a].x - pts[b].x, ddy = pts[a].y - pts[b].y;
+          var dd = ddx * ddx + ddy * ddy;
+          if (dd < LINK2){
+            var alpha = (1 - dd / LINK2) * .22;
+            ctx.beginPath();
+            ctx.moveTo(pts[a].x, pts[a].y);
+            ctx.lineTo(pts[b].x, pts[b].y);
+            ctx.strokeStyle = 'rgba(124,92,255,' + alpha + ')';
+            ctx.lineWidth = .7;
+            ctx.stroke();
+          }
+        }
+      }
+      requestAnimationFrame(draw);
+    }
+    requestAnimationFrame(draw);
+  }
+
+  /* ---------- Hero 视差 ---------- */
+  if (!reduce && window.matchMedia('(hover:hover)').matches){
+    var hero = document.querySelector('.hero');
+    var h1 = hero.querySelector('h1');
+    window.addEventListener('mousemove', function(e){
+      if (window.scrollY > window.innerHeight * .8) return;
+      var nx = (e.clientX / window.innerWidth - .5);
+      var ny = (e.clientY / window.innerHeight - .5);
+      h1.style.transform = 'translate3d(' + (nx * -10) + 'px,' + (ny * -7) + 'px,0)';
+    }, {passive:true});
+  }
+})();
+</script>
+</body>
+</html>

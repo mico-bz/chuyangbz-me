@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>CODE ARENA · 自演化观测台</title>
+<style>
+:root{
+  --bg:#0e1521; --panel:#16202f; --panel2:#1b2839; --line:rgba(255,255,255,.09);
+  --tx:#dbe6f2; --muted:#8595ab; --dim:#5c6b80;
+  --acc:#4fd6b0; --org:#f0915e; --vio:#a394f0; --red:#e46b6b;
+  --mono:"SFMono-Regular",Consolas,"Liberation Mono","Microsoft YaHei",monospace;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);
+  font-family:"PingFang SC","Microsoft YaHei",system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+button{font:inherit;cursor:pointer;border:1px solid var(--line);background:var(--panel2);
+  color:var(--tx);border-radius:7px;padding:7px 12px;font-size:12px;transition:.15s}
+button:hover:not(:disabled){border-color:var(--acc);color:var(--acc)}
+button:disabled{opacity:.4;cursor:default}
+button.on{background:var(--acc);color:#0b1620;border-color:var(--acc);font-weight:600}
+.wrap{max-width:1180px;margin:0 auto;padding:22px 20px 36px}
+header{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap;
+  padding-bottom:16px;border-bottom:1px solid var(--line)}
+h1{margin:0;font-family:var(--mono);font-size:19px;font-weight:600;letter-spacing:2px}
+h1 span{color:var(--acc)}
+.desc{margin:7px 0 0;font-size:12px;color:var(--muted);line-height:1.7}
+.badges{display:flex;gap:7px;flex-wrap:wrap}
+.badge{font-family:var(--mono);font-size:11px;color:var(--muted);
+  border:1px solid var(--line);border-radius:6px;padding:6px 10px;background:var(--panel)}
+.badge b{color:var(--acc);font-weight:600}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:14px}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px}
+.ph{display:flex;align-items:center;justify-content:space-between;margin-bottom:11px}
+.ph h2{margin:0;font-family:var(--mono);font-size:11px;letter-spacing:1.6px;color:var(--muted);font-weight:600}
+.ph .mini{font-family:var(--mono);font-size:10.5px;color:var(--dim)}
+canvas{display:block;width:100%;border-radius:8px;background:#0b121c}
+#board{height:330px}
+#curve{height:132px}
+.controls{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:11px}
+.controls label{font-size:11px;color:var(--muted);display:flex;align-items:center;gap:6px}
+input[type=range]{accent-color:var(--acc);width:110px}
+#replay{max-width:100%}
+.dlist{font-family:var(--mono);font-size:11.5px;line-height:1.65;height:246px;overflow:auto;
+  background:#0b121c;border-radius:8px;padding:10px 12px;white-space:pre;color:#b9c9dc}
+.dlist .hl{color:var(--acc)}
+.dlist .cm{color:var(--dim)}
+.testbox{margin-top:11px;border-top:1px dashed var(--line);padding-top:11px;
+  display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.result{font-family:var(--mono);font-size:11.5px;color:var(--muted);line-height:1.6}
+.result b{color:var(--acc)}
+.result .bad{color:var(--org)}
+.log{font-family:var(--mono);font-size:11px;color:var(--dim);margin-top:10px;line-height:1.7;
+  height:44px;overflow:hidden}
+footer{margin-top:18px;font-size:11.5px;color:var(--dim);line-height:1.9;border-top:1px solid var(--line);padding-top:14px}
+footer code{font-family:var(--mono);color:var(--muted)}
+@media(max-width:820px){.grid{grid-template-columns:1fr}#board{height:280px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div>
+      <h1>CODE <span>ARENA</span> / 自演化观测台</h1>
+      <p class="desc">32 个用自研字节码写的程序，在 16×12 网格里抢食物、互相卷。变异、交叉、淘汰、天梯，全部本地确定性跑。默认暂停：点开始或单步一代，看冠军字节码从乱码长成一段会找食物的程序。</p>
+    </div>
+    <div class="badges">
+      <div class="badge">GEN <b id="bGen">0</b></div>
+      <div class="badge">BEST <b id="bBest">0.0</b></div>
+      <div class="badge">AVG <b id="bAvg">0.0</b></div>
+      <div class="badge">LEN <b id="bLen">0</b></div>
+      <div class="badge">SEED <b id="bSeed">0</b></div>
+    </div>
+  </header>
+
+  <div class="grid">
+    <div>
+      <div class="panel">
+        <div class="ph"><h2>FIELD / 逐帧回放</h2><span class="mini" id="frameInfo">tick 0 / 0</span></div>
+        <canvas id="board"></canvas>
+        <div class="controls">
+          <button id="run">开始演化</button>
+          <button id="step">单步一代</button>
+          <button id="reset">换个种子</button>
+          <label>速度 <input type="range" id="speed" min="1" max="8" value="1"><span id="speedV" class="mini">1 代/帧</span></label>
+        </div>
+        <div class="controls">
+          <button id="record">回放冠军一局</button>
+          <button id="play" disabled>播放</button>
+          <input type="range" id="replay" min="0" max="0" value="0" style="flex:1;min-width:120px">
+        </div>
+      </div>
+      <div class="panel" style="margin-top:14px">
+        <div class="ph"><h2>FITNESS / 代际曲线</h2><span class="mini">青=最优 · 灰蓝=均值</span></div>
+        <canvas id="curve"></canvas>
+      </div>
+    </div>
+
+    <div>
+      <div class="panel">
+        <div class="ph"><h2>CHAMPION / 冠军字节码反汇编</h2><span class="mini" id="champInfo">0 条指令</span></div>
+        <div class="dlist" id="dlist">等第一代跑完…</div>
+        <div class="testbox">
+          <button id="selftest">反向自测：冠军 vs 随机程序</button>
+          <div class="result" id="testResult">未运行。先跑几十代，再用随机程序当对照组检验演化是否真的有效。</div>
+        </div>
+      </div>
+      <div class="panel" style="margin-top:14px">
+        <div class="ph"><h2>ISA / 指令集</h2><span class="mini">每 tick 最多 14 条 · 24 条上限</span></div>
+        <div class="dlist" style="height:auto;white-space:pre-wrap">SENSE a  读传感器写入 R   a: 0最近食物方向 1前 2右 3左 4能量 5对手距 6随机 7常数1
+JMP   a  相对跳转 a-3
+JZ    a  R==0 时相对跳转
+TURN  a  直接设定朝向 a%4 (0上 1右 2下 3左)
+MOVE     朝当前朝向走一步，并结束本 tick
+TURNR    朝向 = R%4（让感知结果直接驱动转向）
+ADD   a  R += a
+CMP   a  R = (R > a) ? 1 : 0
+
+基因 = 指令数组。变异是替换/插入/删除单条指令，交叉是单点拼接。
+没有梯度、没有神经网络、没有外部模型 —— 纯选择压力。</div>
+      </div>
+      <div class="log" id="log"></div>
+    </div>
+  </div>
+
+  <footer>
+    确定性：同一个 seed 重放结果完全一致（xorshift32，每局 seed 由 gen/个体/对手/回合哈希）。先手每 tick 交替，消除抢食偏置。<br>
+    零依赖、零联网、零 API 调用，<code>file://</code> 直接打开即可。引擎是独立于 DOM 的纯函数块（<code>ENGINE START/END</code>），可以整段搬进 Node 做批量实验，或者换成 Unity / Three.js 的渲染层。<br>
+    下一代可长：指令集加 CALL/栈变成真 VM → 多物种共演化 → 把冠军字节码导出成独立可执行文件 → 联机天梯。这版先把机制跑通，皮肤没做。
+  </footer>
+</div>
+
+<script>
+// ---- ENGINE START ----
+var Engine = (function(){
+  var CFG={W:16,H:12,FOOD:24,TICKS:140,MAXLEN:24,MAXOPS:14,POP:32,OPP:4,
+           ENERGY:90,FOOD_GAIN:18,ELITE:4,REGEN:0.22};
+  var OPS=['SENSE','JMP','JZ','TURN','MOVE','TURNR','ADD','CMP'];
+  var SN=['最近食物方向','前方食物距离','右侧食物距离','左侧食物距离','自身能量','对手距离','随机数','常数 1'];
+  function rng(seed){
+    var s=(seed>>>0)||1;
+    return function(){s^=s<<13;s>>>=0;s^=s>>>17;s^=s<<5;s>>>=0;return s/4294967296;};
+  }
+  function ri(r,n){return Math.floor(r()*n)}
+  function randomProgram(r){
+    var len=6+ri(r,10),p=[],i;
+    for(i=0;i<len;i++)p.push([ri(r,8),ri(r,8)]);
+    p[ri(r,p.length)]=[4,0];
+    return p;
+  }
+  function mutate(src,r){
+    var q=src.map(function(x){return x.slice()}),i;
+    if(r()<0.38){i=ri(r,q.length);q[i]=[ri(r,8),ri(r,8)];}
+    if(r()<0.12&&q.length>3)q.splice(ri(r,q.length),1);
+    if(r()<0.12&&q.length<CFG.MAXLEN)q.splice(ri(r,q.length),0,[ri(r,8),ri(r,8)]);
+    if(!q.some(function(x){return x[0]===4}))q[ri(r,q.length)]=[4,0];
+    return q;
+  }
+  function crossover(a,b,r){
+    if(r()<0.45)return mutate(a,r);
+    var ca=1+ri(r,Math.max(1,a.length-1)),cb=1+ri(r,Math.max(1,b.length-1));
+    var q=a.slice(0,ca).concat(b.slice(cb)).slice(0,CFG.MAXLEN).map(function(x){return x.slice()});
+    return mutate(q,r);
+  }
+  function ahead(food,x,y,dir){
+    var dx=[0,1,0,-1][dir],dy=[-1,0,1,0][dir],d,nx,ny;
+    for(d=1;d<=4;d++){
+      nx=x+dx*d;ny=y+dy*d;
+      if(nx<0||ny<0||nx>=CFG.W||ny>=CFG.H)return 0;
+      if(food.has(nx+ny*CFG.W))return 5-d;
+    }
+    return 0;
+  }
+  function nearestFood(c){
+    var best=4,bd=999,k,x,y,d;
+    c.food.forEach(function(v){
+      k=v;x=k%CFG.W;y=Math.floor(k/CFG.W);
+      d=Math.abs(x-c.x)+Math.abs(y-c.y);
+      if(d<bd){bd=d;best=(Math.abs(y-c.y)>Math.abs(x-c.x))?(y<c.y?0:2):(x<c.x?3:1);}
+    });
+    return best;
+  }
+  function sense(c,a,r){
+    switch(a&7){
+      case 0:return nearestFood(c);
+      case 1:return ahead(c.food,c.x,c.y,c.dir);
+      case 2:return ahead(c.food,c.x,c.y,(c.dir+1)&3);
+      case 3:return ahead(c.food,c.x,c.y,(c.dir+3)&3);
+      case 4:return Math.min(7,c.e>>3);
+      case 5:return Math.abs(c.x-c.ox)+Math.abs(c.y-c.oy);
+      case 6:return ri(r,4);
+      default:return 1;
+    }
+  }
+  function decide(prog,c,r){
+    var pc=0,R=0,ops=0,n=prog.length,ins,op,arg;
+    if(!n)return false;
+    while(ops++<CFG.MAXOPS){
+      pc=((pc%n)+n)%n;
+      ins=prog[pc];op=ins[0]&7;arg=ins[1]&7;pc++;
+      if(op===0)R=sense(c,arg,r);
+      else if(op===1)pc+=arg-3;
+      else if(op===2){if(R===0)pc+=arg-3;}
+      else if(op===3)c.dir=arg&3;
+      else if(op===4)return true;
+      else if(op===5)c.dir=R&3;
+      else if(op===6)R=(R+arg)&255;
+      else if(op===7)R=(R>arg)?1:0;
+    }
+    return false;
+  }
+  function step(s,o,prog,r){
+    var dx,dy,nx,ny,k;
+    s.ox=o.x;s.oy=o.y;
+    var want=decide(prog,s,r);
+    s.e--;
+    if(!want)return;
+    dx=[0,1,0,-1][s.dir];dy=[-1,0,1,0][s.dir];
+    nx=s.x+dx;ny=s.y+dy;
+    if(nx<0||ny<0||nx>=CFG.W||ny>=CFG.H){nx=s.x;ny=s.y;}
+    if(nx===o.x&&ny===o.y){nx=s.x;ny=s.y;}
+    s.x=nx;s.y=ny;
+    k=nx+ny*CFG.W;
+    if(s.food.has(k)){s.food.delete(k);s.e+=CFG.FOOD_GAIN;s.got++;}
+  }
+  function runMatch(pa,pb,seed,record){
+    var r=rng(seed),food=new Set(),i;
+    while(food.size<CFG.FOOD)food.add(ri(r,CFG.W)+ri(r,CFG.H)*CFG.W);
+    var A={x:1,y:6,dir:1,e:CFG.ENERGY,food:food,ox:0,oy:0,got:0};
+    var B={x:14,y:6,dir:3,e:CFG.ENERGY,food:food,ox:0,oy:0,got:0};
+    var frames=record?[]:null,winner=0,t;
+    for(t=0;t<CFG.TICKS;t++){
+      if(t%2===0){step(A,B,pa,r);step(B,A,pb,r);}
+      else{step(B,A,pb,r);step(A,B,pa,r);}
+      if(r()<CFG.REGEN)food.add(ri(r,CFG.W)+ri(r,CFG.H)*CFG.W);
+      if(record)frames.push([A.x,A.y,A.dir,A.e,B.x,B.y,B.dir,B.e,Array.from(food)]);
+      if(A.e<=0||B.e<=0){winner=A.e<=0&&B.e<=0?0:(A.e<=0?2:1);break;}
+    }
+    if(!winner)winner=A.e>B.e?1:(B.e>A.e?2:0);
+    return {winner:winner,aGot:A.got,bGot:B.got,ticks:t+1,frames:frames,ae:A.e,be:B.e};
+  }
+  function scoreOf(m,side){return m.winner===0?1:(m.winner===side?3:0);}
+  function evaluate(pop,gen,seed){
+    var scores=new Array(pop.length).fill(0),r=rng((seed+gen*7919)>>>0),i,k,j,s,m1,m2;
+    for(i=0;i<pop.length;i++){
+      for(k=0;k<CFG.OPP;k++){
+        j=(i+1+ri(r,pop.length-1))%pop.length;
+        s=(seed+gen*104729+i*1009+k*97)>>>0;
+        m1=runMatch(pop[i],pop[j],s,false);
+        scores[i]+=scoreOf(m1,1)+m1.aGot*0.5;
+        m2=runMatch(pop[j],pop[i],(s+1)>>>0,false);
+        scores[i]+=scoreOf(m2,2)+m2.bGot*0.5;
+      }
+    }
+    return scores;
+  }
+  function createState(seed){
+    var r=rng(seed),pop=[],i;
+    for(i=0;i<CFG.POP;i++)pop.push(randomProgram(r));
+    return {seed:seed>>>0,gen:0,pop:pop,history:[],
+            champ:pop[0].map(function(x){return x.slice()}),best:0,avg:0,len:0};
+  }
+  function advance(st){
+    var gen=st.gen,scores=evaluate(st.pop,gen,st.seed);
+    var idx=scores.map(function(s,i){return [s,i]}).sort(function(a,b){return b[0]-a[0]});
+    var best=idx[0][0],avg=scores.reduce(function(a,b){return a+b},0)/scores.length;
+    var r=rng((st.seed+gen*31337)>>>0),next=[],k,bi,c,t,pick;
+    for(k=0;k<CFG.ELITE;k++)next.push(st.pop[idx[k][1]].map(function(x){return x.slice()}));
+    pick=function(){bi=ri(r,st.pop.length);for(t=0;t<2;t++){c=ri(r,st.pop.length);if(scores[c]>scores[bi])bi=c;}return st.pop[bi];};
+    while(next.length<CFG.POP)next.push(crossover(pick(),pick(),r));
+    st.champ=st.pop[idx[0][1]].map(function(x){return x.slice()});
+    st.pop=next;st.gen=gen+1;st.best=best;st.avg=avg;
+    st.len=st.pop.reduce(function(a,p){return a+p.length},0)/st.pop.length;
+    st.history.push({best:best,avg:avg,len:st.len});
+    return st;
+  }
+  function selfTest(st,rounds){
+    var win=0,draw=0,lose=0,k,r,foe,s,m1,m2;
+    for(k=0;k<rounds;k++){
+      r=rng((st.seed+90001+k*131)>>>0);
+      foe=randomProgram(r);
+      s=(st.seed+77777+k*977)>>>0;
+      m1=runMatch(st.champ,foe,s,false);
+      m2=runMatch(foe,st.champ,(s+1)>>>0,false);
+      if(m1.winner===1)win++;else if(m1.winner===0)draw++;else lose++;
+      if(m2.winner===2)win++;else if(m2.winner===0)draw++;else lose++;
+    }
+    return {win:win,draw:draw,lose:lose,total:rounds*2,rate:win/(rounds*2)};
+  }
+  function disasm(p){
+    return p.map(function(x,i){
+      var op=OPS[x[0]&7],a=x[1]&7,s=op+'  '+a;
+      if(op==='JMP'||op==='JZ')s+='   ; 偏移 '+(a-3);
+      if(op==='SENSE')s+='   ; '+SN[a];
+      if(op==='TURN')s+='   ; 朝 '+(a&3);
+      return String(i).padStart(2,'0')+'  '+s;
+    });
+  }
+  return {CFG:CFG,OPS:OPS,SN:SN,rng:rng,randomProgram:randomProgram,mutate:mutate,
+          crossover:crossover,decide:decide,runMatch:runMatch,evaluate:evaluate,
+          createState:createState,advance:advance,selfTest:selfTest,disasm:disasm};
+})();
+// ---- ENGINE END ----
+
+var $=function(id){return document.getElementById(id)};
+var state, running=false, speed=1, frames=null, frameIdx=0, playing=false;
+var board=$('board'),curve=$('curve');
+function fitCanvas(c){
+  var dpr=window.devicePixelRatio||1,r=c.getBoundingClientRect();
+  c.width=Math.round(r.width*dpr);c.height=Math.round(r.height*dpr);
+  var ctx=c.getContext('2d');ctx.setTransform(dpr,0,0,dpr,0,0);
+  return {ctx:ctx,w:r.width,h:r.height};
+}
+function drawBoard(){
+  var f=fitCanvas(board),ctx=f.ctx,W=f.w,H=f.h,C=Engine.CFG;
+  var cw=W/C.W,ch=H/C.H,pad=8;
+  ctx.clearRect(0,0,W,H);
+  ctx.strokeStyle='rgba(255,255,255,.05)';ctx.lineWidth=1;
+  for(var i=0;i<=C.W;i++){ctx.beginPath();ctx.moveTo(i*cw,0);ctx.lineTo(i*cw,H);ctx.stroke();}
+  for(var j=0;j<=C.H;j++){ctx.beginPath();ctx.moveTo(0,j*ch);ctx.lineTo(W,j*ch);ctx.stroke();}
+  var fr=frames&&frames[frameIdx];
+  if(fr){
+    var food=fr[8];
+    ctx.fillStyle='rgba(79,214,176,.42)';
+    for(var k=0;k<food.length;k++){
+      var fx=food[k]%C.W,fy=Math.floor(food[k]/C.W);
+      ctx.beginPath();ctx.arc((fx+.5)*cw,(fy+.5)*ch,Math.min(cw,ch)*.16,0,6.2832);ctx.fill();
+    }
+    agent(ctx,fr[0],fr[1],fr[2],cw,ch,'#4fd6b0');
+    agent(ctx,fr[4],fr[5],fr[6],cw,ch,'#f0915e');
+    ctx.font='11px monospace';
+    ctx.fillStyle='#4fd6b0';ctx.fillText('A  E='+fr[3],pad,15);
+    ctx.fillStyle='#f0915e';ctx.fillText('B  E='+fr[7],pad+88,15);
+  }else{
+    ctx.fillStyle='#5c6b80';ctx.font='12px monospace';ctx.textAlign='center';
+    ctx.fillText('点「回放冠军一局」生成逐帧快照',W/2,H/2);
+    ctx.textAlign='left';
+  }
+}
+function agent(ctx,x,y,dir,cw,ch,color){
+  var cx=(x+.5)*cw,cy=(y+.5)*ch,r=Math.min(cw,ch)*.33;
+  var ang=[-Math.PI/2,0,Math.PI/2,Math.PI][dir];
+  ctx.fillStyle=color;ctx.beginPath();
+  ctx.moveTo(cx+Math.cos(ang)*r,cy+Math.sin(ang)*r);
+  ctx.lineTo(cx+Math.cos(ang+2.5)*r,cy+Math.sin(ang+2.5)*r);
+  ctx.lineTo(cx+Math.cos(ang-2.5)*r,cy+Math.sin(ang-2.5)*r);
+  ctx.closePath();ctx.fill();
+}
+function drawCurve(){
+  var f=fitCanvas(curve),ctx=f.ctx,W=f.w,H=f.h,h=state.history;
+  ctx.clearRect(0,0,W,H);
+  ctx.strokeStyle='rgba(255,255,255,.06)';
+  for(var i=1;i<4;i++){ctx.beginPath();ctx.moveTo(0,H*i/4);ctx.lineTo(W,H*i/4);ctx.stroke();}
+  if(h.length<2)return;
+  var mx=1;for(var k=0;k<h.length;k++)mx=Math.max(mx,h[k].best,h[k].avg);
+  var X=function(i){return (i/(h.length-1))*(W-8)+4};
+  var Y=function(v){return H-6-(v/mx)*(H-14)};
+  ctx.lineWidth=1.6;
+  ctx.strokeStyle='#5c7899';ctx.beginPath();
+  for(k=0;k<h.length;k++){if(k===0)ctx.moveTo(X(k),Y(h[k].avg));else ctx.lineTo(X(k),Y(h[k].avg));}
+  ctx.stroke();
+  ctx.strokeStyle='#4fd6b0';ctx.beginPath();
+  for(k=0;k<h.length;k++){if(k===0)ctx.moveTo(X(k),Y(h[k].best));else ctx.lineTo(X(k),Y(h[k].best));}
+  ctx.stroke();
+  ctx.fillStyle='#8595ab';ctx.font='10px monospace';
+  ctx.fillText('max '+mx.toFixed(1),6,12);
+}
+function renderDisasm(){
+  var lines=Engine.disasm(state.champ),html='';
+  for(var i=0;i<lines.length;i++){
+    var s=lines[i].replace(/&/g,'&amp;').replace(/</g,'&lt;');
+    var cm=s.indexOf(';');
+    if(cm>=0)s='<span class="hl">'+s.slice(0,cm)+'</span><span class="cm">'+s.slice(cm)+'</span>';
+    else s='<span class="hl">'+s+'</span>';
+    html+=s+'\n';
+  }
+  $('dlist').innerHTML=html;
+  $('champInfo').textContent=state.champ.length+' 条指令';
+}
+function sync(){
+  $('bGen').textContent=state.gen;
+  $('bBest').textContent=state.best.toFixed(1);
+  $('bAvg').textContent=state.avg.toFixed(1);
+  $('bLen').textContent=state.len.toFixed(1);
+  $('bSeed').textContent=state.seed;
+}
+function log(s){$('log').innerHTML=s+'<br>'+$('log').innerHTML.split('<br>').slice(0,2).join('<br>')}
+function tick(n){
+  var t0=performance.now(),i;
+  for(i=0;i<n;i++)Engine.advance(state);
+  var ms=performance.now()-t0;
+  sync();
+  if(state.gen%5===0){renderDisasm();log('gen '+state.gen+' · best '+state.best.toFixed(1)+' · '+ms.toFixed(0)+'ms/'+n+'代');}
+  drawCurve();
+}
+function loop(){
+  if(running&&!playing)tick(speed);
+  requestAnimationFrame(loop);
+}
+function reset(seed){
+  state=Engine.createState(seed>>>0);
+  frames=null;frameIdx=0;playing=false;
+  $('replay').max=0;$('replay').value=0;$('frameInfo').textContent='tick 0 / 0';
+  $('play').disabled=true;$('testResult').textContent='未运行。先跑几十代，再用随机程序当对照组检验演化是否真的有效。';
+  sync();drawCurve();drawBoard();
+  log('新种子 '+state.seed+' · 32 个随机祖宗已就位');
+}
+$('run').addEventListener('click',function(){
+  running=!running;
+  this.textContent=running?'暂停演化':'继续演化';
+  this.classList.toggle('on',running);
+});
+$('step').addEventListener('click',function(){tick(1);renderDisasm();});
+$('reset').addEventListener('click',function(){reset((Math.random()*4294967295)>>>0)});
+$('speed').addEventListener('input',function(){speed=+this.value;$('speedV').textContent=speed+' 代/帧'});
+$('record').addEventListener('click',function(){
+  var r=Engine.rng((state.seed+state.gen*613+7)>>>0),foe=Engine.randomProgram(r);
+  var m=Engine.runMatch(state.champ,foe,(state.seed+424242)>>>0,true);
+  frames=m.frames;frameIdx=0;playing=false;
+  $('replay').max=frames.length-1;$('replay').value=0;
+  $('play').disabled=false;$('play').textContent='播放';
+  $('frameInfo').textContent='tick 0 / '+frames.length+' · 胜方 '+(m.winner===1?'A(冠军)':m.winner===2?'B(随机)':'平局');
+  drawBoard();
+  log('回放已生成 · '+frames.length+' 帧 · 冠军吃到 '+m.aGot+' 份 / 随机 '+m.bGot+' 份');
+});
+$('replay').addEventListener('input',function(){frameIdx=+this.value;$('frameInfo').textContent='tick '+frameIdx+' / '+(frames?frames.length:0);drawBoard()});
+$('play').addEventListener('click',function(){
+  if(!frames)return;
+  playing=!playing;
+  this.textContent=playing?'暂停':'播放';
+  this.classList.toggle('on',playing);
+  if(playing)playLoop();
+});
+function playLoop(){
+  if(!playing||!frames)return;
+  frameIdx=(frameIdx+1)%frames.length;
+  $('replay').value=frameIdx;
+  $('frameInfo').textContent='tick '+frameIdx+' / '+frames.length;
+  drawBoard();
+  setTimeout(playLoop,55);
+}
+$('selftest').addEventListener('click',function(){
+  var el=$('testResult');
+  el.textContent='跑 50 局对照…';
+  setTimeout(function(){
+    var t=Engine.selfTest(state,25);
+    var verdict=t.rate>0.62?'演化有效':(t.rate>=0.45?'不显著，别急着下结论':'反了，参数得调');
+    var cls=t.rate>0.62?'':' class="bad"';
+    el.innerHTML='冠军 '+t.win+' 胜 / '+t.draw+' 平 / '+t.lose+' 负 · 胜率 <b'+(t.rate>0.62?'':' class="bad"')+'>'+(t.rate*100).toFixed(1)+'%</b> · '+verdict;
+    log('反向自测 @gen '+state.gen+' · 胜率 '+(t.rate*100).toFixed(1)+'% · '+verdict);
+  },20);
+});
+window.addEventListener('resize',function(){drawBoard();drawCurve()});
+reset(20261106);
+requestAnimationFrame(loop);
+</script>
+</body>
+</html>
