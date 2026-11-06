@@ -122,6 +122,8 @@ nav.scrolled{
 }
 .nav-links a:hover{color:var(--txt)}
 .nav-links a:hover::after{width:100%}
+.nav-links a.active{color:var(--txt)}
+.nav-links a.active::after{width:100%;opacity:1}
 
 /* ============================================================
    Hero
@@ -143,7 +145,6 @@ nav.scrolled{
 h1{
   font-size:clamp(52px,13vw,132px);font-weight:800;line-height:.92;
   letter-spacing:-.055em;margin-bottom:26px;
-  opacity:0;transform:translateY(20px);animation:fadeUp .9s var(--ease) .18s forwards;
 }
 .grad{
   background:linear-gradient(102deg,#fff 0%,#c4b5fd 32%,var(--v) 52%,var(--c) 76%,#67e8f9 100%);
@@ -642,13 +643,196 @@ footer .mono{font-size:11px}
 @media (max-width:420px){
   .proj-grid{grid-template-columns:1fr}
 }
+/* ============================================================
+   特效层 v2
+   ============================================================ */
+/* 噪点 + 扫描线 */
+.fx{position:fixed;inset:0;pointer-events:none;z-index:0}
+.fx-noise{
+  position:fixed;inset:-8%;
+  opacity:.05;
+  background-image:url("data:image/svg+xml;charset=utf-8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/></filter><rect width='160' height='160' filter='url(%23n)'/></svg>");
+  background-size:160px 160px;
+  animation:noiseShift 7s steps(8) infinite;
+}
+@keyframes noiseShift{
+  0%{transform:translate(0,0)}25%{transform:translate(-2.5%,1.5%)}50%{transform:translate(1.5%,-2.5%)}
+  75%{transform:translate(-1.5%,-1.5%)}100%{transform:translate(0,0)}
+}
+.fx-scan{background:repeating-linear-gradient(to bottom,rgba(255,255,255,.032) 0 1px,transparent 1px 3px)}
+.fx-vig{background:radial-gradient(ellipse 96% 74% at 50% 42%,transparent 46%,rgba(0,0,0,.55) 100%)}
+
+/* 启动遮罩 */
+#boot{
+  position:fixed;inset:0;z-index:10001;background:#05060a;
+  display:grid;place-items:center;
+  animation:bootOut .62s cubic-bezier(.22,1,.36,1) .5s forwards;
+}
+#boot.done{animation:none;opacity:0;visibility:hidden;pointer-events:none;transition:opacity .5s,visibility .5s}
+@keyframes bootOut{to{opacity:0;visibility:hidden}}
+.boot-wrap{display:flex;flex-direction:column;align-items:center;gap:18px}
+.boot-mark{
+  width:48px;height:48px;border-radius:15px;
+  background:linear-gradient(135deg,var(--v),var(--c));
+  display:grid;place-items:center;font-size:23px;font-weight:800;color:#fff;
+  box-shadow:0 0 52px rgba(124,92,255,.6);
+  animation:bootPulse 1.5s ease-in-out infinite;
+}
+@keyframes bootPulse{50%{transform:scale(.9);box-shadow:0 0 24px rgba(124,92,255,.3)}}
+.boot-bar{width:138px;height:2px;border-radius:2px;background:rgba(255,255,255,.09);overflow:hidden}
+.boot-bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--v),var(--c));animation:bootFill .9s cubic-bezier(.4,0,.2,1) forwards}
+@keyframes bootFill{to{width:100%}}
+.boot-txt{font-family:ui-monospace,Consolas,monospace;font-size:10px;letter-spacing:.26em;color:var(--dim2);text-transform:uppercase}
+
+/* 自定义光标环 */
+.cur-ring,.cur-dot{
+  position:fixed;left:0;top:0;z-index:9999;pointer-events:none;border-radius:50%;
+  will-change:transform;opacity:0;transition:opacity .3s;
+}
+.cur-ring{
+  width:34px;height:34px;margin:-17px 0 0 -17px;
+  border:1.5px solid rgba(190,180,255,.75);
+  mix-blend-mode:difference;
+  transition:width .3s var(--ease),height .3s var(--ease),margin .3s var(--ease),border-color .3s,opacity .3s;
+}
+.cur-ring.on{opacity:1}
+body.cur-hot .cur-ring{width:62px;height:62px;margin:-31px 0 0 -31px;border-color:rgba(255,255,255,.9)}
+.cur-dot{width:4px;height:4px;margin:-2px 0 0 -2px;background:#b9a8ff;box-shadow:0 0 12px rgba(124,92,255,.95)}
+.cur-dot.on{opacity:1}
+.cur-ripple{
+  position:fixed;left:0;top:0;z-index:9998;pointer-events:none;
+  width:26px;height:26px;margin:-13px 0 0 -13px;border-radius:50%;
+  border:1px solid rgba(140,120,255,.95);opacity:0;
+}
+.cur-ripple.go{animation:rippleOut .62s cubic-bezier(.22,1,.36,1) forwards}
+@keyframes rippleOut{0%{opacity:.85;transform:scale(.28)}100%{opacity:0;transform:scale(3.6)}}
+
+/* Hero 光环 */
+.orb{position:absolute;left:50%;top:50%;translate:-50% -50%;border-radius:50%;pointer-events:none;z-index:0}
+.orb-1{width:min(62vw,530px);aspect-ratio:1;border:1px dashed rgba(124,92,255,.4);animation:spin 40s linear infinite}
+.orb-2{width:min(46vw,395px);aspect-ratio:1;border:1px solid rgba(34,211,238,.32);animation:spin 27s linear infinite reverse}
+.orb-3{width:min(32vw,272px);aspect-ratio:1;border:1px solid rgba(244,114,182,.26);animation:spin 52s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+/* 轨道上划过的光弧 */
+.orb-1::after,.orb-2::after,.orb-3::after{
+  content:"";position:absolute;inset:-1px;border-radius:50%;
+  -webkit-mask:radial-gradient(circle,transparent calc(100% - 3px),#000 calc(100% - 3px));
+  mask:radial-gradient(circle,transparent calc(100% - 3px),#000 calc(100% - 3px));
+}
+.orb-1::after{background:conic-gradient(from 160deg,transparent 0 68%,#9d7dff 90%,transparent 100%)}
+.orb-2::after{background:conic-gradient(from 20deg,transparent 0 72%,#4fe3f5 92%,transparent 100%)}
+.orb-3::after{background:conic-gradient(from 260deg,transparent 0 76%,#f9a8d4 93%,transparent 100%)}
+/* 沿轨道运行的发光点 */
+.orb i{position:absolute;top:-5px;left:50%;margin-left:-5px;width:10px;height:10px;border-radius:50%}
+.orb-1 i{background:#c9b6ff;box-shadow:0 0 26px 8px rgba(124,92,255,.85),0 0 60px 18px rgba(124,92,255,.35)}
+.orb-2 i{background:#8df0fc;box-shadow:0 0 26px 8px rgba(34,211,238,.8),0 0 60px 18px rgba(34,211,238,.3)}
+.orb-3 i{background:#fdd5e7;box-shadow:0 0 22px 7px rgba(244,114,182,.75),0 0 52px 16px rgba(244,114,182,.28)}
+/* Hero 中心辉光 */
+.hero::before{
+  content:"";position:absolute;left:50%;top:46%;translate:-50% -50%;
+  width:min(88vw,780px);aspect-ratio:1;border-radius:50%;pointer-events:none;z-index:0;
+  background:radial-gradient(circle,rgba(124,92,255,.19),rgba(34,211,238,.06) 42%,transparent 66%);
+  filter:blur(30px);animation:heroGlow 9s ease-in-out infinite;
+}
+@keyframes heroGlow{50%{opacity:.6}}
+
+/* Hero 标题：模糊聚焦 + 光带扫过 */
+h1{position:relative;animation:h1In 1.2s cubic-bezier(.22,1,.36,1) .14s both}
+@keyframes h1In{
+  from{opacity:0;filter:blur(16px);transform:translateY(18px) scale(.99);letter-spacing:-.09em}
+  to{opacity:1;filter:blur(0px);transform:translateY(0) scale(1);letter-spacing:-.055em}
+}
+h1::after{
+  content:"";position:absolute;inset:-14% -8%;pointer-events:none;z-index:2;
+  background:linear-gradient(104deg,transparent 36%,rgba(255,255,255,.28) 46%,rgba(196,181,253,.34) 52%,transparent 64%);
+  transform:translateX(-130%);
+  animation:sheen 6s cubic-bezier(.45,0,.25,1) 1.5s infinite;
+}
+@keyframes sheen{0%{transform:translateX(-130%)}42%,100%{transform:translateX(130%)}}
+
+/* 跑马灯 */
+.band{
+  position:relative;z-index:1;overflow:hidden;padding:24px 0;margin:8px 0;
+  border-top:1px solid var(--line);border-bottom:1px solid var(--line);
+  background:linear-gradient(90deg,rgba(124,92,255,.055),transparent 32%,transparent 68%,rgba(34,211,238,.055));
+  mask-image:linear-gradient(90deg,transparent,#000 7%,#000 93%,transparent);
+  -webkit-mask-image:linear-gradient(90deg,transparent,#000 7%,#000 93%,transparent);
+}
+.band-track{display:flex;width:max-content;animation:marq 36s linear infinite}
+.band:hover .band-track{animation-play-state:paused}
+@keyframes marq{to{transform:translateX(-50%)}}
+.band-item{
+  display:inline-flex;align-items:center;white-space:nowrap;padding:0 28px;
+  font-size:clamp(19px,3vw,33px);font-weight:800;letter-spacing:-.01em;line-height:1.2;
+  color:transparent;-webkit-text-stroke:1px rgba(255,255,255,.16);
+}
+.band-item.hot{
+  -webkit-text-stroke:0;
+  background:linear-gradient(100deg,#fff,#c4b5fd 46%,var(--c));
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.band-item::after{content:"";width:6px;height:6px;border-radius:50%;background:rgba(124,92,255,.55);margin-left:28px}
+
+/* 卡片高光 + 3D 倾斜 */
+.glare{
+  position:absolute;inset:0;pointer-events:none;z-index:3;opacity:0;transition:opacity .45s;
+  background:radial-gradient(430px circle at var(--gx,50%) var(--gy,50%),rgba(255,255,255,.14),transparent 58%);
+}
+.card:hover .glare,.play-card:hover .glare{opacity:1}
+.card.tilting{transition:transform .12s linear,border-color .35s,box-shadow .45s,opacity .3s}
+
+/* 工作流 */
+.flow{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(206px,1fr));
+  gap:1px;background:var(--line);border:1px solid var(--line);
+  border-radius:var(--r);overflow:hidden;margin-top:8px;
+}
+.flow-step{background:var(--bg-2);padding:30px 26px 34px;position:relative;transition:background .35s}
+.flow-step:hover{background:rgba(124,92,255,.065)}
+.flow-idx{
+  font-family:ui-monospace,Consolas,monospace;font-size:11px;letter-spacing:.18em;
+  color:var(--v);opacity:.8;margin-bottom:18px;
+}
+.flow-step h4{font-size:17px;font-weight:700;letter-spacing:-.02em;margin-bottom:9px}
+.flow-step p{font-size:13.5px;color:var(--dim);line-height:1.72}
+.flow-step::after{
+  content:"";position:absolute;left:0;top:0;width:100%;height:1px;
+  background:linear-gradient(90deg,var(--v),transparent);
+  transform:scaleX(0);transform-origin:left;transition:transform .55s var(--ease);
+}
+.flow-step:hover::after{transform:scaleX(1)}
+
+/* 数字条进场分割线：扫一次就消失 */
+.stat{position:relative;overflow:hidden}
+.stat::after{
+  content:"";position:absolute;left:0;bottom:0;height:1px;width:100%;
+  background:linear-gradient(90deg,var(--v),var(--c));
+  transform:scaleX(0);transform-origin:left;opacity:0;
+}
+.stat.in::after{animation:statLine 1.15s var(--ease) forwards}
+@keyframes statLine{
+  0%{transform:scaleX(0);opacity:0}
+  60%{transform:scaleX(1);opacity:.85}
+  100%{transform:scaleX(1);opacity:.28}
+}
+
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
   html{scroll-behavior:auto}
+  h1::after,.fx-noise{display:none}
 }
 </style>
 </head>
 <body>
+
+<!-- 启动遮罩 -->
+<div id="boot" aria-hidden="true">
+  <div class="boot-wrap">
+    <div class="boot-mark">c</div>
+    <div class="boot-bar"><i></i></div>
+    <div class="boot-txt">Loading Portfolio</div>
+  </div>
+</div>
 
 <!-- 背景层 -->
 <div class="bg-layer" aria-hidden="true">
@@ -659,6 +843,11 @@ footer .mono{font-size:11px}
   <canvas id="particles"></canvas>
   <div class="cursor-glow" id="cursorGlow"></div>
 </div>
+
+<!-- 质感层 -->
+<div class="fx fx-noise" aria-hidden="true"></div>
+<div class="fx fx-scan" aria-hidden="true"></div>
+<div class="fx fx-vig" aria-hidden="true"></div>
 
 <div class="progress" id="progress"></div>
 
@@ -679,6 +868,9 @@ footer .mono{font-size:11px}
 
 <!-- Hero -->
 <header class="hero" id="top">
+  <div class="orb orb-1" aria-hidden="true"><i></i></div>
+  <div class="orb orb-2" aria-hidden="true"><i></i></div>
+  <div class="orb orb-3" aria-hidden="true"><i></i></div>
   <div class="hero-badge">
     <span class="dot-live"></span>
     现在在线 · 33 个项目在跑
@@ -722,6 +914,36 @@ footer .mono{font-size:11px}
   <div class="stat"><div class="stat-num" data-count="8">0</div><div class="stat-label">个 Android 应用</div></div>
   <div class="stat"><div class="stat-num" data-count="10">0</div><div class="stat-label">个游戏</div></div>
   <div class="stat"><div class="stat-num" data-count="6">0</div><div class="stat-label">个可在线试玩</div></div>
+</div>
+
+<!-- 滚动横幅 -->
+<div class="band" aria-hidden="true">
+  <div class="band-track">
+    <span class="band-item hot">把想法做成能跑的东西</span>
+    <span class="band-item">KOTLIN · COMPOSE</span>
+    <span class="band-item">UNITY · C#</span>
+    <span class="band-item">THREE.JS · WEBGL</span>
+    <span class="band-item">GODOT · GDSCRIPT</span>
+    <span class="band-item">FASTIFY · POSTGRESQL</span>
+    <span class="band-item hot">单个 HTML 就能玩</span>
+    <span class="band-item">PYTHON · OPENCV</span>
+    <span class="band-item">BLENDER · 141 个自建模型</span>
+    <span class="band-item">FFMPEG · 本地转码</span>
+    <span class="band-item hot">数据不出本机</span>
+    <span class="band-item">LLM · AIGC</span>
+    <span class="band-item hot">把想法做成能跑的东西</span>
+    <span class="band-item">KOTLIN · COMPOSE</span>
+    <span class="band-item">UNITY · C#</span>
+    <span class="band-item">THREE.JS · WEBGL</span>
+    <span class="band-item">GODOT · GDSCRIPT</span>
+    <span class="band-item">FASTIFY · POSTGRESQL</span>
+    <span class="band-item hot">单个 HTML 就能玩</span>
+    <span class="band-item">PYTHON · OPENCV</span>
+    <span class="band-item">BLENDER · 141 个自建模型</span>
+    <span class="band-item">FFMPEG · 本地转码</span>
+    <span class="band-item hot">数据不出本机</span>
+    <span class="band-item">LLM · AIGC</span>
+  </div>
 </div>
 
 <!-- 试玩 -->
@@ -1220,6 +1442,43 @@ footer .mono{font-size:11px}
   </div>
 </section>
 
+<!-- 工作流 -->
+<section id="flow">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div class="sec-eyebrow">Process</div>
+      <h2>一个东西是怎么被做出来的</h2>
+      <p class="sec-desc">这里没有一个项目是按教科书流程做的。真实过程大概就是这四步，来回循环，直到它能跑。</p>
+    </div>
+    <div class="flow reveal">
+      <div class="flow-step">
+        <div class="flow-idx">STEP 01</div>
+        <h4>先把画面想清楚</h4>
+        <p>打开之后第一秒看到什么、按哪个键、屏幕上会发生什么 —— 先写下来再动手。说不清楚的地方，做出来一定是错的。</p>
+      </div>
+      <div class="flow-step">
+        <div class="flow-idx">STEP 02</div>
+        <h4>拆成能单独跑通的小块</h4>
+        <p>地形、采集、合成、建造，每块都得自己能跑起来才算数。一块没通就往下堆，最后只会得到一坨谁也修不动的代码。</p>
+      </div>
+      <div class="flow-step">
+        <div class="flow-idx">STEP 03</div>
+        <h4>让 AI 写，我负责跑</h4>
+        <p>报错日志比任何解释都有用。把控制台原样贴回去，比"这里好像不对"快十倍。写的人不需要懂我，跑的人必须懂。</p>
+      </div>
+      <div class="flow-step">
+        <div class="flow-idx">STEP 04</div>
+        <h4>跑不通就回到上一步</h4>
+        <p>不接受"应该可以了"。只有双击打开、真的动起来、真的存下东西，才算做完。剩下的都叫草稿。</p>
+      </div>
+    </div>
+    <p class="note reveal" style="margin-top:22px">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16.5v.01"/></svg>
+      <span>报错是常态。上面 33 个项目，没有一个是靠一次生成就摆在这里的。</span>
+    </p>
+  </div>
+</section>
+
 <!-- 技术栈 -->
 <section id="stack">
   <div class="wrap">
@@ -1279,7 +1538,7 @@ footer .mono{font-size:11px}
     <div class="about-grid">
       <div class="about-text reveal">
         <p>我叫 <strong>chuyangBZ</strong>，学生，写代码的方式比较特别 —— <strong>基本上都是靠 AI 做</strong>。</p>
-        <p>不是让 AI 替我写一段就完事，而是把想法拆开、跟它来回讨论、让它写、我来跑、跑崩了再一起看日志。这个页面上的 41 个项目，绝大多数都是这么长出来的。</p>
+        <p>不是让 AI 替我写一段就完事，而是把想法拆开、跟它来回讨论、让它写、我来跑、跑崩了再一起看日志。这个页面上的 33 个项目，绝大多数都是这么长出来的。</p>
         <p>所以你会看到一些奇怪的东西：一个能在线玩的地牢游戏、一只会在桌面上散步的小狐狸、一个把视频留在本机不往外传的剪辑工具，还有个把各大厂免费额度缝起来的服务。</p>
         <p>它们不一定都很成熟，但都是<strong>真的能跑</strong>的。</p>
         <div class="about-quote" style="margin-top:22px">
@@ -1656,6 +1915,144 @@ footer .mono{font-size:11px}
       h1.style.transform = 'translate3d(' + (nx * -10) + 'px,' + (ny * -7) + 'px,0)';
     }, {passive:true});
   }
+
+  /* ---------- 启动遮罩 ---------- */
+  var boot = document.getElementById('boot');
+  if (boot){
+    var killBoot = function(){ boot.classList.add('done'); };
+    setTimeout(killBoot, 520);
+    window.addEventListener('load', killBoot);
+  }
+
+  /* 标题入场动画跑完后清掉 filter，避免文字被合成层弄糊 */
+  var heroTitle = document.querySelector('h1');
+  if (heroTitle){
+    heroTitle.addEventListener('animationend', function(){
+      heroTitle.style.animation = 'none';
+      heroTitle.style.filter = 'none';
+    });
+  }
+
+  var fine = !reduce && window.matchMedia('(hover:hover) and (pointer:fine)').matches;
+
+  /* ---------- 自定义光标 ---------- */
+  if (fine){
+    var ring = document.createElement('div'); ring.className = 'cur-ring';
+    var cdot = document.createElement('div'); cdot.className = 'cur-dot';
+    document.body.appendChild(ring); document.body.appendChild(cdot);
+
+    var tx = 0, ty = 0, rx = 0, ry = 0, seen = false;
+    document.addEventListener('mousemove', function(e){
+      tx = e.clientX; ty = e.clientY;
+      if (!seen){
+        seen = true; rx = tx; ry = ty;
+        ring.classList.add('on'); cdot.classList.add('on');
+      }
+      cdot.style.transform = 'translate3d(' + tx + 'px,' + ty + 'px,0)';
+    }, {passive:true});
+
+    (function ringLoop(){
+      rx += (tx - rx) * .17; ry += (ty - ry) * .17;
+      ring.style.transform = 'translate3d(' + rx + 'px,' + ry + 'px,0)';
+      requestAnimationFrame(ringLoop);
+    })();
+
+    document.addEventListener('mouseover', function(e){
+      var t = e.target;
+      var hot = t && t.closest && t.closest('a,button,.card,.play-card,.filter,.stack-item,.flow-step');
+      document.body.classList.toggle('cur-hot', !!hot);
+    }, {passive:true});
+
+    document.addEventListener('pointerdown', function(e){
+      var rp = document.createElement('div');
+      rp.className = 'cur-ripple';
+      rp.style.left = e.clientX + 'px';
+      rp.style.top = e.clientY + 'px';
+      document.body.appendChild(rp);
+      requestAnimationFrame(function(){ rp.classList.add('go'); });
+      setTimeout(function(){ rp.remove(); }, 720);
+    }, {passive:true});
+  }
+
+  /* ---------- 卡片高光 + 3D 倾斜 ---------- */
+  if (fine){
+    Array.prototype.slice.call(document.querySelectorAll('.card')).forEach(function(card){
+      var g = document.createElement('div');
+      g.className = 'glare';
+      card.appendChild(g);
+
+      var pend = null, rotX = 0, rotY = 0;
+      card.addEventListener('mousemove', function(ev){
+        var r = card.getBoundingClientRect();
+        var px = (ev.clientX - r.left) / r.width;
+        var py = (ev.clientY - r.top) / r.height;
+        card.style.setProperty('--gx', (px * 100).toFixed(1) + '%');
+        card.style.setProperty('--gy', (py * 100).toFixed(1) + '%');
+        rotX = (py - .5) * -6.5;
+        rotY = (px - .5) * 8.5;
+        if (!pend){
+          pend = requestAnimationFrame(function(){
+            card.classList.add('tilting');
+            card.style.transform =
+              'perspective(1000px) rotateX(' + rotX.toFixed(2) + 'deg) rotateY(' + rotY.toFixed(2) + 'deg) translateY(-5px)';
+            pend = null;
+          });
+        }
+      });
+      card.addEventListener('mouseleave', function(){
+        card.style.transform = '';
+        setTimeout(function(){ card.classList.remove('tilting'); }, 280);
+      });
+    });
+
+    Array.prototype.slice.call(document.querySelectorAll('.play-card')).forEach(function(card){
+      var g = document.createElement('div');
+      g.className = 'glare';
+      card.appendChild(g);
+      card.addEventListener('mousemove', function(ev){
+        var r = card.getBoundingClientRect();
+        card.style.setProperty('--gx', (((ev.clientX - r.left) / r.width) * 100).toFixed(1) + '%');
+        card.style.setProperty('--gy', (((ev.clientY - r.top) / r.height) * 100).toFixed(1) + '%');
+      });
+    });
+  }
+
+  /* ---------- 磁性按钮 ---------- */
+  if (fine){
+    Array.prototype.slice.call(document.querySelectorAll('.btn')).forEach(function(btn){
+      btn.addEventListener('mousemove', function(ev){
+        var r = btn.getBoundingClientRect();
+        var dx = (ev.clientX - r.left - r.width / 2) * .16;
+        var dy = (ev.clientY - r.top - r.height / 2) * .2;
+        btn.style.transform = 'translate(' + dx.toFixed(1) + 'px,' + dy.toFixed(1) + 'px)';
+      });
+      btn.addEventListener('mouseleave', function(){ btn.style.transform = ''; });
+    });
+  }
+
+  /* ---------- 导航高亮当前区块 ---------- */
+  var navLinks = Array.prototype.slice.call(document.querySelectorAll('.nav-links a'));
+  var navSecs = [];
+  navLinks.forEach(function(a){
+    var el = document.querySelector(a.getAttribute('href'));
+    if (el) navSecs.push(el);
+  });
+  if ('IntersectionObserver' in window && navSecs.length){
+    var ioNav = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if (!e.isIntersecting) return;
+        navLinks.forEach(function(a){
+          a.classList.toggle('active', a.getAttribute('href') === '#' + e.target.id);
+        });
+      });
+    }, {rootMargin:'-42% 0px -52% 0px', threshold:0});
+    navSecs.forEach(function(s){ ioNav.observe(s); });
+  }
+
+  /* ---------- 数字条分割线 ---------- */
+  Array.prototype.slice.call(document.querySelectorAll('.stat')).forEach(function(s, i){
+    setTimeout(function(){ s.classList.add('in'); }, 160 + i * 110);
+  });
 })();
 </script>
 </body>
