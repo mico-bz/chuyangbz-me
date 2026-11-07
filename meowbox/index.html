@@ -1,0 +1,928 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>喵盒 MeowBox · 版本更新记录与使用声明</title>
+<meta name="description" content="喵盒 MeowBox 的完整版本更新记录、下载地址、功能说明，以及未备案、未上架应用商店的如实声明与免责条款。个人非商业项目，仅供朋友间技术交流。">
+<meta name="theme-color" content="#05060a">
+<link rel="canonical" href="https://chuyangbz.me/meowbox/">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://chuyangbz.me/meowbox/">
+<meta property="og:title" content="喵盒 MeowBox · 版本更新记录与使用声明">
+<meta property="og:description" content="完整版本历史、每版更新内容、下载地址，以及未备案未上架的如实声明。">
+<meta property="og:site_name" content="chuyangBZ">
+<meta name="twitter:card" content="summary">
+<meta name="author" content="chuyangBZ">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><defs><linearGradient id='g' x1='0' y1='0' x2='1' y2='1'><stop offset='0' stop-color='%237c5cff'/><stop offset='1' stop-color='%2322d3ee'/></linearGradient></defs><rect width='100' height='100' rx='24' fill='url(%23g)'/><text x='50' y='70' font-size='54' font-weight='800' fill='%23fff' text-anchor='middle' font-family='sans-serif'>喵</text></svg>">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#05060a;
+  --bg-2:#0a0c12;
+  --card:rgba(255,255,255,.032);
+  --card-h:rgba(255,255,255,.06);
+  --line:rgba(255,255,255,.075);
+  --txt:#e8ecf4;
+  --dim:#8b93a3;
+  --dim2:#5a6274;
+  --v:#7c5cff;
+  --c:#22d3ee;
+  --p:#f472b6;
+  --g:#34d399;
+  --y:#fbbf24;
+  --r:18px;
+  --ease:cubic-bezier(.22,1,.36,1);
+}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{
+  background:var(--bg);color:var(--txt);
+  font-family:-apple-system,BlinkMacSystemFont,"SF Pro SC","PingFang SC","Microsoft YaHei",system-ui,sans-serif;
+  line-height:1.7;overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;
+}
+.mono{font-family:ui-monospace,SFMono-Regular,"SF Mono","Cascadia Code",Consolas,monospace}
+::selection{background:rgba(124,92,255,.4);color:#fff}
+a{color:inherit;text-decoration:none}
+img{display:block;max-width:100%}
+
+/* 背景 */
+.bg-grid{
+  position:fixed;inset:-50%;z-index:0;pointer-events:none;
+  background-image:
+    linear-gradient(rgba(124,92,255,.05) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(124,92,255,.05) 1px,transparent 1px);
+  background-size:56px 56px;
+  transform:perspective(560px) rotateX(58deg) translateY(-18%);
+  mask-image:radial-gradient(ellipse 70% 55% at 50% 0%,#000 10%,transparent 75%);
+  -webkit-mask-image:radial-gradient(ellipse 70% 55% at 50% 0%,#000 10%,transparent 75%);
+}
+.bg-glow{position:fixed;border-radius:50%;filter:blur(120px);pointer-events:none;z-index:0}
+.g1{width:600px;height:600px;background:var(--v);opacity:.16;top:-220px;left:-180px}
+.g2{width:520px;height:520px;background:var(--c);opacity:.10;top:30%;right:-200px}
+
+/* 导航 */
+nav{
+  position:sticky;top:0;z-index:50;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:14px clamp(16px,5vw,44px);
+  background:rgba(5,6,10,.78);
+  backdrop-filter:blur(20px) saturate(150%);
+  -webkit-backdrop-filter:blur(20px) saturate(150%);
+  border-bottom:1px solid var(--line);
+}
+.logo{display:flex;align-items:center;gap:9px;font-weight:750;font-size:15px;letter-spacing:-.02em}
+.logo-mark{
+  width:27px;height:27px;border-radius:9px;
+  background:linear-gradient(135deg,var(--v),var(--c));
+  display:grid;place-items:center;font-size:14px;font-weight:800;color:#fff;
+  box-shadow:0 4px 16px rgba(124,92,255,.45);
+}
+.nav-back{font-size:13.5px;color:var(--dim);display:flex;align-items:center;gap:6px;transition:color .25s}
+.nav-back:hover{color:var(--txt)}
+.nav-back svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2.2}
+
+/* 容器 */
+.wrap{position:relative;z-index:1;max-width:940px;margin:0 auto;padding:0 clamp(18px,5vw,32px)}
+section{position:relative;z-index:1}
+
+/* 头部 */
+.hero{padding:clamp(44px,7vw,76px) 0 clamp(30px,4vw,44px)}
+.kicker{
+  display:inline-flex;align-items:center;gap:8px;
+  font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--c);margin-bottom:18px;
+}
+.kicker::before{content:"";width:22px;height:1px;background:linear-gradient(90deg,var(--c),transparent)}
+h1{
+  font-size:clamp(30px,5.6vw,46px);line-height:1.16;
+  letter-spacing:-.035em;font-weight:800;
+}
+h1 .en{
+  display:block;font-size:clamp(13px,2.2vw,16px);font-weight:500;
+  letter-spacing:.24em;text-transform:uppercase;color:var(--dim2);margin-top:10px;
+}
+.lede{margin-top:20px;font-size:clamp(14.5px,2.1vw,16.5px);color:var(--dim);max-width:660px}
+
+/* 状态条 */
+.status{
+  margin-top:26px;display:flex;flex-wrap:wrap;gap:9px;
+}
+.pill{
+  display:inline-flex;align-items:center;gap:7px;
+  padding:6px 13px;border-radius:999px;
+  font-size:12px;border:1px solid var(--line);
+  background:var(--card);color:var(--dim);
+}
+.pill .dot{width:6px;height:6px;border-radius:50%;background:var(--dim2)}
+.pill.ok{color:#86efac;border-color:rgba(52,211,153,.3);background:rgba(52,211,153,.07)}
+.pill.ok .dot{background:var(--g);box-shadow:0 0 8px rgba(52,211,153,.8)}
+.pill.warn{color:#fcd34d;border-color:rgba(251,191,36,.3);background:rgba(251,191,36,.06)}
+.pill.warn .dot{background:var(--y)}
+.pill.info{color:#a5b4fc;border-color:rgba(124,92,255,.3);background:rgba(124,92,255,.08)}
+.pill.info .dot{background:var(--v)}
+
+/* 提示块 */
+.notice{
+  margin-top:26px;padding:18px 20px;border-radius:var(--r);
+  border:1px solid rgba(251,191,36,.22);
+  background:linear-gradient(180deg,rgba(251,191,36,.055),rgba(251,191,36,.018));
+}
+.notice h4{
+  font-size:13px;font-weight:700;color:#fcd34d;
+  letter-spacing:.02em;margin-bottom:8px;
+  display:flex;align-items:center;gap:7px;
+}
+.notice h4 svg{width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:2}
+.notice p{font-size:13px;line-height:1.75;color:#cbd5e1}
+.notice p+p{margin-top:8px}
+
+/* 章节标题 */
+.sec-head{margin:clamp(44px,7vw,64px) 0 26px}
+.sec-head h2{
+  font-size:clamp(20px,3.4vw,26px);letter-spacing:-.028em;font-weight:750;
+  display:flex;align-items:center;gap:12px;
+}
+.sec-head h2 .bar{
+  width:3px;height:20px;border-radius:2px;
+  background:linear-gradient(180deg,var(--v),var(--c));flex:none;
+}
+.sec-head p{margin-top:9px;font-size:13.5px;color:var(--dim);max-width:620px}
+
+/* 下载卡 */
+.dl-card{
+  padding:24px;border-radius:var(--r);
+  border:1px solid var(--line);background:var(--card);
+  display:flex;flex-wrap:wrap;gap:20px;align-items:center;justify-content:space-between;
+}
+.dl-card .dl-info{min-width:220px;flex:1}
+.dl-card .dl-ver{font-size:12px;color:var(--dim2);letter-spacing:.1em;text-transform:uppercase}
+.dl-card .dl-name{
+  font-size:22px;font-weight:750;letter-spacing:-.03em;margin-top:5px;
+}
+.dl-card .dl-meta{font-size:12.5px;color:var(--dim);margin-top:7px}
+.dl-btn{
+  display:inline-flex;align-items:center;gap:9px;
+  padding:13px 24px;border-radius:999px;
+  background:linear-gradient(135deg,var(--v),#6366f1);
+  color:#fff;font-size:14px;font-weight:650;
+  box-shadow:0 8px 26px rgba(124,92,255,.4);
+  transition:transform .25s var(--ease),box-shadow .25s;
+  white-space:nowrap;
+}
+.dl-btn:hover{transform:translateY(-2px);box-shadow:0 12px 34px rgba(124,92,255,.55)}
+.dl-btn svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2.2}
+.dl-hint{margin-top:12px;font-size:12px;color:var(--dim2);line-height:1.7}
+
+/* 版本时间线 */
+.timeline{position:relative;padding-left:26px}
+.timeline::before{
+  content:"";position:absolute;left:6px;top:8px;bottom:8px;width:1.5px;
+  background:linear-gradient(180deg,var(--v),var(--c) 40%,rgba(124,92,255,.08));
+}
+.ver{position:relative;margin-bottom:14px}
+.ver::before{
+  content:"";position:absolute;left:-26px;top:22px;
+  width:11px;height:11px;border-radius:50%;
+  background:var(--bg);border:2px solid var(--dim2);
+  box-shadow:0 0 0 3px var(--bg);
+  transition:border-color .3s,box-shadow .3s;
+}
+.ver:first-child::before{
+  border-color:var(--v);
+  box-shadow:0 0 0 3px var(--bg),0 0 14px rgba(124,92,255,.85);
+}
+.ver-box{
+  border:1px solid var(--line);border-radius:var(--r);
+  background:var(--card);overflow:hidden;
+  transition:border-color .3s,background .3s;
+}
+.ver-box:hover{border-color:rgba(124,92,255,.28);background:var(--card-h)}
+.ver:first-child .ver-box{border-color:rgba(124,92,255,.3);background:rgba(124,92,255,.045)}
+.ver-top{
+  padding:16px 20px;display:flex;flex-wrap:wrap;
+  align-items:center;gap:10px;
+  border-bottom:1px solid var(--line);
+}
+.ver-tag{
+  font-size:16px;font-weight:750;letter-spacing:-.02em;
+  font-family:ui-monospace,SFMono-Regular,Consolas,monospace;
+}
+.ver-date{font-size:12px;color:var(--dim2)}
+.ver-badge{
+  font-size:10.5px;padding:2.5px 9px;border-radius:999px;
+  border:1px solid rgba(52,211,153,.34);color:#86efac;
+  background:rgba(52,211,153,.07);letter-spacing:.04em;
+}
+.ver-badge.old{border-color:var(--line);color:var(--dim2);background:transparent}
+.ver-body{padding:15px 20px 18px}
+.ver-group+.ver-group{margin-top:14px}
+.ver-group h5{
+  font-size:11px;font-weight:700;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--c);margin-bottom:8px;
+}
+.ver-group.add h5{color:#86efac}
+.ver-group.fix h5{color:#a5b4fc}
+.ver-group h5.none{color:var(--dim2)}
+.ver-body ul{list-style:none}
+.ver-body li{
+  position:relative;padding-left:17px;
+  font-size:13.5px;line-height:1.78;color:#c3cad6;
+}
+.ver-body li+li{margin-top:5px}
+.ver-body li::before{
+  content:"";position:absolute;left:0;top:11px;
+  width:5px;height:5px;border-radius:50%;
+  background:var(--dim2);
+}
+.ver-group.add li::before{background:rgba(52,211,153,.7)}
+.ver-group.fix li::before{background:rgba(124,92,255,.75)}
+.ver-body code{
+  font-family:ui-monospace,SFMono-Regular,Consolas,monospace;
+  font-size:12px;padding:1.5px 5px;border-radius:4px;
+  background:rgba(255,255,255,.055);color:#c4b5fd;
+}
+
+/* 功能网格 */
+.feat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px}
+.feat{
+  padding:17px 18px;border-radius:14px;
+  border:1px solid var(--line);background:var(--card);
+}
+.feat h4{font-size:14px;font-weight:650;margin-bottom:6px;display:flex;align-items:center;gap:8px}
+.feat h4 .ico{
+  width:22px;height:22px;border-radius:7px;flex:none;
+  display:grid;place-items:center;font-size:11px;
+  background:rgba(124,92,255,.14);color:#c4b5fd;
+}
+.feat p{font-size:12.5px;line-height:1.7;color:var(--dim)}
+
+/* 声明正文 */
+.decl{
+  border:1px solid var(--line);border-radius:var(--r);
+  background:var(--card);overflow:hidden;
+}
+.decl-item{padding:20px 22px;border-bottom:1px solid var(--line)}
+.decl-item:last-child{border-bottom:none}
+.decl-item h3{
+  font-size:14.5px;font-weight:700;letter-spacing:-.01em;
+  margin-bottom:9px;display:flex;align-items:flex-start;gap:9px;
+}
+.decl-item h3 .n{
+  font-family:ui-monospace,Consolas,monospace;
+  font-size:11.5px;color:var(--v);flex:none;margin-top:2px;
+}
+.decl-item p{font-size:13.5px;line-height:1.82;color:#c3cad6}
+.decl-item p+p{margin-top:9px}
+.decl-item strong{color:var(--txt);font-weight:650}
+.decl-item ul{list-style:none;margin-top:9px}
+.decl-item ul li{
+  position:relative;padding-left:16px;
+  font-size:13.5px;line-height:1.8;color:#c3cad6;
+}
+.decl-item ul li+li{margin-top:4px}
+.decl-item ul li::before{
+  content:"";position:absolute;left:2px;top:11px;
+  width:4px;height:4px;border-radius:50%;background:var(--p);
+}
+.decl-note{
+  margin-top:16px;padding:13px 16px;border-radius:12px;
+  background:rgba(255,255,255,.03);border:1px solid var(--line);
+  font-size:12.5px;line-height:1.75;color:var(--dim);
+}
+
+/* 表格 */
+.table-wrap{overflow-x:auto;border-radius:14px;border:1px solid var(--line)}
+table{width:100%;border-collapse:collapse;font-size:13px;min-width:520px}
+th{
+  text-align:left;padding:12px 16px;font-weight:650;font-size:11.5px;
+  letter-spacing:.06em;text-transform:uppercase;color:var(--dim2);
+  background:rgba(255,255,255,.028);border-bottom:1px solid var(--line);
+}
+td{padding:12px 16px;border-bottom:1px solid rgba(255,255,255,.045);color:#c3cad6;vertical-align:top}
+tr:last-child td{border-bottom:none}
+td.mono{font-family:ui-monospace,Consolas,monospace;font-size:12px;color:#c4b5fd}
+td.yes{color:#86efac}
+td.no{color:#fca5a5}
+
+/* 安装步骤 */
+.steps{counter-reset:s;display:flex;flex-direction:column;gap:10px}
+.step{
+  counter-increment:s;position:relative;
+  padding:14px 18px 14px 52px;border-radius:12px;
+  border:1px solid var(--line);background:var(--card);
+  font-size:13.5px;line-height:1.75;color:#c3cad6;
+}
+.step::before{
+  content:counter(s);position:absolute;left:16px;top:13px;
+  width:24px;height:24px;border-radius:50%;
+  display:grid;place-items:center;
+  font-size:12px;font-weight:700;
+  background:rgba(124,92,255,.16);color:#c4b5fd;
+  font-family:ui-monospace,Consolas,monospace;
+}
+.step strong{color:var(--txt);font-weight:650}
+
+/* 联系 */
+.contact-box{
+  padding:24px;border-radius:var(--r);
+  border:1px solid var(--line);
+  background:linear-gradient(135deg,rgba(124,92,255,.07),rgba(34,211,238,.03));
+  text-align:center;
+}
+.contact-box h3{font-size:16px;font-weight:700;margin-bottom:8px}
+.contact-box p{font-size:13px;color:var(--dim);margin-bottom:14px}
+.contact-box a{
+  display:inline-block;font-family:ui-monospace,Consolas,monospace;
+  font-size:13.5px;color:#a5b4fc;padding:8px 18px;border-radius:999px;
+  border:1px solid rgba(124,92,255,.3);background:rgba(124,92,255,.07);
+  transition:background .25s,border-color .25s;
+}
+.contact-box a:hover{background:rgba(124,92,255,.16);border-color:rgba(124,92,255,.5)}
+
+/* 页脚 */
+footer{
+  position:relative;z-index:1;margin-top:clamp(48px,7vw,72px);
+  padding:26px clamp(18px,5vw,32px) 40px;
+  border-top:1px solid var(--line);
+  display:flex;flex-wrap:wrap;gap:10px;justify-content:space-between;
+  font-size:12px;color:var(--dim2);
+  max-width:940px;margin-left:auto;margin-right:auto;
+}
+
+@media (max-width:600px){
+  .dl-card{flex-direction:column;align-items:stretch}
+  .dl-btn{justify-content:center}
+  .ver-top{padding:14px 16px}
+  .ver-body{padding:13px 16px 16px}
+  .decl-item{padding:17px 17px}
+}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *{animation:none!important;transition:none!important}
+}
+</style>
+</head>
+<body>
+<div class="bg-grid" aria-hidden="true"></div>
+<div class="bg-glow g1" aria-hidden="true"></div>
+<div class="bg-glow g2" aria-hidden="true"></div>
+
+<nav>
+  <a class="logo" href="/">
+    <span class="logo-mark">c</span>
+    <span>chuyangBZ</span>
+  </a>
+  <a class="nav-back" href="/">
+    <svg viewBox="0 0 24 24"><path d="M19 12H5M11 18l-6-6 6-6"/></svg>
+    返回作品集
+  </a>
+</nav>
+
+<div class="wrap">
+
+  <header class="hero">
+    <div class="kicker">Android · 版本记录</div>
+    <h1>
+      喵盒 MeowBox
+      <span class="en">Version History &amp; Notice</span>
+    </h1>
+    <p class="lede">
+      一个自己写着用的 Android App：邮箱验证码登录、聊天、好友、朋友圈、公开 API 工具箱。
+      这个页面放的是它每一次版本改了什么、怎么装、以及必须说清楚的那些事 ——
+      因为它是<strong style="color:var(--txt)">个人业余项目，没有备案、没有上架任何应用商店</strong>。
+    </p>
+
+    <div class="status">
+      <span class="pill ok"><i class="dot"></i>最新 0.6.0</span>
+      <span class="pill warn"><i class="dot"></i>未办理 ICP / App 备案</span>
+      <span class="pill warn"><i class="dot"></i>未上架应用商店</span>
+      <span class="pill info"><i class="dot"></i>个人非商业 · 不收费</span>
+    </div>
+
+    <div class="notice">
+      <h4>
+        <svg viewBox="0 0 24 24"><path d="M12 9v4M12 17h.01M10.3 3.9L1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/></svg>
+        先说最要紧的三件事
+      </h4>
+      <p>
+        ① 这个 App <strong style="color:#fcd34d">没有在任何应用商店上架，也没有办理 ICP 备案和 App 备案</strong>。
+        它不是对外经营的产品，只是我自己做、自己用，顺手分享给朋友的技术练习作品。
+      </p>
+      <p>
+        ② 数据存在<strong style="color:#fcd34d">新加坡</strong>的服务器上（Appwrite Cloud），这构成个人信息出境。
+        我没有做数据出境安全评估，因为不具备申报主体资格。请不要在里面存放任何敏感信息。
+      </p>
+      <p>
+        ③ 服务端<strong style="color:#fcd34d">没有任何内容审核，也没有端到端加密</strong>。
+        发出去的内容理论上服务端可读。请把它当成一个公开的半成品来用。
+      </p>
+    </div>
+  </header>
+
+  <section id="download">
+    <div class="dl-card">
+      <div class="dl-info">
+        <div class="dl-ver">Latest Release</div>
+        <div class="dl-name">0.6.0</div>
+        <div class="dl-meta mono">versionCode 5 · 19 MB · debug 签名 · Android 7.0+</div>
+      </div>
+      <a class="dl-btn" href="MeowBox-0.6.0-5.apk" download>
+        <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+        下载 APK
+      </a>
+    </div>
+    <p class="dl-hint">
+      这个包用 debug 证书签名，和以前的版本签名一致，可以直接覆盖安装、不会丢登录状态。
+      以后版本号连续递增，装有 0.6.0 及以上的设备可以在 App 内「检查更新」直接下载新版本，不用再回这个页面。
+    </p>
+  </section>
+
+  <section id="history">
+    <div class="sec-head">
+      <h2><span class="bar"></span>版本更新记录</h2>
+      <p>每个版本实际改了什么。没做的、做不到的也会写在这里，不凑数。</p>
+    </div>
+
+    <div class="timeline">
+
+      <!-- 0.6.0 -->
+      <article class="ver">
+        <div class="ver-box">
+          <div class="ver-top">
+            <span class="ver-tag">v0.6.0</span>
+            <span class="ver-badge">最新</span>
+            <span class="ver-date">2026-11-08 · code 5</span>
+          </div>
+          <div class="ver-body">
+            <div class="ver-group add">
+              <h5>新增</h5>
+              <ul>
+                <li><strong>每日签到</strong>：记连续天数与累计天数。断签后连续归零，但累计不丢。纯本机记录，不上云。</li>
+                <li><strong>动态双击点赞</strong>：双击动态正文或图片，心形弹出带碎片飞散。已经赞过的只会放动画，不会把赞撤掉。</li>
+              </ul>
+            </div>
+            <div class="ver-group fix">
+              <h5>改进</h5>
+              <ul>
+                <li><strong>更新检查改成优先读本站</strong>：以后发版本只要往仓库推两个文件，不用再登录 Appwrite 控制台手动上传。Appwrite 作为备用源自动回落。</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- 0.5.0 -->
+      <article class="ver">
+        <div class="ver-box">
+          <div class="ver-top">
+            <span class="ver-tag">v0.5.0</span>
+            <span class="ver-date">2026-11-07 · code 4</span>
+          </div>
+          <div class="ver-body">
+            <div class="ver-group add">
+              <h5>新增</h5>
+              <ul>
+                <li><strong>用户协议</strong>：13 条，含禁止发布内容清单、未成年人条款、责任范围。</li>
+                <li><strong>隐私政策</strong>：12 条，逐项列出收集的字段、权限、第三方组件、跨境存储事实。</li>
+                <li><strong>免责声明</strong>：10 条，明确非商业性质、分享边界、责任限制。</li>
+                <li><strong>开源许可</strong>：MIT 全文 + 第三方组件按许可证分组列出。</li>
+                <li><strong>登录页协议勾选</strong>：不勾选不能登录，点协议名可当场读全文。</li>
+                <li><strong>应用内检查更新</strong>：启动时静默检查，关于页也有手动入口，可直接下载并调起系统安装器。</li>
+              </ul>
+            </div>
+            <div class="ver-group fix">
+              <h5>改进</h5>
+              <ul>
+                <li><strong>去掉方块水波纹</strong>：全局按压反馈改成跟随圆角的柔和底色，不再是一个方形的框。</li>
+                <li><strong>按压缩放反馈</strong>：列表行、底部 tab、开关、小按钮按下时轻微缩小，手感有回应。</li>
+                <li><strong>页面切换过渡</strong>：tab 之间淡入淡出，进二级页右滑进入，返回反向滑出。</li>
+                <li><strong>通知开关真正生效</strong>：关掉后未读轮询整条不跑，不再空耗流量。</li>
+                <li><strong>声音开关真正生效</strong>：未读数增加时响提示音，不需要任何音频资源文件。</li>
+                <li><strong>清缓存显示真实占用</strong>：递归统计并格式化为 B/KB/MB，清完重新统计。</li>
+                <li><strong>版本号单一数据源</strong>：以前版本号写在三个地方，改一次漏两处，导致安装包版本号一直没涨，只能覆盖安装。现在只有 <code>version.properties</code> 一个来源。</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- 0.4.0 -->
+      <article class="ver">
+        <div class="ver-box">
+          <div class="ver-top">
+            <span class="ver-tag">v0.4.0</span>
+            <span class="ver-date">2026-11-06 · 早期版本</span>
+          </div>
+          <div class="ver-body">
+            <div class="ver-group">
+              <h5>主要变化</h5>
+              <ul>
+                <li>用户 ID 展示与复制，方便别人加好友。</li>
+                <li>设置里的隐私、通用页面补齐内容。</li>
+                <li>加好友入口打通。</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- 0.3.0 -->
+      <article class="ver">
+        <div class="ver-box">
+          <div class="ver-top">
+            <span class="ver-tag">v0.3.0</span>
+            <span class="ver-date">早期版本</span>
+          </div>
+          <div class="ver-body">
+            <div class="ver-group">
+              <h5>主要变化</h5>
+              <ul>
+                <li>朋友圈动态、图片九宫格、评论与点赞。</li>
+                <li>好友体系与通讯录。</li>
+                <li>小应用入口（公开 API 工具箱）。</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- 0.1.0 -->
+      <article class="ver">
+        <div class="ver-box">
+          <div class="ver-top">
+            <span class="ver-tag">v0.1.0</span>
+            <span class="ver-badge old">起始</span>
+            <span class="ver-date">最早的版本</span>
+          </div>
+          <div class="ver-body">
+            <div class="ver-group">
+              <h5>主要变化</h5>
+              <ul>
+                <li>邮箱验证码登录 / 注册（一个流程，不分注册登录，不保存密码）。</li>
+                <li>会话列表与单聊。</li>
+                <li>阿里云百炼对话框，支持联网搜索。</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+  <section id="features">
+    <div class="sec-head">
+      <h2><span class="bar"></span>它现在能做什么</h2>
+      <p>列出来是为了让人清楚这是什么 —— 不是一个「AI 聊天壳」，而是一个带社交通信功能的完整 Android 应用。</p>
+    </div>
+    <div class="feat-grid">
+      <div class="feat">
+        <h4><span class="ico">信</span>邮箱验证码登录</h4>
+        <p>只验证邮箱归属，不保存任何密码。新邮箱自动建号，注册和登录是同一条路。</p>
+      </div>
+      <div class="feat">
+        <h4><span class="ico">聊</span>会话与单聊</h4>
+        <p>消息列表、未读角标、已读标记。纯文本与图片，没有语音和视频通话。</p>
+      </div>
+      <div class="feat">
+        <h4><span class="ico">友</span>好友与通讯录</h4>
+        <p>用 8 位用户 ID 加好友，通讯录按首字母分组。搜索开关在隐私设置里。</p>
+      </div>
+      <div class="feat">
+        <h4><span class="ico">圈</span>朋友圈动态</h4>
+        <p>发文字和图片、九宫格查看、#话题 标签、评论与点赞，还支持双击点赞。</p>
+      </div>
+      <div class="feat">
+        <h4><span class="ico">签</span>每日签到</h4>
+        <p>连续天数与累计天数，保存在本机。断一天连续归零，累计不清。</p>
+      </div>
+      <div class="feat">
+        <h4><span class="ico">AI</span>百炼对话</h4>
+        <p>接阿里云百炼，支持联网搜索。API Key 由用户自己在设置里填。</p>
+      </div>
+      <div class="feat">
+        <h4><span class="ico">箱</span>公开 API 工具箱</h4>
+        <p>一百多个免注册的公开接口，开箱即用，不需要任何第三方账号。</p>
+      </div>
+      <div class="feat">
+        <h4><span class="ico">版</span>应用内更新</h4>
+        <p>启动时静默检查新版本，可直接下载并调起系统安装器。不能静默安装。</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="install">
+    <div class="sec-head">
+      <h2><span class="bar"></span>怎么装</h2>
+      <p>因为没有上架商店，只能手动安装 APK。系统会拦一次，这是正常现象，不是病毒警告。</p>
+    </div>
+    <div class="steps">
+      <div class="step">点上面的<strong>「下载 APK」</strong>，把 <code style="font-family:ui-monospace,Consolas,monospace;font-size:12px;color:#c4b5fd">MeowBox-0.6.0-5.apk</code> 存到手机里。</div>
+      <div class="step">用文件管理器打开它。系统会提示「<strong>禁止安装未知来源应用</strong>」—— 到设置里给这个文件管理器（或浏览器）打开「安装未知应用」权限，再回来点一次。</div>
+      <div class="step">安装界面会显示<strong>没有应用商店来源</strong>、可能提示风险。<strong>这是所有未上架 APK 的必然状态</strong>，确认它来自这个页面即可继续。</div>
+      <div class="step">装好后首次打开，会先看到登录页。<strong>必须勾选用户协议和隐私政策才能登录</strong> —— 不勾选按钮是灰的，这是有意为之。</div>
+      <div class="step">如果只是想看看界面，可以点<strong>「先逛逛，不登录」</strong>，但发动态、聊天、加好友都需要登录。</div>
+    </div>
+    <div class="decl-note">
+      升级时如果报「应用未安装」，通常是因为之前的包签名不同。把旧版卸载再装新版即可，
+      但<strong style="color:var(--txt)">卸载会清除本地数据</strong>（登录状态、签到记录、设置）。
+      如果你一直装的是这个页面的包，签名是一致的，可以直接覆盖。
+    </div>
+  </section>
+
+  <section id="permissions">
+    <div class="sec-head">
+      <h2><span class="bar"></span>权限与数据</h2>
+      <p>全部如实列出。只有两个网络权限，没有位置、通讯录、IMEI、传感器。</p>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>项目</th>
+            <th>实际情况</th>
+            <th>说明</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="mono">INTERNET</td>
+            <td class="yes">已申请</td>
+            <td>登录、聊天、动态、AI 对话都要联网</td>
+          </tr>
+          <tr>
+            <td class="mono">ACCESS_NETWORK_STATE</td>
+            <td class="yes">已申请</td>
+            <td>判断有没有网络，避免无网时反复重试</td>
+          </tr>
+          <tr>
+            <td class="mono">REQUEST_INSTALL_PACKAGES</td>
+            <td class="yes">已申请</td>
+            <td>仅为应用内更新下载 APK 后调起安装器</td>
+          </tr>
+          <tr>
+            <td class="mono">位置 / 通讯录 / 相机 / 麦克风</td>
+            <td class="no">未申请</td>
+            <td>完全不需要，也没有写相关代码</td>
+          </tr>
+          <tr>
+            <td class="mono">设备标识（IMEI / OAID）</td>
+            <td class="no">未采集</td>
+            <td>没有读取任何设备唯一标识</td>
+          </tr>
+          <tr>
+            <td class="mono">存储位置</td>
+            <td class="no" style="color:#fcd34d">境外</td>
+            <td>Appwrite Cloud，服务器在新加坡（sgp.cloud.appwrite.io）</td>
+          </tr>
+          <tr>
+            <td class="mono">第三方 SDK</td>
+            <td class="yes">仅基础库</td>
+            <td>Appwrite SDK / OkHttp / AndroidX / Kotlin。无广告、无统计、无社交 SDK</td>
+          </tr>
+          <tr>
+            <td class="mono">内容审核</td>
+            <td class="no" style="color:#fca5a5">无</td>
+            <td>服务端不做任何自动审核，也没有人工审核</td>
+          </tr>
+          <tr>
+            <td class="mono">端到端加密</td>
+            <td class="no" style="color:#fca5a5">无</td>
+            <td>传输用 HTTPS，但服务端可读内容</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="decl-note">
+      明确声明<strong style="color:var(--txt)">没有接入</strong>：友盟、TalkingData、Firebase、穿山甲、AdMob、微信 SDK、QQ SDK、极光推送。
+      也没有接入任何系统级推送服务 —— 所以关掉 App 之后不会收到任何通知。
+    </div>
+  </section>
+
+  <section id="disclaimer">
+    <div class="sec-head">
+      <h2><span class="bar"></span>免责声明</h2>
+      <p>下面每一条都是事实陈述，不是法律套话。如果你要把它转发给别人，请连同这一段一起给。</p>
+    </div>
+
+    <div class="decl">
+
+      <div class="decl-item">
+        <h3><span class="n">01</span>性质：这是个人业余项目，不是产品</h3>
+        <p>
+          MeowBox 由我一个人在业余时间开发，<strong>没有公司主体、没有营业执照、没有增值电信业务经营许可证</strong>，
+          也没有办理 <strong>ICP 备案</strong> 与 <strong>App 备案</strong>。它不是任何形式的对外经营活动，
+          <strong>不收取任何费用，没有会员、没有充值、没有广告、没有内购</strong>。
+        </p>
+        <p>
+          它没有被提交到任何应用商店审核，因此不存在「商店审核通过」这一事实。
+          任何声称「喵盒已在应用商店上架」或「官方版本」的说法都是不准确的。
+        </p>
+      </div>
+
+      <div class="decl-item">
+        <h3><span class="n">02</span>分发边界：可以给朋友，不能拿去经营</h3>
+        <p>允许的行为：</p>
+        <ul>
+          <li>自己安装使用；</li>
+          <li>把安装包直接发给朋友，用于技术交流；</li>
+          <li>阅读、参考、学习其中公开的实现思路。</li>
+        </ul>
+        <p>不允许的行为：</p>
+        <ul>
+          <li>上传到任何应用商店、软件下载站、网盘公开分享页；</li>
+          <li>用于任何商业用途，包括但不限于收费分发、捆绑销售、作为付费服务的一部分；</li>
+          <li>改名换标后伪装成自己的作品或「官方版本」；</li>
+          <li>用于任何违反法律法规的场景。</li>
+        </ul>
+      </div>
+
+      <div class="decl-item">
+        <h3><span class="n">03</span>内容责任：你发的什么，责任在你</h3>
+        <p>
+          服务端<strong>没有内容审核能力，也没有做审核</strong>。因此，
+          通过本 App 发布、传输的一切内容（文字、图片、评论、昵称、签名、群公告），
+          其<strong>法律责任由发布者本人承担</strong>。
+        </p>
+        <p>明确禁止发布以下内容：</p>
+        <ul>
+          <li>违反宪法确定的基本原则的内容；</li>
+          <li>危害国家安全、泄露国家秘密、颠覆国家政权、破坏国家统一的内容；</li>
+          <li>损害国家荣誉和利益的内容；</li>
+          <li>煽动民族仇恨、民族歧视，破坏民族团结的内容；</li>
+          <li>破坏国家宗教政策，宣扬邪教和封建迷信的内容；</li>
+          <li>散布谣言，扰乱社会秩序，破坏社会稳定的内容；</li>
+          <li>淫秽、色情、赌博、暴力、凶杀、恐怖或者教唆犯罪的内容；</li>
+          <li><strong>任何涉及未成年人的色情或性化内容 —— 这一类零容忍，发现即永久封禁并保留移交处理的权利</strong>；</li>
+          <li>侮辱或者诽谤他人，侵害他人合法权益的内容；</li>
+          <li>人肉搜索、开盒、公布他人隐私信息的内容；</li>
+          <li>诈骗、传销、非法集资、虚假广告；</li>
+          <li>侵犯他人知识产权的内容。</li>
+        </ul>
+        <p>
+          本项目不对用户发布的内容做任何背书，也不承担因用户发布内容引起的任何责任。
+          如果你看到违法内容，请通过下方邮箱告知，我会在能力范围内处理。
+        </p>
+      </div>
+
+      <div class="decl-item">
+        <h3><span class="n">04</span>政治敏感话题：请不要在这里讨论</h3>
+        <p>
+          这个 App <strong>不是言论平台</strong>，没有审核团队，也没有应急处置能力。
+          请不要用它讨论政治敏感话题、时政评论、民族宗教议题。
+          一旦出现，我没有能力做合规处置，只能选择关闭整个服务 —— 这对所有人都不好。
+        </p>
+      </div>
+
+      <div class="decl-item">
+        <h3><span class="n">05</span>数据风险：随时可能丢，也可能被看到</h3>
+        <p>
+          数据存放在<strong>新加坡</strong>的 Appwrite Cloud 上，这构成个人信息出境。
+          我没有办理数据出境安全评估，因为不具备申报主体资格。
+          <strong>请不要在 App 内存放身份证号、银行卡、医疗记录、家庭住址、他人隐私等任何敏感信息。</strong>
+        </p>
+        <p>
+          服务端不做内容审核，也<strong>没有端到端加密</strong>。传输过程使用 HTTPS，
+          但内容在服务端是可读的。请把它当成公开场合。
+        </p>
+        <p>
+          由于是免费额度的云服务，<strong>数据可能因额度耗尽、服务调整、误操作而丢失</strong>，
+          我没有做任何备份承诺。请不要把唯一一份重要的东西只放在这里。
+        </p>
+      </div>
+
+      <div class="decl-item">
+        <h3><span class="n">06</span>服务可用性：随时可能停</h3>
+        <p>
+          这是我个人维护的项目，<strong>没有任何服务可用性承诺</strong>。
+          可能因为以下原因随时停止服务，且不一定能提前通知：
+        </p>
+        <ul>
+          <li>我个人不再维护；</li>
+          <li>云服务免费额度用尽或政策调整；</li>
+          <li>收到合规要求；</li>
+          <li>出现无法修复的故障。</li>
+        </ul>
+        <p>如果服务停止，App 内所有需要联网的功能都会失效，本地已缓存的内容不受影响。</p>
+      </div>
+
+      <div class="decl-item">
+        <h3><span class="n">07</span>技术风险：未经过安全审计</h3>
+        <p>
+          代码没有经过任何第三方安全审计或渗透测试，可能存在未知漏洞。
+          安装包用 <strong>debug 证书</strong>签名分发，不是正式发布证书，也没有做代码混淆。
+        </p>
+        <p>
+          请自行判断是否在你的设备上安装。如果你对安全性有要求，<strong>不要安装</strong>。
+        </p>
+      </div>
+
+      <div class="decl-item">
+        <h3><span class="n">08</span>AI 功能：输出不可靠</h3>
+        <p>
+          App 内的 AI 对话调用阿里云百炼，<strong>API Key 由用户自己填写并保存在本机</strong>，
+          我不会收集或查看你的 Key。
+        </p>
+        <p>
+          大模型的输出<strong>可能错误、过时、虚构或带有偏见</strong>。
+          它<strong>不构成任何专业建议</strong> —— 医疗、法律、金融、投资问题请咨询有资质的专业人士。
+          不要依据 AI 输出做出可能造成损失的决定。
+        </p>
+      </div>
+
+      <div class="decl-item">
+        <h3><span class="n">09</span>责任限制</h3>
+        <p>
+          在适用法律允许的最大范围内，开发者不对使用或无法使用本 App 所造成的任何直接、间接、
+          偶然、特殊或后果性损害承担责任，包括但不限于数据丢失、设备损坏、业务中断、利润损失。
+        </p>
+        <p>
+          由于本项目<strong>完全免费且不收取任何费用</strong>，
+          任何情况下开发者的赔偿责任总额上限为<strong>人民币 0 元</strong>。
+        </p>
+      </div>
+
+      <div class="decl-item">
+        <h3><span class="n">10</span>第三方链接与内容</h3>
+        <p>
+          App 内包含指向第三方网站、公开 API 的链接与调用结果。
+          这些内容由第三方提供，我不控制也不背书，不对其准确性、合法性、安全性负责。
+          访问第三方服务时，适用的是该第三方的条款与隐私政策。
+        </p>
+      </div>
+
+      <div class="decl-item">
+        <h3><span class="n">11</span>未成年人</h3>
+        <p>
+          本 App <strong>面向 14 周岁及以上用户</strong>。
+          不满 14 周岁的未成年人不应注册使用；如确需使用，应由监护人陪同并同意本声明全部内容。
+        </p>
+        <p>
+          监护人发现未成年人未经同意使用的，可通过下方邮箱要求删除相关账号与数据，
+          我会在核实后处理。
+        </p>
+      </div>
+
+      <div class="decl-item">
+        <h3><span class="n">12</span>做不到的事，直接说清楚</h3>
+        <p>以下这些事情，这个项目客观上做不到，请不要有预期：</p>
+        <ul>
+          <li><strong>不会自动更新</strong>。Android 禁止后台静默装包，每次更新都要过一次系统确认弹窗。</li>
+          <li><strong>没有系统推送</strong>。关掉 App 就收不到任何通知，因为没有接入推送服务。</li>
+          <li><strong>没有内容审核</strong>。违法内容不会自动被拦，只能事后处理。</li>
+          <li><strong>没有账号找回</strong>。邮箱验证码登录，邮箱不可用即无法登录。</li>
+          <li><strong>没有数据备份</strong>。服务停止或数据丢失不可恢复。</li>
+          <li><strong>没有客户服务</strong>。只有我一个人，回复不保证及时。</li>
+        </ul>
+      </div>
+
+      <div class="decl-item">
+        <h3><span class="n">13</span>条款变更与适用法律</h3>
+        <p>
+          本声明可能随功能调整而更新，更新后会在本页面与本 App 内的「关于 → 免责声明」同步。
+          继续使用即视为接受更新后的内容。
+        </p>
+        <p>
+          本声明的解释与适用，以<strong>中华人民共和国法律</strong>为准。
+          因本声明或使用本 App 产生的争议，由<strong>开发者住所地有管辖权的人民法院</strong>管辖。
+        </p>
+        <p>
+          如果本声明的任何条款被认定为无效或不可执行，其余条款仍然有效。
+          若本声明与 App 内展示的版本存在差异，以 App 内随版本发布的最新文本为准。
+        </p>
+      </div>
+
+    </div>
+  </section>
+
+  <section id="contact">
+    <div class="sec-head">
+      <h2><span class="bar"></span>联系</h2>
+      <p>注销账号、删除数据、举报违法内容、发现漏洞，都发这里。</p>
+    </div>
+    <div class="contact-box">
+      <h3>邮件联系</h3>
+      <p>注销账号请用注册邮箱发送，我会在 15 个工作日内处理。</p>
+      <a href="mailto:mqtg2146@agent.qq.com">mqtg2146@agent.qq.com</a>
+    </div>
+    <div class="decl-note">
+      <strong style="color:var(--txt)">关于「注销」的实际含义：</strong>
+      注销会删除你在服务端的账号记录、动态、评论、好友关系。
+      <strong>已发送给别人的聊天消息不会被删除</strong>（对方设备上的副本我无法触及）。
+      本地数据需要你自己在系统设置里清除应用数据或卸载 App。
+    </div>
+  </section>
+
+  <footer>
+    <span>© <span id="year"></span> chuyangBZ · 喵盒 MeowBox 版本记录页</span>
+    <span class="mono">个人学习作品 · 非商业用途 · 未备案未上架</span>
+  </footer>
+
+</div>
+
+<script>
+document.getElementById('year').textContent = new Date().getFullYear();
+</script>
+</body>
+</html>
