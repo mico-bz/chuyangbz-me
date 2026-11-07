@@ -4,13 +4,13 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>喵盒 MeowBox · 版本更新记录与使用声明</title>
-<meta name="description" content="喵盒 MeowBox 的完整版本更新记录、下载地址、功能说明，以及未备案、未上架应用商店的如实声明与免责条款。个人非商业项目，仅供朋友间技术交流。">
+<meta name="description" content="喵盒 MeowBox 的完整版本更新记录、功能说明，以及未备案、未上架应用商店的如实声明与免责条款。个人非商业项目，当前不对外分发安装包。">
 <meta name="theme-color" content="#05060a">
 <link rel="canonical" href="https://chuyangbz.me/meowbox/">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://chuyangbz.me/meowbox/">
 <meta property="og:title" content="喵盒 MeowBox · 版本更新记录与使用声明">
-<meta property="og:description" content="完整版本历史、每版更新内容、下载地址，以及未备案未上架的如实声明。">
+<meta property="og:description" content="完整版本历史、每版更新内容，以及未备案未上架的如实声明。当前不对外分发安装包。">
 <meta property="og:site_name" content="chuyangBZ">
 <meta name="twitter:card" content="summary">
 <meta name="author" content="chuyangBZ">
@@ -172,6 +172,14 @@ h1 .en{
 }
 .dl-btn:hover{transform:translateY(-2px);box-shadow:0 12px 34px rgba(124,92,255,.55)}
 .dl-btn svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2.2}
+
+/* 暂停分发：按钮改为不可点的状态标识 */
+.dl-btn-off{
+  background:transparent;color:var(--dim2);cursor:not-allowed;
+  border:1px dashed rgba(255,255,255,.22);box-shadow:none;
+}
+.dl-btn-off:hover{transform:none;box-shadow:none}
+.dl-off{border-style:dashed;border-color:rgba(255,255,255,.14)}
 .dl-hint{margin-top:12px;font-size:12px;color:var(--dim2);line-height:1.7}
 
 /* 版本时间线 */
@@ -417,6 +425,7 @@ footer{
 
     <div class="status">
       <span class="pill ok"><i class="dot"></i>最新 0.6.0</span>
+      <span class="pill warn"><i class="dot"></i>页面不提供下载</span>
       <span class="pill warn"><i class="dot"></i>未办理 ICP / App 备案</span>
       <span class="pill warn"><i class="dot"></i>未上架应用商店</span>
       <span class="pill info"><i class="dot"></i>个人非商业 · 不收费</span>
@@ -443,20 +452,21 @@ footer{
   </header>
 
   <section id="download">
-    <div class="dl-card">
+    <div class="dl-card dl-off">
       <div class="dl-info">
-        <div class="dl-ver">Latest Release</div>
+        <div class="dl-ver">Latest Release · 不公开下载</div>
         <div class="dl-name">0.6.0</div>
-        <div class="dl-meta mono">versionCode 5 · 19 MB · debug 签名 · Android 7.0+</div>
+        <div class="dl-meta mono">versionCode 5 · debug 签名 · Android 7.0+</div>
       </div>
-      <a class="dl-btn" href="MeowBox-0.6.0-5.apk" download>
-        <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
-        下载 APK
-      </a>
+      <span class="dl-btn dl-btn-off" aria-disabled="true">
+        <svg viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg>
+        页面不提供下载
+      </span>
     </div>
     <p class="dl-hint">
-      这个包用 debug 证书签名，和以前的版本签名一致，可以直接覆盖安装、不会丢登录状态。
-      以后版本号连续递增，装有 0.6.0 及以上的设备可以在 App 内「检查更新」直接下载新版本，不用再回这个页面。
+      这个页面<strong style="color:#fcd34d">不再提供公开下载入口</strong>，APK 不在页面上挂着。
+      已经装了 App 的设备仍然可以正常走<strong style="color:var(--txt)">应用内「检查更新」</strong>，启动时会自动读版本清单并下载新包。
+      页面保留下来，供查阅每一次版本改了什么。
     </p>
   </section>
 
@@ -637,19 +647,19 @@ footer{
   <section id="install">
     <div class="sec-head">
       <h2><span class="bar"></span>怎么装</h2>
-      <p>因为没有上架商店，只能手动安装 APK。系统会拦一次，这是正常现象，不是病毒警告。</p>
+      <p>因为这个 App 没有上架商店，安装只能靠 APK 手动进行。下面这套流程是它装到手机上的真实步骤，写出来是为了说明它会遇到什么、为什么遇到，<strong style="color:var(--txt)">不是让你现在去装</strong>。</p>
     </div>
     <div class="steps">
-      <div class="step">点上面的<strong>「下载 APK」</strong>，把 <code style="font-family:ui-monospace,Consolas,monospace;font-size:12px;color:#c4b5fd">MeowBox-0.6.0-5.apk</code> 存到手机里。</div>
+      <div class="step">从已安装的 App 里走<strong>「检查更新」</strong>下载新包；<strong style="color:#fcd34d">本页面不提供公开下载入口</strong>。</div>
       <div class="step">用文件管理器打开它。系统会提示「<strong>禁止安装未知来源应用</strong>」—— 到设置里给这个文件管理器（或浏览器）打开「安装未知应用」权限，再回来点一次。</div>
-      <div class="step">安装界面会显示<strong>没有应用商店来源</strong>、可能提示风险。<strong>这是所有未上架 APK 的必然状态</strong>，确认它来自这个页面即可继续。</div>
+      <div class="step">安装界面会显示<strong>没有应用商店来源</strong>、可能提示风险。<strong>这是所有未上架 APK 的必然状态</strong>。</div>
       <div class="step">装好后首次打开，会先看到登录页。<strong>必须勾选用户协议和隐私政策才能登录</strong> —— 不勾选按钮是灰的，这是有意为之。</div>
       <div class="step">如果只是想看看界面，可以点<strong>「先逛逛，不登录」</strong>，但发动态、聊天、加好友都需要登录。</div>
     </div>
     <div class="decl-note">
       升级时如果报「应用未安装」，通常是因为之前的包签名不同。把旧版卸载再装新版即可，
       但<strong style="color:var(--txt)">卸载会清除本地数据</strong>（登录状态、签到记录、设置）。
-      如果你一直装的是这个页面的包，签名是一致的，可以直接覆盖。
+      同一个分发包来源的签名是一致的，可以直接覆盖。
     </div>
   </section>
 
@@ -745,16 +755,25 @@ footer{
       </div>
 
       <div class="decl-item">
-        <h3><span class="n">02</span>分发边界：可以给朋友，不能拿去经营</h3>
+        <h3><span class="n">02</span>分发边界：不公开散播，更新照常</h3>
+        <p>
+          <strong style="color:#fcd34d">本页面不提供公开的安装包下载入口。</strong>
+          这个页面保留下来，是为了公开每一次版本改了什么、以及必须说清楚的那些事，
+          它是<strong>更新记录与告知</strong>，不是分发渠道。
+        </p>
+        <p>
+          已安装 App 的设备仍可正常使用<strong>应用内「检查更新」</strong>获取新版本 —— 更新包不经过这个页面，
+          由 App 自己按版本清单下载。两者互不影响。
+        </p>
         <p>允许的行为：</p>
         <ul>
-          <li>自己安装使用；</li>
-          <li>把安装包直接发给朋友，用于技术交流；</li>
-          <li>阅读、参考、学习其中公开的实现思路。</li>
+          <li>阅读这里的版本记录、权限说明与免责条款；</li>
+          <li>参考、学习其中公开的实现思路；</li>
+          <li>已持有安装包的人自己安装使用，或直接发给朋友做技术交流。</li>
         </ul>
         <p>不允许的行为：</p>
         <ul>
-          <li>上传到任何应用商店、软件下载站、网盘公开分享页；</li>
+          <li>把安装包上传到任何应用商店、软件下载站、网盘公开分享页；</li>
           <li>用于任何商业用途，包括但不限于收费分发、捆绑销售、作为付费服务的一部分；</li>
           <li>改名换标后伪装成自己的作品或「官方版本」；</li>
           <li>用于任何违反法律法规的场景。</li>

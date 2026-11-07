@@ -39,24 +39,31 @@
 
 想法先行，拆成能单独跑通的小块，让 AI 写代码、我负责运行和验证，跑不通就一起看日志回到上一步。站点内有一个「一个东西是怎么被做出来的」区块，写的是这套流程。
 
-## 喵盒 MeowBox 发版流程
+## 喵盒 MeowBox 版本记录页
 
-版本记录与下载页：https://chuyangbz.me/meowbox/
+页面：https://chuyangbz.me/meowbox/
+
+**当前状态：暂停对外分发。** 站点内不存放 APK，页面上的下载按钮已替换为不可点的
+「暂不提供下载」标识，`update.json` 的 `apkUrl` 留空并标记 `"distribution": "paused"`。
+页面本身保留，用于公开版本记录、权限清单与免责条款。
+
+### 恢复分发时怎么做
 
 App 内的「检查更新」优先读取 `https://chuyangbz.me/meowbox/update.json`，
-读不到才回落到 Appwrite 上的同名单。所以发新版只需要动两个文件：
+读不到才回落到 Appwrite 上的同名单。恢复分发要动三处：
 
-1. **放 APK**：把新包按 `meowbox/MeowBox-<版本名>-<versionCode>.apk` 命名放进 `meowbox/`。
+1. **放 APK**：把包按 `meowbox/MeowBox-<版本名>-<versionCode>.apk` 放进 `meowbox/`。
    文件名里的 versionCode 必须和包里的一致，否则老版本算出来的更新地址会 404。
-2. **改清单**：改 `meowbox/update.json` 的 `versionCode`、`versionName`、`apkUrl`，
-   把本版改动写进 `notes`（按 `版本号 / 新增 / 改进 / 修复` 分段，App 的更新弹窗原样显示这段文字）。
-3. **改页面**：在 `meowbox/index.html` 的版本时间线最上方插入一条本版记录，
-   同时更新 `#download` 区块的版本号、文件大小与下载按钮地址。
-
-推上去等 GitHub Pages 构建完即可，App 下次启动就会看到新版。
+2. **改清单**：`update.json` 里补回 `apkUrl`（完整直链），把 `distribution` 改成 `"public"`，
+   同时更新 `versionCode`、`versionName`，并把本版改动写进 `notes`
+   （按 `版本号 / 新增 / 改进 / 修复` 分段，App 的更新弹窗原样显示这段文字）。
+3. **改页面**：把 `#download` 区块的 `span.dl-btn-off` 换回
+   `<a class="dl-btn" href="MeowBox-<版本名>-<versionCode>.apk" download>`，
+   去掉 `dl-off` / `dl-btn-off` 两个类，并更新版本号与时间线。
 
 > 注意：`update.json` 里的 `versionCode` 必须大于用户当前安装的版本，否则 App 判定为已是最新。
 > `force` 设为 `true` 时会强制弹窗，`minVersionCode` 用于低于某个版本时静默强制更新。
+> `apkUrl` 为空时 App 端 `parse()` 会返回 null，等同于「没有可用的更新信息」，不会崩、也不会挡启动。
 
 ## 联系
 
