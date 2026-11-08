@@ -424,7 +424,7 @@ footer{
     </p>
 
     <div class="status">
-      <span class="pill ok"><i class="dot"></i>最新 0.10.1</span>
+      <span class="pill ok"><i class="dot"></i>最新 0.10.2</span>
       <span class="pill warn"><i class="dot"></i>页面不提供下载</span>
       <span class="pill warn"><i class="dot"></i>未办理 ICP / App 备案</span>
       <span class="pill warn"><i class="dot"></i>未上架应用商店</span>
@@ -455,8 +455,8 @@ footer{
     <div class="dl-card dl-off">
       <div class="dl-info">
         <div class="dl-ver">Latest Release · 不公开下载</div>
-        <div class="dl-name">0.10.1</div>
-        <div class="dl-meta mono">versionCode 12 · debug 签名 · Android 7.0+</div>
+        <div class="dl-name">0.10.2</div>
+        <div class="dl-meta mono">versionCode 13 · debug 签名 · Android 7.0+</div>
       </div>
       <span class="dl-btn dl-btn-off" aria-disabled="true">
         <svg viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg>
@@ -478,12 +478,60 @@ footer{
 
     <div class="timeline">
 
+      <!-- 0.10.2 -->
+      <article class="ver">
+        <div class="ver-box">
+          <div class="ver-top">
+            <span class="ver-tag">v0.10.2</span>
+            <span class="ver-badge">最新</span>
+            <span class="ver-date">2026-11-08 · code 13</span>
+          </div>
+          <div class="ver-body">
+            <div class="ver-group add">
+              <h5>新增：聊天轻互动</h5>
+              <ul>
+                <li><strong>闪照</strong>：更多面板选「闪照」发一张，对方收到是盖着遮罩的卡片，<strong>按住才显形、松手即焚</strong>。真实边界：图仍在媒体桶里以便传输，「焚」只发生在客户端——松手后本地永久标记已焚毁，不再展示。</li>
+                <li><strong>炸屏</strong>：发一条 emoji 彩带，双方收到都会全屏炸开一次，约 1.1 秒自动收场。</li>
+                <li><strong>拍一拍升级</strong>：现在带随机俏皮后缀，不再是干巴巴的「拍了拍」。</li>
+              </ul>
+            </div>
+            <div class="ver-group add">
+              <h5>新增：关系养成 · 聊天情感条</h5>
+              <ul>
+                <li>顶栏下方一条轻量数据条：<strong>连续火花天数 🔥 / 累计消息条数 💬 / 亲密度等级 Lv.x</strong>。</li>
+                <li>全部由聊天消息的时间戳现算，两端各自算出来天然一致，服务端零改动。</li>
+              </ul>
+            </div>
+            <div class="ver-group add">
+              <h5>新增：个人主页 · 心情状态</h5>
+              <ul>
+                <li>个人卡签名下方多了心情气泡，可挑 emoji + 写一句话，点一下就能改。</li>
+                <li>如实说明：这是<strong>纯本机偏好</strong>，只在自己手机展示，别的设备读不到；想做到「好友可见」得改云端结构，这版不承诺。</li>
+              </ul>
+            </div>
+            <div class="ver-group add">
+              <h5>新增：群互动 · 群接龙</h5>
+              <ul>
+                <li>群聊更多面板里「接龙」可发起，填标题 + 若干选项；卡片式展示，群成员点「参与接龙」即报名，已报名人数和名单实时聚合。</li>
+                <li>全部复用消息表已有的 <code>kind</code> 字段（flash / boom / dragon / dragonjoin），不新建表、不动服务端结构。</li>
+              </ul>
+            </div>
+            <div class="ver-group">
+              <h5>如实说明</h5>
+              <ul>
+                <li>陌生人注册仍未关闭，属于遗留合规项；屏蔽仍是纯本机行为，不是服务端拉黑。</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </article>
+
       <!-- 0.10.1 -->
       <article class="ver">
         <div class="ver-box">
           <div class="ver-top">
             <span class="ver-tag">v0.10.1</span>
-            <span class="ver-badge">最新</span>
+            <span class="ver-badge">历史</span>
             <span class="ver-date">2026-11-08 · code 12</span>
           </div>
           <div class="ver-body">
