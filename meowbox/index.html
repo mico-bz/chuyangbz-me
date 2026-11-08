@@ -424,7 +424,7 @@ footer{
     </p>
 
     <div class="status">
-      <span class="pill ok"><i class="dot"></i>最新 0.10.0</span>
+      <span class="pill ok"><i class="dot"></i>最新 0.10.1</span>
       <span class="pill warn"><i class="dot"></i>页面不提供下载</span>
       <span class="pill warn"><i class="dot"></i>未办理 ICP / App 备案</span>
       <span class="pill warn"><i class="dot"></i>未上架应用商店</span>
@@ -455,8 +455,8 @@ footer{
     <div class="dl-card dl-off">
       <div class="dl-info">
         <div class="dl-ver">Latest Release · 不公开下载</div>
-        <div class="dl-name">0.10.0</div>
-        <div class="dl-meta mono">versionCode 11 · debug 签名 · Android 7.0+</div>
+        <div class="dl-name">0.10.1</div>
+        <div class="dl-meta mono">versionCode 12 · debug 签名 · Android 7.0+</div>
       </div>
       <span class="dl-btn dl-btn-off" aria-disabled="true">
         <svg viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg>
@@ -478,12 +478,55 @@ footer{
 
     <div class="timeline">
 
+      <!-- 0.10.1 -->
+      <article class="ver">
+        <div class="ver-box">
+          <div class="ver-top">
+            <span class="ver-tag">v0.10.1</span>
+            <span class="ver-badge">最新</span>
+            <span class="ver-date">2026-11-08 · code 12</span>
+          </div>
+          <div class="ver-body">
+            <div class="ver-group add">
+              <h5>新增：拍一拍（聊天内）</h5>
+              <ul>
+                <li><strong>双击对方头像</strong>就「拍一拍」，屏幕浮出一行 <code>🐾 你 拍了拍 小明</code>，和微信同一个味道。</li>
+                <li>私聊里双击自己头像＝拍对方；群聊里双击谁的头像就拍谁。</li>
+                <li>触发时给一次极轻触感，不吵不闹。</li>
+              </ul>
+            </div>
+            <div class="ver-group add">
+              <h5>新增：表情回应（聊天内）</h5>
+              <ul>
+                <li>长按任意一条消息，最上面直接甩出一排表情（👍❤️😂😮😢🎉），点完立刻发出去。</li>
+                <li>回应以小 chip 挂在气泡下方，同一个表情自动聚合成「👍 3」，自己点过的会高亮。</li>
+                <li>再点一下就是撤回自己那条回应——不是假开关。</li>
+              </ul>
+            </div>
+            <div class="ver-group fix">
+              <h5>打磨：手感与细节</h5>
+              <ul>
+                <li>聊天页顶栏返回、群信息、搜索、表情/加号、公告关闭、错误条、图片气泡、更多面板、长按菜单……所有点击位统一换成自绘 <code>meowTap</code>（缩放 + 圆角反馈），不再有 Material 方块水波纹。</li>
+                <li>发现页的朋友圈大卡、视频号/搭子广场卡片也换成 <code>meowTap</code>，整页按压手感一致。</li>
+                <li>拍一拍、表情回应都复用消息表已有的 <code>kind</code> 字段，不新建表、不动服务端结构，两端都能看到。</li>
+              </ul>
+            </div>
+            <div class="ver-group">
+              <h5>如实说明</h5>
+              <ul>
+                <li>陌生人注册仍未关闭，属于遗留合规项；屏蔽仍是纯本机行为，不是服务端拉黑。</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </article>
+
       <!-- 0.10.0 -->
       <article class="ver">
         <div class="ver-box">
           <div class="ver-top">
             <span class="ver-tag">v0.10.0</span>
-            <span class="ver-badge">最新</span>
+            <span class="ver-badge">历史</span>
             <span class="ver-date">2026-11-08 · code 11</span>
           </div>
           <div class="ver-body">
