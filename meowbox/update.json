@@ -1,13 +1,13 @@
 {
-  "versionCode": 15,
-  "versionName": "0.12.0",
+  "versionCode": 16,
+  "versionName": "0.13.0",
   "distribution": "unlisted",
-  "apkUrl": "https://chuyangbz.me/meowbox/pkg/mb-15-278d53c0.apk",
+  "apkUrl": "https://chuyangbz.me/meowbox/pkg/mb-16-53b7f11f.apk",
   "apkUrlAlt": [
-    "https://gcore.jsdelivr.net/gh/mico-bz/chuyangbz-me@main/meowbox/pkg/mb-15-278d53c0.apk",
-    "https://raw.githubusercontent.com/mico-bz/chuyangbz-me/main/meowbox/pkg/mb-15-278d53c0.apk"
+    "https://gcore.jsdelivr.net/gh/mico-bz/chuyangbz-me@main/meowbox/pkg/mb-16-53b7f11f.apk",
+    "https://raw.githubusercontent.com/mico-bz/chuyangbz-me/main/meowbox/pkg/mb-16-53b7f11f.apk"
   ],
-  "notes": "0.12.0\n\n主题：安全与合规加固。\n\n一、关闭陌生人注册（客户端门槛）\n1. 登录页新增「邀请码」校验：不填对邀请码无法发送验证码，拿到安装包的陌生人也进不来。\n2. 建议配合 Appwrite 控制台 Auth → Security → Users limit 设一个上限，做双重保险（此步为可选加固）。\n\n二、拉黑升级为「云端真拦截」（复用消息表 kind=block，不新建表）\n3. 拉黑名单同步到云端，换手机也生效。\n4. 被拉黑的人给你发消息会被直接拒绝（对方不会收到通知）；他的动态也不再出现在你的朋友圈与会话列表。\n5. 技术说明：屏蔽簿复用 messages 表（chatId = blocks_<用户ID>），因为消息的 fromId 强制取自登录会话、无法伪造，所以名单可信、别人塞不进假条目。\n6. 边界如实说明：这是官方客户端范围内的拦截，恶意改包者仍可绕过；普通用户已完全发不进消息。\n\n三、合规文案复核\n7. 登录页与三份法律文本保持一致：未备案、未上架、数据存境外（新加坡）、个人非商业、不保存密码。\n\n如实说明：\n- 邀请码由开发者分享给需要加入的同学，请勿公开扩散。\n- 本版未改动其它功能逻辑。",
+  "notes": "0.13.0\n\n主题：扩充小程序 + 聊天更多面板。\n\n一、小游戏 +3（纯本地，不联网，断网也能玩）\n1. 俄罗斯方块：10×20 经典玩法，消行得分，触屏方向键操作。\n2. 井字棋：内置 Minimax AI，认真下基本赢不了；记录你赢和平局次数。\n3. 扫雷：9×9 十雷，「挖开 / 插旗」双模式，首点必安全。\n\n二、小工具 +4（纯本地，不上传输入内容）\n4. 密码生成器：长度 6–40 可调，大小写/数字/符号自由勾选，一键复制。\n5. 字数统计：实时统计字数、去空白字数、行数。\n6. 日期计算：算两个日期相差多少天，以及某天是星期几。\n7. 拾色器：选任意颜色，实时给出 HEX / RGB 并一键复制。\n\n三、聊天「更多」面板 +2（复用已有消息通道，零新表）\n8. 拍一拍：面板里直接点，随机带一句俏皮后缀发出去。\n9. 掷骰子：点一下随机 1–6 点，作为一条消息发到当前会话。\n\n如实说明：\n- 本版只新增本地小玩意与两个聊天小动作，未改动核心的登录/聊天/好友/朋友圈逻辑。\n- 游戏与工具均为本地 HTML，不涉及联网权限，不会有隐私外传。",
   "force": false,
   "minVersionCode": 0
 }
