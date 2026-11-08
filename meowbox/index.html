@@ -424,7 +424,7 @@ footer{
     </p>
 
     <div class="status">
-      <span class="pill ok"><i class="dot"></i>最新 0.8.0</span>
+      <span class="pill ok"><i class="dot"></i>最新 0.9.0</span>
       <span class="pill warn"><i class="dot"></i>页面不提供下载</span>
       <span class="pill warn"><i class="dot"></i>未办理 ICP / App 备案</span>
       <span class="pill warn"><i class="dot"></i>未上架应用商店</span>
@@ -455,8 +455,8 @@ footer{
     <div class="dl-card dl-off">
       <div class="dl-info">
         <div class="dl-ver">Latest Release · 不公开下载</div>
-        <div class="dl-name">0.8.0</div>
-        <div class="dl-meta mono">versionCode 8 · debug 签名 · Android 7.0+</div>
+        <div class="dl-name">0.9.0</div>
+        <div class="dl-meta mono">versionCode 9 · debug 签名 · Android 7.0+</div>
       </div>
       <span class="dl-btn dl-btn-off" aria-disabled="true">
         <svg viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg>
@@ -478,12 +478,51 @@ footer{
 
     <div class="timeline">
 
+      <!-- 0.9.0 -->
+      <article class="ver">
+        <div class="ver-box">
+          <div class="ver-top">
+            <span class="ver-tag">v0.9.0</span>
+            <span class="ver-badge">最新</span>
+            <span class="ver-date">2026-11-08 · code 9</span>
+          </div>
+          <div class="ver-body">
+            <div class="ver-group fix">
+              <h5>按压手感（这次只有这个，没有新功能）</h5>
+              <ul>
+                <li><strong>方块水波纹没了</strong>：原来用的是 Material 默认 ripple，它按控件<strong>矩形边界</strong>绘制，所以在图标、小按钮、心形上戳下去会冒出一个硬邦邦的方块。换成自己画的反馈后，形状跟着控件走 —— 圆形热区得到圆形反馈，条状按钮得到胶囊反馈，全项目再没有直角方块。</li>
+                <li><strong>圆角按控件比例自适应</strong>：原来只按「短边一半」算半径，像「心形＋数字」这种约 40×23 的宽扁节点，半径在宽度上只占 29%，看上去仍是个方片。现在宽高比超过 1.4 就按高度收圆角，趋近胶囊。</li>
+                <li><strong>真的会「压下去」</strong>：按下时整块缩到 0.86~0.96，松开用弹簧弹回，不是线性渐变。缩放走图层变换，不参与布局，不会让周围元素跳动。</li>
+                <li><strong>极轻触感反馈</strong>：只在按下沿触发一次，用系统最轻那一档，不需要任何权限。</li>
+                <li><strong>红心弹跳加大</strong>：幅度改成 1 → 1.38 → 0.94 → 1。原来 1.32 起跳，在 29dp 的心形上肉眼看不出来，点完只觉得「亮了」。</li>
+                <li><strong>10 处 IconButton 换成自绘版</strong>：Material3 的 IconButton 内部写死了 <code>ripple()</code>，根本不读全局设置，所以标题栏的返回/刷新/新建三个图标以前照样是方块。</li>
+                <li><strong>补齐 11 处零散小按钮</strong>：朋友圈的「取消/发布/发送」、表情面板的格子、搭子的「撤回」、联系人的「举报/屏蔽」、我的「取消收藏」、登录页的协议勾选框（这个以前 <code>indication = null</code>，点了完全没有反馈）。</li>
+                <li><strong>加载中的按钮自动禁用按压</strong>：避免连点造成重复请求。</li>
+              </ul>
+            </div>
+            <div class="ver-group add">
+              <h5>更新检查</h5>
+              <ul>
+                <li><strong>修掉了一个假的降级链</strong>：原来以为「自定义域 + github.io 默认域」是两个互为备份的源，实测发现 github.io 那个会 <code>301</code> 重定向回 chuyangbz.me —— 两行其实是同一个源，主站 DNS 一挂就两个一起挂，等于没有降级。真正的独立源是 jsDelivr（直接从 GitHub 仓库读，走自己的 CDN，不经过 Pages 的域名和证书链），现在它在第二位。</li>
+              </ul>
+            </div>
+            <div class="ver-group fix">
+              <h5>仍然做不到的（如实写明）</h5>
+              <ul>
+                <li>陌生人注册仍未关闭，这是遗留的合规项。</li>
+                <li>屏蔽仍是<strong>纯本机行为</strong>，不是服务端拉黑：名单只存在这台手机里，对方不会收到通知，依然能看到你的动态、依然能给你发消息。真正的拉黑需要新建 <code>blocks</code> 表并配读权限规则。</li>
+                <li>「仅好友」依旧是本机过滤，不是服务端权限。</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </article>
+
       <!-- 0.8.0 -->
       <article class="ver">
         <div class="ver-box">
           <div class="ver-top">
             <span class="ver-tag">v0.8.0</span>
-            <span class="ver-badge">最新</span>
             <span class="ver-date">2026-11-08 · code 8</span>
           </div>
           <div class="ver-body">
