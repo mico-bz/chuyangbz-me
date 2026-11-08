@@ -424,7 +424,7 @@ footer{
     </p>
 
     <div class="status">
-      <span class="pill ok"><i class="dot"></i>最新 0.7.0</span>
+      <span class="pill ok"><i class="dot"></i>最新 0.8.0</span>
       <span class="pill warn"><i class="dot"></i>页面不提供下载</span>
       <span class="pill warn"><i class="dot"></i>未办理 ICP / App 备案</span>
       <span class="pill warn"><i class="dot"></i>未上架应用商店</span>
@@ -455,8 +455,8 @@ footer{
     <div class="dl-card dl-off">
       <div class="dl-info">
         <div class="dl-ver">Latest Release · 不公开下载</div>
-        <div class="dl-name">0.7.0</div>
-        <div class="dl-meta mono">versionCode 7 · debug 签名 · Android 7.0+</div>
+        <div class="dl-name">0.8.0</div>
+        <div class="dl-meta mono">versionCode 8 · debug 签名 · Android 7.0+</div>
       </div>
       <span class="dl-btn dl-btn-off" aria-disabled="true">
         <svg viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg>
@@ -478,12 +478,48 @@ footer{
 
     <div class="timeline">
 
+      <!-- 0.8.0 -->
+      <article class="ver">
+        <div class="ver-box">
+          <div class="ver-top">
+            <span class="ver-tag">v0.8.0</span>
+            <span class="ver-badge">最新</span>
+            <span class="ver-date">2026-11-08 · code 8</span>
+          </div>
+          <div class="ver-body">
+            <div class="ver-group add">
+              <h5>新增</h5>
+              <ul>
+                <li><strong>搭子可以撤回了</strong>：后端 <code>deleteBuddy</code> 早就写好，但界面没有任何入口，发错的搭子在广场上永远收不回来。现在自己发的搭子右上角有「撤回」；已经有人报名时会先变成「确定撤回？」，再点一次才真删，免得别人好不容易报上名被一键抹掉。</li>
+                <li><strong>本机屏蔽</strong>：资料页新增「屏蔽（仅本机）」。屏蔽后他发的动态不再出现在你的朋友圈列表，单聊也不再出现在消息列表（群聊不受影响，因为屏蔽一个人就把整个群藏起来并不合适）。</li>
+                <li><strong>屏蔽名单管理</strong>：设置 → 隐私里能看到已屏蔽几人、逐个点 ID 解除。这是唯一的解除入口，否则屏蔽了就没地方反悔。</li>
+                <li><strong>拦住「屏蔽自己」</strong>：自己的资料页不显示这个按钮，朋友圈过滤也永远保留自己的动态，防止名单里误加自己后把自己藏了。</li>
+              </ul>
+            </div>
+            <div class="ver-group fix">
+              <h5>改进</h5>
+              <ul>
+                <li><strong>消息列表全部被屏蔽时给了空态文案</strong>，不会只剩一片白，并提示去哪里解除。</li>
+              </ul>
+            </div>
+            <div class="ver-group fix">
+              <h5>仍然做不到的（如实写明）</h5>
+              <ul>
+                <li><strong>屏蔽是纯本机行为，不是服务端拉黑</strong>。名单存在这台手机的本地存储里，不上云；对方不会收到通知，依然能看到你的动态、依然能给你发消息。真正的拉黑需要新建一张 <code>blocks</code> 表并配读权限规则，属于服务端模型变更，这次没有做——做半截只会给出「已经拉黑了」的错觉。</li>
+                <li><strong>陌生人注册仍未关闭</strong>，这是遗留的合规项。</li>
+                <li><strong>「仅好友」依旧是本机过滤，不是服务端权限</strong>。动态表对所有登录用户可读，这一点没有变。</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </article>
+
       <!-- 0.7.0 -->
       <article class="ver">
         <div class="ver-box">
           <div class="ver-top">
             <span class="ver-tag">v0.7.0</span>
-            <span class="ver-badge">最新</span>
+            <span class="ver-badge old">历史</span>
             <span class="ver-date">2026-11-08 · code 7</span>
           </div>
           <div class="ver-body">
@@ -510,7 +546,7 @@ footer{
               <h5>仍然做不到的（如实写明）</h5>
               <ul>
                 <li><strong>「仅好友」仍是本机过滤，不是服务端权限</strong>。动态表对所有登录用户可读，这一点这版没有变，也不可能靠客户端开关改变。</li>
-                <li><strong>没有拉黑和屏蔽功能</strong>。举报走邮件人工处理，没有后台审核队列。</li>
+                <li><strong>没有拉黑功能</strong>（0.8.0 补了本机屏蔽，但那不是服务端拉黑）。举报走邮件人工处理，没有后台审核队列。</li>
               </ul>
             </div>
           </div>
