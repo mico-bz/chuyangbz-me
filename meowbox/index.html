@@ -424,7 +424,7 @@ footer{
     </p>
 
     <div class="status">
-      <span class="pill ok"><i class="dot"></i>最新 0.16.2</span>
+      <span class="pill ok"><i class="dot"></i>最新 0.18.0</span>
       <span class="pill warn"><i class="dot"></i>页面不提供下载</span>
       <span class="pill warn"><i class="dot"></i>未办理 ICP / App 备案</span>
       <span class="pill warn"><i class="dot"></i>未上架应用商店</span>
@@ -455,8 +455,8 @@ footer{
     <div class="dl-card dl-off">
       <div class="dl-info">
         <div class="dl-ver">Latest Release · 不公开下载</div>
-        <div class="dl-name">0.16.2</div>
-        <div class="dl-meta mono">versionCode 21 · debug 签名 · Android 7.0+</div>
+        <div class="dl-name">0.18.0</div>
+        <div class="dl-meta mono">versionCode 23 · debug 签名 · Android 7.0+</div>
       </div>
       <span class="dl-btn dl-btn-off" aria-disabled="true">
         <svg viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg>
@@ -478,12 +478,50 @@ footer{
 
     <div class="timeline">
 
+      <!-- 0.18.0 -->
+      <article class="ver">
+        <div class="ver-box">
+          <div class="ver-top">
+            <span class="ver-tag">v0.18.0</span>
+            <span class="ver-badge">最新</span>
+            <span class="ver-date">2026-11-08 · code 23</span>
+          </div>
+          <div class="ver-body">
+            <div class="ver-group add">
+              <h5>界面：更有活力、更像「有人玩」</h5>
+              <ul>
+                <li><strong>搭子广场整体重做</strong>：每类搭子配专属渐变场景卡，带场景大图、人数徽章、报名头像叠压，一眼就有热闹劲，不再是一张张白卡片。</li>
+                <li><strong>「发现」页动效增强</strong>：朋友圈封面头像轻微呼吸、入口图标轻轻上下浮动，静态清单也活了起来。</li>
+                <li><strong>个人中心三统计</strong>改为「搭子 / 好友 / 完成率」，点一下摊开完整数据（动态 / 关注 / 粉丝 / 收藏）。</li>
+              </ul>
+            </div>
+            <div class="ver-group add">
+              <h5>社交：四项玩法一次补齐（全部零新表）</h5>
+              <ul>
+                <li><strong>消息页顶部社交通知条</strong>：🔥 N 个搭子正在找人 / 👋 N 条好友申请 / 💬 N 条新互动，横向可滑，点一下直达对应页面。</li>
+                <li><strong>通讯录好友在线状态</strong>：头像右上角绿点，按最近聊天时间显示「在线 / N 分钟前 / N 小时前 / N 天前活跃」，分组标题也带在线人数。</li>
+                <li><strong>搭子广场详情 + 长按菜单</strong>：点卡片看详情与「谁在找」；长按可举报 / 不感兴趣 / 分享 / 收藏（收藏纯本地）。</li>
+                <li><strong>搭子广场流体渐变空态</strong>：没人发搭子时也不再是一片空白。</li>
+              </ul>
+            </div>
+            <div class="ver-group fix">
+              <h5>如实说明</h5>
+              <ul>
+                <li>以上玩法全部复用现有 buddies / buddy_joins / messages 等表，<strong>未新建任何表</strong>。</li>
+                <li>在线状态由最近聊天记录的时间戳推算（最近 5 分钟内视为在线），<strong>不是服务端实时在线</strong>；搭子收藏存本机 SharedPreferences，换设备不同步。</li>
+                <li>未上架、未备案、个人非商业、不收费。</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </article>
+
       <!-- 0.16.2 -->
       <article class="ver">
         <div class="ver-box">
           <div class="ver-top">
             <span class="ver-tag">v0.16.2</span>
-            <span class="ver-badge">最新</span>
+            <span class="ver-badge old">历史</span>
             <span class="ver-date">2026-11-08 · code 21</span>
           </div>
           <div class="ver-body">
