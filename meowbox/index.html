@@ -424,7 +424,7 @@ footer{
     </p>
 
     <div class="status">
-      <span class="pill ok"><i class="dot"></i>最新 0.9.1</span>
+      <span class="pill ok"><i class="dot"></i>最新 0.10.0</span>
       <span class="pill warn"><i class="dot"></i>页面不提供下载</span>
       <span class="pill warn"><i class="dot"></i>未办理 ICP / App 备案</span>
       <span class="pill warn"><i class="dot"></i>未上架应用商店</span>
@@ -455,8 +455,8 @@ footer{
     <div class="dl-card dl-off">
       <div class="dl-info">
         <div class="dl-ver">Latest Release · 不公开下载</div>
-        <div class="dl-name">0.9.1</div>
-        <div class="dl-meta mono">versionCode 10 · debug 签名 · Android 7.0+</div>
+        <div class="dl-name">0.10.0</div>
+        <div class="dl-meta mono">versionCode 11 · debug 签名 · Android 7.0+</div>
       </div>
       <span class="dl-btn dl-btn-off" aria-disabled="true">
         <svg viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg>
@@ -478,12 +478,59 @@ footer{
 
     <div class="timeline">
 
+      <!-- 0.10.0 -->
+      <article class="ver">
+        <div class="ver-box">
+          <div class="ver-top">
+            <span class="ver-tag">v0.10.0</span>
+            <span class="ver-badge">最新</span>
+            <span class="ver-date">2026-11-08 · code 11</span>
+          </div>
+          <div class="ver-body">
+            <div class="ver-group add">
+              <h5>新增：7 款离线小游戏</h5>
+              <ul>
+                <li><strong>2048</strong>：4×4 滑格合并，最高分存在本机（<code>localStorage</code>），滑动手势 + 合并弹跳动画，赢局/死局都有对话框。</li>
+                <li><strong>记忆翻牌</strong>：8 对 emoji，3D 翻转（<code>rotateY</code> + 透视），记步数与用时，配对成功变绿。</li>
+                <li><strong>打地鼠</strong>：9 个圆洞，30 秒倒计时，<code>+1</code> 飘字，最高分本机存档。</li>
+                <li><strong>贪吃蛇</strong>：Canvas 绘制，帧率无关步进，圆角蛇身，十字方向键 + 滑动手势。</li>
+                <li><strong>数字华容道</strong>：4×4，用 300 次合法随机移动打乱，保证一定可解。</li>
+                <li><strong>打砖块</strong>：Canvas，挡板跟随手指，砖块按行着色，过关加行、加速球，三条命。</li>
+                <li><strong>五子棋</strong>：15×15 木色棋盘，带棋型加权的 AI（连五/活四/冲四/活三分别打分），支持悔棋、重开。</li>
+              </ul>
+            </div>
+            <div class="ver-group add">
+              <h5>新增：免费 API 工具箱</h5>
+              <ul>
+                <li>内置 <strong>120+ 条实测过的公开接口</strong>，覆盖 AI、图片、天气、娱乐随机、开发数据、百科、汇率等 13 个分类。</li>
+                <li>支持<strong>按名称/分类/网址搜索</strong>、点分类筛选；点进任一接口可<strong>现场修调查询参数</strong>再发送。</li>
+                <li>结果自动处理：<strong>JSON 自动美化</strong>、纯文本原样显示、图片直接渲染成图；顶部显示状态码、耗时与内容类型。</li>
+              </ul>
+            </div>
+            <div class="ver-group fix">
+              <h5>界面与手感（和之前一个标准）</h5>
+              <ul>
+                <li><strong>小程序页改成「小游戏 / 小工具」双 Tab</strong>，用胶囊分段切换器，原来的 8 个本地小工具一个没少。</li>
+                <li><strong>H5 里的操作也有原生触感</strong>：通过 JS 桥 <code>Meow.tap()</code>，网页游戏里每次落子、消砖、吃食物都会触发和原生按钮同一档的极轻触感。</li>
+                <li>所有新入口、新格子、返回键一律走自绘 <code>meowTap</code>（缩放 + 圆角反馈），没有一处 Material 方块水波纹。</li>
+              </ul>
+            </div>
+            <div class="ver-group fix">
+              <h5>仍然做不到的（如实写明）</h5>
+              <ul>
+                <li>陌生人注册仍未关闭，这是遗留的合规项。</li>
+                <li>屏蔽仍是纯本机行为，不是服务端拉黑。</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </article>
+
       <!-- 0.9.0 -->
       <article class="ver">
         <div class="ver-box">
           <div class="ver-top">
             <span class="ver-tag">v0.9.1</span>
-            <span class="ver-badge">最新</span>
             <span class="ver-date">2026-11-08 · code 10</span>
           </div>
           <div class="ver-body">
