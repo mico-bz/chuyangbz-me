@@ -1,13 +1,13 @@
 {
-  "versionCode": 29,
-  "versionName": "0.24.0",
+  "versionCode": 30,
+  "versionName": "0.25.0",
   "distribution": "unlisted",
-  "apkUrl": "https://chuyangbz.me/meowbox/pkg/mb-29-2f1a9cbc.apk",
+  "apkUrl": "https://chuyangbz.me/meowbox/pkg/mb-30-6bcc131f.apk",
   "apkUrlAlt": [
-    "https://gcore.jsdelivr.net/gh/mico-bz/chuyangbz-me@latest/meowbox/pkg/mb-29-2f1a9cbc.apk",
-    "https://raw.githubusercontent.com/mico-bz/chuyangbz-me/main/meowbox/pkg/mb-29-2f1a9cbc.apk"
+    "https://gcore.jsdelivr.net/gh/mico-bz/chuyangbz-me@latest/meowbox/pkg/mb-30-6bcc131f.apk",
+    "https://raw.githubusercontent.com/mico-bz/chuyangbz-me/main/meowbox/pkg/mb-30-6bcc131f.apk"
   ],
-  "notes": "0.24.0\n\n主题：新增「效率工作台」+ AI 嵌进资源库 —— 让 App 不止能社交。\n\n一、效率工作台（新）\n1. 待办清单：随手加一条、勾掉一条，完成加删除线，可一键清空已完成。\n2. 快捷笔记：随手记想法 / 备忘 / 灵感，点开可编辑，长内容自动折叠预览。\n3. 倒数日：生日 / 考试 / 纪念日，自动算「还有几天」，支持今天 / +7 天 / +30 天快填。\n4. 纯本机存储：三份数据只存手机本地，不上云、不联网。\n\n二、AI 嵌进资源库（新）\n5. 每条库内容底栏新增「AI 解读」，一键带着这条内容去问 AI，用大白话讲清关键点。\n6. 复用已配置的大模型；没填 Key 时照旧引导配置。\n\n三、如实说明\n- 本版未新建云表、未新增字段；工作台数据仅存本机 SharedPreferences。\n- 仍未上架任何应用商店、未办理 ICP / App 备案，纯个人非商业、不收费。",
+  "notes": "0.25.0\n\n主题：宠物领养上线 —— 每人一只，真正联网、可以互相照顾。\n\n一、宠物领养（新）\n1. 每人可领养一只宠物：6 种可选（猫 / 狗 / 兔 / 狐狸 / 企鹅 / 小龙），还能给它起名字。\n2. 宠物状态存在云端，换手机登录还是同一只；别人进你的资料页也能看到。\n\n二、社交互动（新）\n3. 「宠物广场」按人气排出所有人的宠物，谁都能点「摸摸」「投喂」。\n4. 每次照顾都会留下记录，主人能在「我的宠物」里看到「最近有谁来过」。\n5. 亲密度 = 摸摸 + 投喂×2，攒满自动升级（Lv.）；投喂比摸摸更管用。\n6. 进他人资料页也能直接摸 / 喂 Ta 的宠物，不用先加好友。\n\n三、入口\n7. 发现页「萌宠乐园」、我的页「我的宠物」都能进。\n\n四、如实说明\n- 复用消息表实现（kind=pet / petfeed 的伪会话），未新建云表、未新增字段。\n- 读写都走云端，别人能看到、能参与，不是单机养成。",
   "force": false,
   "minVersionCode": 0
 }
