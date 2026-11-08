@@ -1,13 +1,13 @@
 {
-  "versionCode": 16,
-  "versionName": "0.13.0",
+  "versionCode": 17,
+  "versionName": "0.14.0",
   "distribution": "unlisted",
-  "apkUrl": "https://chuyangbz.me/meowbox/pkg/mb-16-53b7f11f.apk",
+  "apkUrl": "https://chuyangbz.me/meowbox/pkg/mb-17-5f2795e7.apk",
   "apkUrlAlt": [
-    "https://gcore.jsdelivr.net/gh/mico-bz/chuyangbz-me@main/meowbox/pkg/mb-16-53b7f11f.apk",
-    "https://raw.githubusercontent.com/mico-bz/chuyangbz-me/main/meowbox/pkg/mb-16-53b7f11f.apk"
+    "https://gcore.jsdelivr.net/gh/mico-bz/chuyangbz-me@main/meowbox/pkg/mb-17-5f2795e7.apk",
+    "https://raw.githubusercontent.com/mico-bz/chuyangbz-me/main/meowbox/pkg/mb-17-5f2795e7.apk"
   ],
-  "notes": "0.13.0\n\n主题：扩充小程序 + 聊天更多面板。\n\n一、小游戏 +3（纯本地，不联网，断网也能玩）\n1. 俄罗斯方块：10×20 经典玩法，消行得分，触屏方向键操作。\n2. 井字棋：内置 Minimax AI，认真下基本赢不了；记录你赢和平局次数。\n3. 扫雷：9×9 十雷，「挖开 / 插旗」双模式，首点必安全。\n\n二、小工具 +4（纯本地，不上传输入内容）\n4. 密码生成器：长度 6–40 可调，大小写/数字/符号自由勾选，一键复制。\n5. 字数统计：实时统计字数、去空白字数、行数。\n6. 日期计算：算两个日期相差多少天，以及某天是星期几。\n7. 拾色器：选任意颜色，实时给出 HEX / RGB 并一键复制。\n\n三、聊天「更多」面板 +2（复用已有消息通道，零新表）\n8. 拍一拍：面板里直接点，随机带一句俏皮后缀发出去。\n9. 掷骰子：点一下随机 1–6 点，作为一条消息发到当前会话。\n\n如实说明：\n- 本版只新增本地小玩意与两个聊天小动作，未改动核心的登录/聊天/好友/朋友圈逻辑。\n- 游戏与工具均为本地 HTML，不涉及联网权限，不会有隐私外传。",
+  "notes": "0.14.0\n\n主题：学习成长系统 + 学习圈互动 + 单词笔记。纯增量，未动登录/聊天/好友/朋友圈。\n\n一、学习成长中心（纯本地）\n1. 经验/等级/段位：每背一组词结算经验，逐级升级，6 档段位青铜→王者。\n2. 成就徽章 12 枚：按真实学习数据实时判定，只记已解锁的做展示。\n3. 每日随机挑战：每天一个目标词数，当天达成可领学习币。\n4. 学习币商店·连胜冻结卡：花学习币买冻结卡，断签时护住连续天数。\n5. 学习日历热力图：近 12 周×7 天，按当天学习量深浅着色。\n6. 词汇量估算：按已掌握词数给估算词汇量。\n数据只存本机 SharedPreferences，换设备不同步、不上云。\n\n二、学习圈互动（复用消息表，零新表）\n7. 学习圈四 Tab：打卡墙 / 单词 PK / 学习搭子 / 求助。\n8. 每日打卡墙：一键发「今日学 X 词·连续 Y 天」，同学互相看得见。\n9. 单词 PK：晒「词书+词数+正确率」成绩条。\n10. 学习搭子：发找搭子的动态。\n全部复用消息表 kind 字段（checkin/pk/buddy/help），不新建表、不动服务端结构。\n\n三、单词笔记 + 这词怎么记\n11. 背词页每卡下加 📝 笔记（本机记忆法）与 🆘 这词怎么记（丢学习圈求助）。\n12. 笔记只存本地；求助走 kind=help 通道。\n\n如实说明：\n- 本版纯增量，未改登录/聊天/好友/朋友圈。\n- 成长数据纯本地，换手机不迁移；学习圈内容走云端消息，别人可见。\n- 未做：段位排位赛/周榜月榜/校园榜、7 天组队挑战、学习小组、战报评论、关注好友、词汇量海报。",
   "force": false,
   "minVersionCode": 0
 }

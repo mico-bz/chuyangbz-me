@@ -424,7 +424,7 @@ footer{
     </p>
 
     <div class="status">
-      <span class="pill ok"><i class="dot"></i>最新 0.13.0</span>
+      <span class="pill ok"><i class="dot"></i>最新 0.14.0</span>
       <span class="pill warn"><i class="dot"></i>页面不提供下载</span>
       <span class="pill warn"><i class="dot"></i>未办理 ICP / App 备案</span>
       <span class="pill warn"><i class="dot"></i>未上架应用商店</span>
@@ -455,8 +455,8 @@ footer{
     <div class="dl-card dl-off">
       <div class="dl-info">
         <div class="dl-ver">Latest Release · 不公开下载</div>
-        <div class="dl-name">0.13.0</div>
-        <div class="dl-meta mono">versionCode 16 · debug 签名 · Android 7.0+</div>
+        <div class="dl-name">0.14.0</div>
+        <div class="dl-meta mono">versionCode 17 · debug 签名 · Android 7.0+</div>
       </div>
       <span class="dl-btn dl-btn-off" aria-disabled="true">
         <svg viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg>
@@ -478,12 +478,62 @@ footer{
 
     <div class="timeline">
 
+      <!-- 0.14.0 -->
+      <article class="ver">
+        <div class="ver-box">
+          <div class="ver-top">
+            <span class="ver-tag">v0.14.0</span>
+            <span class="ver-badge">最新</span>
+            <span class="ver-date">2026-11-08 · code 17</span>
+          </div>
+          <div class="ver-body">
+            <div class="ver-group add">
+              <h5>新增：学习成长中心（纯本地）</h5>
+              <ul>
+                <li><strong>经验 / 等级 / 段位</strong>：每背一组词结算经验，逐级升级，6 档段位青铜 → 王者。</li>
+                <li><strong>成就徽章 12 枚</strong>：按真实学习数据实时判定（首日打卡、连续 7 天、累计 500 词等），只把已解锁的记下来做展示，不虚标。</li>
+                <li><strong>每日随机挑战</strong>：每天一个目标词数（稳定不抖动），当天达成可领学习币。</li>
+                <li><strong>学习币商店 · 连胜冻结卡</strong>：花学习币买「冻结卡」，断签时自动护住连续天数。</li>
+                <li><strong>学习日历热力图</strong>：近 12 周 × 7 天，按当天学习量深浅着色，一眼看出坚持得怎么样。</li>
+                <li><strong>词汇量估算</strong>：按已掌握词数给出估算词汇量，图个直观。</li>
+                <li>所有数据只存本机 <code>SharedPreferences</code>，<strong>换设备不同步、不上云</strong>。</li>
+              </ul>
+            </div>
+            <div class="ver-group add">
+              <h5>新增：学习圈互动（复用消息表，零新表）</h5>
+              <ul>
+                <li>学习专区新增<strong>「学习圈」</strong>入口，四个 Tab：<strong>打卡墙 / 单词 PK / 学习搭子 / 求助</strong>。</li>
+                <li><strong>每日打卡墙</strong>：一键把「今日学 X 词 · 连续 Y 天」发上墙，同学互相看得见。</li>
+                <li><strong>单词 PK</strong>：晒出「词书 + 词数 + 正确率」的成绩条，跟同学比一比。</li>
+                <li><strong>学习搭子</strong>：发一条找搭子的动态，找人一起卷。</li>
+                <li>全部复用消息表已有的 <code>kind</code> 字段（checkin / pk / buddy / help），<strong>不新建表、不动服务端结构</strong>。</li>
+              </ul>
+            </div>
+            <div class="ver-group add">
+              <h5>新增：单词笔记 + 这词怎么记</h5>
+              <ul>
+                <li>背词页每张卡下方多两个动作：<strong>📝 笔记</strong>（给自己记一条记忆法，存本机）与 <strong>🆘 这词怎么记</strong>（一键把生词丢进学习圈求助）。</li>
+                <li>笔记只存本地；求助走学习圈 <code>kind=help</code> 通道，同学能在 feed 里看到并回应。</li>
+              </ul>
+            </div>
+            <div class="ver-group fix">
+              <h5>如实说明</h5>
+              <ul>
+                <li>本版是<strong>纯增量</strong>：只往学习专区加成长系统、学习圈与笔记求助，<strong>没有改动登录 / 聊天 / 好友 / 朋友圈。</strong></li>
+                <li>成长数据是纯本地偏好，<strong>换手机不迁移</strong>；学习圈内容走云端消息，别人能看到。</li>
+                <li>清单里未做的仍如实标注：段位排位赛 / 周榜月榜 / 校园榜、7 天组队挑战、学习小组、战报评论、关注好友、词汇量海报 —— 这些依赖更重的榜单与关系结构，本版没做。</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </article>
+
       <!-- 0.13.0 -->
       <article class="ver">
         <div class="ver-box">
           <div class="ver-top">
             <span class="ver-tag">v0.13.0</span>
-            <span class="ver-badge">最新</span>
+            <span class="ver-badge old">历史</span>
             <span class="ver-date">2026-11-08 · code 16</span>
           </div>
           <div class="ver-body">
