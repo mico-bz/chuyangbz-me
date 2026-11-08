@@ -424,7 +424,7 @@ footer{
     </p>
 
     <div class="status">
-      <span class="pill ok"><i class="dot"></i>最新 0.6.0</span>
+      <span class="pill ok"><i class="dot"></i>最新 0.6.1</span>
       <span class="pill warn"><i class="dot"></i>页面不提供下载</span>
       <span class="pill warn"><i class="dot"></i>未办理 ICP / App 备案</span>
       <span class="pill warn"><i class="dot"></i>未上架应用商店</span>
@@ -455,8 +455,8 @@ footer{
     <div class="dl-card dl-off">
       <div class="dl-info">
         <div class="dl-ver">Latest Release · 不公开下载</div>
-        <div class="dl-name">0.6.0</div>
-        <div class="dl-meta mono">versionCode 5 · debug 签名 · Android 7.0+</div>
+        <div class="dl-name">0.6.1</div>
+        <div class="dl-meta mono">versionCode 6 · debug 签名 · Android 7.0+</div>
       </div>
       <span class="dl-btn dl-btn-off" aria-disabled="true">
         <svg viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg>
@@ -478,12 +478,38 @@ footer{
 
     <div class="timeline">
 
+      <!-- 0.6.1 -->
+      <article class="ver">
+        <div class="ver-box">
+          <div class="ver-top">
+            <span class="ver-tag">v0.6.1</span>
+            <span class="ver-badge">最新</span>
+            <span class="ver-date">2026-11-08 · code 6</span>
+          </div>
+          <div class="ver-body">
+            <div class="ver-group add">
+              <h5>新增</h5>
+              <ul>
+                <li><strong>举报入口</strong>：关于页新增「举报违规内容」，点开直接调起邮件并预填好四段格式（账号邮箱、被举报对象、问题描述、截图提示）。以前协议里写了「被举报」，但入口只藏在协议附件里，普通人根本找不到。</li>
+              </ul>
+            </div>
+            <div class="ver-group fix">
+              <h5>改进</h5>
+              <ul>
+                <li><strong>更新检查补上真正的降级链</strong>：以前写着「主站挂了回落 Appwrite」，但 Appwrite 桶里那份清单其实早就是 404，主站一出问题检查更新就彻底失败。现在依次尝试自定义域 → GitHub Pages 默认域 → Appwrite，任一成功即用。</li>
+                <li><strong>APK 下载也支持多源</strong>：清单里的 <code>apkUrlAlt</code> 会作为备用直链，下载时逐个尝试；服务器给了内容长度就校验完整性，避免拿到被截断的半个包。</li>
+                <li><strong>关于页文案改成如实描述</strong>：原文写「你看到的内容，都来自你关注的人」，与实际不符 —— 动态列表实际拉取的是全站内容，可见范围默认「所有人可见」。已改为如实说明。</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </article>
+
       <!-- 0.6.0 -->
       <article class="ver">
         <div class="ver-box">
           <div class="ver-top">
             <span class="ver-tag">v0.6.0</span>
-            <span class="ver-badge">最新</span>
             <span class="ver-date">2026-11-08 · code 5</span>
           </div>
           <div class="ver-body">
@@ -497,7 +523,7 @@ footer{
             <div class="ver-group fix">
               <h5>改进</h5>
               <ul>
-                <li><strong>更新检查改成优先读本站</strong>：以后发版本只要往仓库推两个文件，不用再登录 Appwrite 控制台手动上传。Appwrite 作为备用源自动回落。</li>
+                <li><strong>更新检查改成优先读本站</strong>：以后发版本只要往仓库推两个文件，不用再登录 Appwrite 控制台手动上传。Appwrite 作为备用源自动回落。<em>（0.6.1 更正：这条当时写的「Appwrite 备用」其实是空的，桶里那份清单早已 404，真正的降级链到 0.6.1 才补上。）</em></li>
               </ul>
             </div>
           </div>

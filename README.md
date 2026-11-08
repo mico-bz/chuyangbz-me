@@ -57,14 +57,24 @@
 
 ### 恢复分发时怎么做
 
-App 内的「检查更新」优先读取 `https://chuyangbz.me/meowbox/update.json`，
-读不到才回落到 Appwrite 上的同名单。恢复分发要动三处：
+App 内的「检查更新」按顺序尝试多个清单源，任一成功即用（2026-11-08 起）：
+
+1. `https://chuyangbz.me/meowbox/update.json`（自定义域）
+2. `https://mico-bz.github.io/chuyangbz-me/meowbox/update.json`（GitHub Pages 默认域，同一份文件、不同的 CDN）
+3. Appwrite media 桶里的同名文件（历史遗留，桶里那份实际已 404，只作最后兜底）
+
+> 别被旧文档带偏：0.6.0 时写的「主站挂了回落 Appwrite」是**空的** —— Appwrite 桶里那份清单
+> 早已 404，主站一出问题检查更新就彻底失败。真正的降级链到 0.6.1 才补上。
+> 现在两个 http 源指向同一份文件，主站 DNS / 证书 / Pages 故障时 github.io 那条仍能兜住。
+
+恢复分发要动三处：
 
 1. **放 APK**：把包放进 `meowbox/pkg/`，命名 `mb-<versionCode>-<8位hash>.apk`
    （hash 随便取，作用是让文件名不可猜）。文件名里的 versionCode 必须和包里的一致，
    否则老版本算出来的更新地址会 404。旧的 `meowbox/MeowBox-<版本名>-<versionCode>.apk`
    命名已废弃，别再用。
-2. **改清单**：`update.json` 里把 `apkUrl` 更新为新包的完整直链，
+2. **改清单**：`update.json` 里把 `apkUrl` 更新为新包的完整直链，并把
+   `apkUrlAlt` 写成同一份包的备用直链数组（用 `https://mico-bz.github.io/chuyangbz-me/meowbox/pkg/...`），
    `distribution` 保持或改回 `"unlisted"`（`"public"` 仅在你确实要在页面上挂下载入口时用），
    同时更新 `versionCode`、`versionName`，并把本版改动写进 `notes`
    （按 `版本号 / 新增 / 改进 / 修复` 分段，App 的更新弹窗原样显示这段文字）。
@@ -78,6 +88,9 @@ App 内的「检查更新」优先读取 `https://chuyangbz.me/meowbox/update.js
 > `apkUrl` 留空时 App 端 `parse()` 会返回 null，等同于「没有可用的更新信息」，
 > 不会崩、也不会挡启动 —— 但**也就没有更新了**，这正是上次踩的坑（清空后自己也收不到更新）。
 > 除非你真的想彻底停掉更新，否则不要清空 `apkUrl`。
+>
+> 下载时若服务器返回了 `Content-Length`，客户端会校验已写入字节数与之一致，
+> 不一致就判为失败并自动换下一个候选地址 —— 避免把被截断的半个包交给安装器。
 
 ## 联系
 
