@@ -1,13 +1,13 @@
 {
-  "versionCode": 28,
-  "versionName": "0.23.0",
+  "versionCode": 29,
+  "versionName": "0.24.0",
   "distribution": "unlisted",
-  "apkUrl": "https://chuyangbz.me/meowbox/pkg/mb-28-5942d3c5.apk",
+  "apkUrl": "https://chuyangbz.me/meowbox/pkg/mb-29-2f1a9cbc.apk",
   "apkUrlAlt": [
-    "https://gcore.jsdelivr.net/gh/mico-bz/chuyangbz-me@latest/meowbox/pkg/mb-28-5942d3c5.apk",
-    "https://raw.githubusercontent.com/mico-bz/chuyangbz-me/main/meowbox/pkg/mb-28-5942d3c5.apk"
+    "https://gcore.jsdelivr.net/gh/mico-bz/chuyangbz-me@latest/meowbox/pkg/mb-29-2f1a9cbc.apk",
+    "https://raw.githubusercontent.com/mico-bz/chuyangbz-me/main/meowbox/pkg/mb-29-2f1a9cbc.apk"
   ],
-  "notes": "0.23.0\n\n主题：AI Key 全面加固 —— 自己的 Key 更安全，没填就灰显不可用。\n\n一、Key 全面加固（新）\n1. 关闭云备份：allowBackup=false + 备份规则排除，Key 不再随系统备份/换机迁移离开手机。\n2. 系统级加密：Key 用 Android Keystore 的 AES-256 加密后再存本机，即使拿到存储文件也解不开。\n3. 旧版明文 Key 自动迁移：升级后首次启动即加密并删除明文，无需手动重填。\n\n二、未配置即灰显（新）\n4. 没填 Key 时，8 项能力卡变灰并标注「未启用」，点击直接弹配置，不再进空功能页。\n5. 聊天输入框在未配置时灰显锁定，避免误以为能用。\n\n三、更放心\n6. 设置页新增「清除已保存的 Key」按钮，一键抹除。\n7. 再次说明：App 无自有服务器，Key 只发往你填的那家服务商，不上传、不打印、不备份。\n\n四、如实说明\n- AI 由你自己配置的大模型驱动，App 不内置、不代管任何 Key。\n- 本版未新建云表、未新增字段，加密工具用系统 API，未引入第三方加密库。\n- 仍未上架任何应用商店、未办理 ICP / App 备案，纯个人非商业、不收费。",
+  "notes": "0.24.0\n\n主题：新增「效率工作台」+ AI 嵌进资源库 —— 让 App 不止能社交。\n\n一、效率工作台（新）\n1. 待办清单：随手加一条、勾掉一条，完成加删除线，可一键清空已完成。\n2. 快捷笔记：随手记想法 / 备忘 / 灵感，点开可编辑，长内容自动折叠预览。\n3. 倒数日：生日 / 考试 / 纪念日，自动算「还有几天」，支持今天 / +7 天 / +30 天快填。\n4. 纯本机存储：三份数据只存手机本地，不上云、不联网。\n\n二、AI 嵌进资源库（新）\n5. 每条库内容底栏新增「AI 解读」，一键带着这条内容去问 AI，用大白话讲清关键点。\n6. 复用已配置的大模型；没填 Key 时照旧引导配置。\n\n三、如实说明\n- 本版未新建云表、未新增字段；工作台数据仅存本机 SharedPreferences。\n- 仍未上架任何应用商店、未办理 ICP / App 备案，纯个人非商业、不收费。",
   "force": false,
   "minVersionCode": 0
 }
