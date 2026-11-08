@@ -1,13 +1,13 @@
 {
-  "versionCode": 27,
-  "versionName": "0.22.0",
+  "versionCode": 28,
+  "versionName": "0.23.0",
   "distribution": "unlisted",
-  "apkUrl": "https://chuyangbz.me/meowbox/pkg/mb-27-260cc9af.apk",
+  "apkUrl": "https://chuyangbz.me/meowbox/pkg/mb-28-5942d3c5.apk",
   "apkUrlAlt": [
-    "https://gcore.jsdelivr.net/gh/mico-bz/chuyangbz-me@latest/meowbox/pkg/mb-27-260cc9af.apk",
-    "https://raw.githubusercontent.com/mico-bz/chuyangbz-me/main/meowbox/pkg/mb-27-260cc9af.apk"
+    "https://gcore.jsdelivr.net/gh/mico-bz/chuyangbz-me@latest/meowbox/pkg/mb-28-5942d3c5.apk",
+    "https://raw.githubusercontent.com/mico-bz/chuyangbz-me/main/meowbox/pkg/mb-28-5942d3c5.apk"
   ],
-  "notes": "0.22.0\n\n主题：从「社交软件」升级成「能力平台」—— 新增 AI 能力中心。\n\n一、8 项 AI 能力（新）\n1. 通用助手 / 翻译官 / 写作润色 / 代码助手 / 学习讲解 / 总结提炼 / 生活顾问 / 灵感创意，一个入口全搞定。\n2. 每项能力有独立的人设与推荐问法，挑「我现在想干嘛」即可，不用懂什么是 prompt。\n\n二、任意大模型可用（新）\n3. 兼容 OpenAI 接口：DeepSeek / 通义千问 / Moonshot / OpenAI 一键切换，填 BaseURL + Key + 模型名即可。\n4. Key 只保存在本机、不上传、不打印；无 Key 时有清晰引导（去 platform.deepseek.com 领免费额度）。\n\n三、更顺手\n5. 对话按能力分桶保存，翻译的记录不会串到写作里，退出重进还在。\n6. 点气泡一键复制回复；「发现」页顶部新增 Meow AI 入口卡。\n\n四、如实说明\n- AI 由你自己配置的大模型驱动，App 不内置、不代管任何 Key。\n- 本版未新建云表、未新增字段，配置与对话历史全部落在本机 SharedPreferences。\n- 仍未上架任何应用商店、未办理 ICP / App 备案，纯个人非商业、不收费。",
+  "notes": "0.23.0\n\n主题：AI Key 全面加固 —— 自己的 Key 更安全，没填就灰显不可用。\n\n一、Key 全面加固（新）\n1. 关闭云备份：allowBackup=false + 备份规则排除，Key 不再随系统备份/换机迁移离开手机。\n2. 系统级加密：Key 用 Android Keystore 的 AES-256 加密后再存本机，即使拿到存储文件也解不开。\n3. 旧版明文 Key 自动迁移：升级后首次启动即加密并删除明文，无需手动重填。\n\n二、未配置即灰显（新）\n4. 没填 Key 时，8 项能力卡变灰并标注「未启用」，点击直接弹配置，不再进空功能页。\n5. 聊天输入框在未配置时灰显锁定，避免误以为能用。\n\n三、更放心\n6. 设置页新增「清除已保存的 Key」按钮，一键抹除。\n7. 再次说明：App 无自有服务器，Key 只发往你填的那家服务商，不上传、不打印、不备份。\n\n四、如实说明\n- AI 由你自己配置的大模型驱动，App 不内置、不代管任何 Key。\n- 本版未新建云表、未新增字段，加密工具用系统 API，未引入第三方加密库。\n- 仍未上架任何应用商店、未办理 ICP / App 备案，纯个人非商业、不收费。",
   "force": false,
   "minVersionCode": 0
 }
