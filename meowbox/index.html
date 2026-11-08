@@ -424,7 +424,7 @@ footer{
     </p>
 
     <div class="status">
-      <span class="pill ok"><i class="dot"></i>最新 0.6.1</span>
+      <span class="pill ok"><i class="dot"></i>最新 0.7.0</span>
       <span class="pill warn"><i class="dot"></i>页面不提供下载</span>
       <span class="pill warn"><i class="dot"></i>未办理 ICP / App 备案</span>
       <span class="pill warn"><i class="dot"></i>未上架应用商店</span>
@@ -455,8 +455,8 @@ footer{
     <div class="dl-card dl-off">
       <div class="dl-info">
         <div class="dl-ver">Latest Release · 不公开下载</div>
-        <div class="dl-name">0.6.1</div>
-        <div class="dl-meta mono">versionCode 6 · debug 签名 · Android 7.0+</div>
+        <div class="dl-name">0.7.0</div>
+        <div class="dl-meta mono">versionCode 7 · debug 签名 · Android 7.0+</div>
       </div>
       <span class="dl-btn dl-btn-off" aria-disabled="true">
         <svg viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg>
@@ -478,12 +478,51 @@ footer{
 
     <div class="timeline">
 
+      <!-- 0.7.0 -->
+      <article class="ver">
+        <div class="ver-box">
+          <div class="ver-top">
+            <span class="ver-tag">v0.7.0</span>
+            <span class="ver-badge">最新</span>
+            <span class="ver-date">2026-11-08 · code 7</span>
+          </div>
+          <div class="ver-body">
+            <div class="ver-group add">
+              <h5>把写完没接上的功能接上了</h5>
+              <ul>
+                <li><strong>收藏真的能用了</strong>：收藏表和接口早在 0.6.0 之前就建好了，但界面上从来没有收藏按钮，所以「我 → 我的收藏」永远是空的。现在每条动态右下角有书签图标，点一下收进收藏，再点取消。</li>
+                <li><strong>我的收藏页可管理</strong>：收藏列表里每条都带「取消收藏」，不必再回朋友圈一条条翻。</li>
+                <li><strong>评论可以删了</strong>：自己发的评论右侧出现删除按钮。接口 <code>deleteComment</code> 一直存在，只是没人调用。</li>
+                <li><strong>举报入口铺到内容本身</strong>：动态右下角和用户资料页都能直接举报，点开自动拉起邮件并预填被举报人和内容摘要。以前只有「关于」页一个入口，看到违规内容还得先退出去找。</li>
+                <li><strong>小程序从 3 个扩到 7 个</strong>：新增秒表（带计次）、随机数（可设范围）、BMI、单位换算（长度/重量/温度）、倒计时。全部是本地 HTML，不联网也能用。</li>
+                <li><strong>聊天「更多」面板不再是只有相册</strong>：扩到相册 / 拍照 / 我的名片。拍照走系统相机，不额外申请相机权限；名片把昵称、ID、签名拼成一条可直接发送的文本。</li>
+              </ul>
+            </div>
+            <div class="ver-group fix">
+              <h5>改进</h5>
+              <ul>
+                <li><strong>小程序改成每行 4 个自动换行</strong>：原来是单行排布，数量一多就会被挤成一条线。</li>
+                <li><strong>隐私页那个开关改了名</strong>：原来叫「谁可以看我的动态」，但它实际只影响你自己手机上看到什么，别人能不能看到你的动态完全不受它控制。现在叫「朋友圈列表显示谁」，说明里把这一点写死，不再给人虚假的安全感。</li>
+                <li><strong>举报邮件模板抽成共用函数</strong>：以后改联系方式只需要改一处，不会出现不同页面填到不同邮箱。</li>
+              </ul>
+            </div>
+            <div class="ver-group fix">
+              <h5>仍然做不到的（如实写明）</h5>
+              <ul>
+                <li><strong>「仅好友」仍是本机过滤，不是服务端权限</strong>。动态表对所有登录用户可读，这一点这版没有变，也不可能靠客户端开关改变。</li>
+                <li><strong>没有拉黑和屏蔽功能</strong>。举报走邮件人工处理，没有后台审核队列。</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </article>
+
       <!-- 0.6.1 -->
       <article class="ver">
         <div class="ver-box">
           <div class="ver-top">
             <span class="ver-tag">v0.6.1</span>
-            <span class="ver-badge">最新</span>
+            <span class="ver-badge old">历史</span>
             <span class="ver-date">2026-11-08 · code 6</span>
           </div>
           <div class="ver-body">
