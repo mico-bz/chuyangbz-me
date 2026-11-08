@@ -1,13 +1,13 @@
 {
-  "versionCode": 14,
-  "versionName": "0.11.0",
+  "versionCode": 15,
+  "versionName": "0.12.0",
   "distribution": "unlisted",
-  "apkUrl": "https://chuyangbz.me/meowbox/pkg/mb-14-64c84bf6.apk",
+  "apkUrl": "https://chuyangbz.me/meowbox/pkg/mb-15-278d53c0.apk",
   "apkUrlAlt": [
-    "https://gcore.jsdelivr.net/gh/mico-bz/chuyangbz-me@main/meowbox/pkg/mb-14-64c84bf6.apk",
-    "https://raw.githubusercontent.com/mico-bz/chuyangbz-me/main/meowbox/pkg/mb-14-64c84bf6.apk"
+    "https://gcore.jsdelivr.net/gh/mico-bz/chuyangbz-me@main/meowbox/pkg/mb-15-278d53c0.apk",
+    "https://raw.githubusercontent.com/mico-bz/chuyangbz-me/main/meowbox/pkg/mb-15-278d53c0.apk"
   ],
-  "notes": "0.11.0\n\n发现页新增「学习专区」——把原先独立的英语背单词应用「墨词」的核心能力整进了 MeowBox，并第一次给它加上社交属性。\n\n一、背单词（内嵌墨词核心）\n1. 内置 8 本词书、共 21709 词（高考 / 四级 / 六级 / 考研 / 雅思 / 托福 / 初中 / 小学），离线可用\n2. 单词卡片：轻点翻面看释义与例句，支持系统 TTS 发音（不需要任何 API Key）\n3. SM-2 间隔重复算法：四档反馈（不认识 / 模糊 / 认识 / 太简单）自动安排下次复习时间\n4. 今日进度：新学 + 复习计数、正确率、连续学习天数，纯本机存储、零云端结构改动\n\n二、社交功能（复用消息表 kind=study，不新建表）\n5. 学习圈战报：一键把「今日学 X 词 · 连续 Y 天 · 掌握 Z」发到学习圈\n6. 学习榜：所有用户的学习战报按词数聚合排名，看到同学进度一起卷\n7. 加油互动：给同学的战报点 💪（复用表情回应机制），战报下方显示加油数\n\n如实说明：\n- 学习进度存在本机（SharedPreferences），换设备不同步；社交相关（战报/榜单/加油）走云端消息，所以别人能看到\n- 陌生人注册仍未关闭、屏蔽仍是纯本机行为，这两项遗留合规问题本版未处理",
+  "notes": "0.12.0\n\n主题：安全与合规加固。\n\n一、关闭陌生人注册（客户端门槛）\n1. 登录页新增「邀请码」校验：不填对邀请码无法发送验证码，拿到安装包的陌生人也进不来。\n2. 建议配合 Appwrite 控制台 Auth → Security → Users limit 设一个上限，做双重保险（此步为可选加固）。\n\n二、拉黑升级为「云端真拦截」（复用消息表 kind=block，不新建表）\n3. 拉黑名单同步到云端，换手机也生效。\n4. 被拉黑的人给你发消息会被直接拒绝（对方不会收到通知）；他的动态也不再出现在你的朋友圈与会话列表。\n5. 技术说明：屏蔽簿复用 messages 表（chatId = blocks_<用户ID>），因为消息的 fromId 强制取自登录会话、无法伪造，所以名单可信、别人塞不进假条目。\n6. 边界如实说明：这是官方客户端范围内的拦截，恶意改包者仍可绕过；普通用户已完全发不进消息。\n\n三、合规文案复核\n7. 登录页与三份法律文本保持一致：未备案、未上架、数据存境外（新加坡）、个人非商业、不保存密码。\n\n如实说明：\n- 邀请码由开发者分享给需要加入的同学，请勿公开扩散。\n- 本版未改动其它功能逻辑。",
   "force": false,
   "minVersionCode": 0
 }

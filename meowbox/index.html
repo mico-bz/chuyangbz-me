@@ -424,7 +424,7 @@ footer{
     </p>
 
     <div class="status">
-      <span class="pill ok"><i class="dot"></i>最新 0.11.0</span>
+      <span class="pill ok"><i class="dot"></i>最新 0.12.0</span>
       <span class="pill warn"><i class="dot"></i>页面不提供下载</span>
       <span class="pill warn"><i class="dot"></i>未办理 ICP / App 备案</span>
       <span class="pill warn"><i class="dot"></i>未上架应用商店</span>
@@ -455,8 +455,8 @@ footer{
     <div class="dl-card dl-off">
       <div class="dl-info">
         <div class="dl-ver">Latest Release · 不公开下载</div>
-        <div class="dl-name">0.11.0</div>
-        <div class="dl-meta mono">versionCode 14 · debug 签名 · Android 7.0+</div>
+        <div class="dl-name">0.12.0</div>
+        <div class="dl-meta mono">versionCode 15 · debug 签名 · Android 7.0+</div>
       </div>
       <span class="dl-btn dl-btn-off" aria-disabled="true">
         <svg viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg>
@@ -478,12 +478,50 @@ footer{
 
     <div class="timeline">
 
+      <!-- 0.12.0 -->
+      <article class="ver">
+        <div class="ver-box">
+          <div class="ver-top">
+            <span class="ver-tag">v0.12.0</span>
+            <span class="ver-badge">最新</span>
+            <span class="ver-date">2026-11-08 · code 15</span>
+          </div>
+          <div class="ver-body">
+            <div class="ver-group add">
+              <h5>新增：邀请码准入 · 挡住陌生人注册</h5>
+              <ul>
+                <li>登录首页多了一个「邀请码」输入框，<strong>不填对不发验证码</strong>，从入口上挡住拿到安装包就能注册的陌生人。</li>
+                <li>内置口令由我自己分发给同学；没有邀请码进不来。</li>
+                <li><strong>如实说明</strong>：这是客户端校验，懂技术的人反编译改包仍能绕过；真要彻底关闭，得去 Appwrite 控制台限制用户数，但那会连受邀的人一起挡在门外，所以本版没动服务端，用邀请码做第一道门槛。</li>
+              </ul>
+            </div>
+            <div class="ver-group add">
+              <h5>改进：拉黑不再是「只对本机有效」</h5>
+              <ul>
+                <li>以前「屏蔽」只是把对方从自己的列表里藏起来，<strong>被拉黑的人照样能发消息</strong>。本版把拉黑名单真正同步到云端。</li>
+                <li>拉黑后：<strong>他的动态不会出现在你的朋友圈</strong>，会话列表也不显示；<strong>他给你发消息会被直接拒绝</strong>（提示「对方已把你拉黑」），对方不会收到通知。</li>
+                <li>换手机登录后自动拉回云端名单，<strong>拉黑关系跨设备生效</strong>。</li>
+                <li>复用消息表已有的 <code>kind=block</code> 存名单，<strong>不新建表、不动服务端结构</strong>；名单写入强制以你自己的账号为发送者，别人塞不进假的拉黑记录。</li>
+                <li>拦截覆盖全部消息类型（文本 / 图片 / 闪照 / 炸屏 / 接龙 / 拍一拍 / 表情回应），只作用于单聊，不影响学习圈和群聊。</li>
+              </ul>
+            </div>
+            <div class="ver-group">
+              <h5>复核：合规文案如实陈述</h5>
+              <ul>
+                <li>再次核对页内与 App 内的说明：<strong>未备案、未上架、服务器在新加坡、个人非商业、不保存密码</strong>，与实际一致，未粉饰。</li>
+                <li><strong>遗留</strong>：陌生人注册的服务端开关仍未动（见上，客户端邀请码是第一道门槛）；被拉黑者若懂技术改包仍可绕过——这类对抗没有终点，只能不断提高门槛。</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </article>
+
       <!-- 0.11.0 -->
       <article class="ver">
         <div class="ver-box">
           <div class="ver-top">
             <span class="ver-tag">v0.11.0</span>
-            <span class="ver-badge">最新</span>
+            <span class="ver-badge old">历史</span>
             <span class="ver-date">2026-11-08 · code 14</span>
           </div>
           <div class="ver-body">
