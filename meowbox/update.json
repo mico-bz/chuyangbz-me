@@ -1,13 +1,13 @@
 {
-  "versionCode": 24,
-  "versionName": "0.19.0",
+  "versionCode": 25,
+  "versionName": "0.20.0",
   "distribution": "unlisted",
-  "apkUrl": "https://chuyangbz.me/meowbox/pkg/mb-24-10908f6a.apk",
+  "apkUrl": "https://chuyangbz.me/meowbox/pkg/mb-25-63961415.apk",
   "apkUrlAlt": [
-    "https://gcore.jsdelivr.net/gh/mico-bz/chuyangbz-me@latest/meowbox/pkg/mb-24-10908f6a.apk",
-    "https://raw.githubusercontent.com/mico-bz/chuyangbz-me/main/meowbox/pkg/mb-24-10908f6a.apk"
+    "https://gcore.jsdelivr.net/gh/mico-bz/chuyangbz-me@latest/meowbox/pkg/mb-25-63961415.apk",
+    "https://raw.githubusercontent.com/mico-bz/chuyangbz-me/main/meowbox/pkg/mb-25-63961415.apk"
   ],
-  "notes": "0.19.0\n\n主题：资源库上线 —— 每个人都能建自己的「库」，像 GitHub 一样分享技术、软件、圈子。\n\n一、资源库（全新）\n1. 建自己的库：给库起名、写简介（相当于 README）、选分类，零门槛。\n2. Star 别人的库：每个库显示 Star 数与条目数，一键收藏好库。\n3. 库条目：往库里加「代码片段 / 软件资源链接 / 心得笔记」，一条条沉淀。\n4. 代码块自动高亮：正文里用 ``` 包住的代码会渲染成深色等宽代码块，右上角一键复制带走。\n5. 链接自动识别：正文里的网址自动提取成可点卡片，一键复制链接。\n6. 分类筛选 + 搜索：顶部按「技术 / 设计 / 游戏 / 学习 / 工具 / 资源…」筛选，也能搜库名与简介。\n7. 长条目可折叠：内容长的先显示摘要，点「展开全文」看完整内容。\n\n二、入口变化\n8. 「发现」页原「频道」入口升级为「资源库」，图标与文案同步更新。\n\n三、如实说明\n- 以上全部复用现有 channels / channel_posts / channel_subs 表，未新建任何表、未新增字段。\n- 分类维度落在库的图标（emoji）上，不是独立字段。\n- 代码块为纯前端渲染，不执行任何代码；链接为复制，不在应用内直接打开。\n- 仍未上架任何应用商店、未办理 ICP / App 备案，纯个人非商业、不收费。",
+  "notes": "0.20.0\n\n主题：资源库继续完善 —— 把「库」做成能天天刷的圈子。\n\n一、关注动态（新）\n1. 资源库顶部新增「发现 / 关注动态」两个 Tab。\n2. 关注动态会把「你 Star 过的库」的最新条目汇总成一条时间线，一屏看完所有更新。\n3. 没 Star 过库时给出引导空态，去「发现」里 Star 几个库即可。\n\n二、代码语法高亮（新）\n4. 深色代码块里对 关键字 / 字符串 / 数字 / 注释 分别着色，本地规则渲染，不联网、不上传。\n5. 仍保留右上角一键复制，长代码可折叠展开。\n\n三、个人中心「我的库」（新）\n6. 「我」页面新增「我的库」入口，显示你建过 / Star 过的库数量，一键进入资源库。\n\n四、如实说明\n- 以上全部复用现有 channels / channel_posts / channel_subs 表，未新建任何表、未新增字段。\n- 语法高亮为纯前端规则匹配（非编译器级解析），仅做关键词着色，不执行任何代码。\n- 仍未上架任何应用商店、未办理 ICP / App 备案，纯个人非商业、不收费。",
   "force": false,
   "minVersionCode": 0
 }
