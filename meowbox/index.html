@@ -424,7 +424,7 @@ footer{
     </p>
 
     <div class="status">
-      <span class="pill ok"><i class="dot"></i>最新 0.10.2</span>
+      <span class="pill ok"><i class="dot"></i>最新 0.11.0</span>
       <span class="pill warn"><i class="dot"></i>页面不提供下载</span>
       <span class="pill warn"><i class="dot"></i>未办理 ICP / App 备案</span>
       <span class="pill warn"><i class="dot"></i>未上架应用商店</span>
@@ -455,8 +455,8 @@ footer{
     <div class="dl-card dl-off">
       <div class="dl-info">
         <div class="dl-ver">Latest Release · 不公开下载</div>
-        <div class="dl-name">0.10.2</div>
-        <div class="dl-meta mono">versionCode 13 · debug 签名 · Android 7.0+</div>
+        <div class="dl-name">0.11.0</div>
+        <div class="dl-meta mono">versionCode 14 · debug 签名 · Android 7.0+</div>
       </div>
       <span class="dl-btn dl-btn-off" aria-disabled="true">
         <svg viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg>
@@ -478,12 +478,49 @@ footer{
 
     <div class="timeline">
 
+      <!-- 0.11.0 -->
+      <article class="ver">
+        <div class="ver-box">
+          <div class="ver-top">
+            <span class="ver-tag">v0.11.0</span>
+            <span class="ver-badge">最新</span>
+            <span class="ver-date">2026-11-08 · code 14</span>
+          </div>
+          <div class="ver-body">
+            <div class="ver-group add">
+              <h5>新增：发现页「学习专区」· 内嵌墨词核心</h5>
+              <ul>
+                <li>把原先独立的英语背单词应用「墨词」的核心能力整合进 MeowBox：<strong>内置 8 本词书、共 21709 词</strong>（高考 / 四级 / 六级 / 考研 / 雅思 / 托福 / 初中 / 小学），离线可用。</li>
+                <li><strong>单词卡片</strong>：轻点翻面看释义与例句，支持<strong>系统 TTS 发音</strong>（不需要任何 API Key）。</li>
+                <li><strong>SM-2 间隔重复</strong>：四档反馈（不认识 / 模糊 / 认识 / 太简单）自动安排下次复习时间。</li>
+                <li><strong>今日进度</strong>：新学 + 复习计数、正确率、连续学习天数，纯本机存储。</li>
+              </ul>
+            </div>
+            <div class="ver-group add">
+              <h5>新增：学习社交</h5>
+              <ul>
+                <li><strong>学习圈战报</strong>：一键把「今日学 X 词 · 连续 Y 天 · 掌握 Z」发到学习圈。</li>
+                <li><strong>学习榜</strong>：所有用户的学习战报按词数聚合排名，看到同学进度一起卷。</li>
+                <li><strong>加油互动</strong>：给同学的战报点 💪（复用表情回应机制），战报下方显示加油数。</li>
+                <li>全部复用消息表已有的 <code>kind=study</code>，不新建表、不动服务端结构。</li>
+              </ul>
+            </div>
+            <div class="ver-group">
+              <h5>如实说明</h5>
+              <ul>
+                <li>学习进度存在本机（SharedPreferences），<strong>换设备不同步</strong>；社交相关（战报/榜单/加油）走云端消息，所以别人能看到。</li>
+                <li>陌生人注册仍未关闭、屏蔽仍是纯本机行为 —— 这两项遗留合规问题本版未处理。</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </article>
+
       <!-- 0.10.2 -->
       <article class="ver">
         <div class="ver-box">
           <div class="ver-top">
             <span class="ver-tag">v0.10.2</span>
-            <span class="ver-badge">最新</span>
             <span class="ver-date">2026-11-08 · code 13</span>
           </div>
           <div class="ver-body">

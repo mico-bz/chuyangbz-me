@@ -1,13 +1,13 @@
 {
-  "versionCode": 13,
-  "versionName": "0.10.2",
+  "versionCode": 14,
+  "versionName": "0.11.0",
   "distribution": "unlisted",
-  "apkUrl": "https://chuyangbz.me/meowbox/pkg/mb-13-149c71f3.apk",
+  "apkUrl": "https://chuyangbz.me/meowbox/pkg/mb-14-64c84bf6.apk",
   "apkUrlAlt": [
-    "https://gcore.jsdelivr.net/gh/mico-bz/chuyangbz-me@main/meowbox/pkg/mb-13-149c71f3.apk",
-    "https://raw.githubusercontent.com/mico-bz/chuyangbz-me/main/meowbox/pkg/mb-13-149c71f3.apk"
+    "https://gcore.jsdelivr.net/gh/mico-bz/chuyangbz-me@main/meowbox/pkg/mb-14-64c84bf6.apk",
+    "https://raw.githubusercontent.com/mico-bz/chuyangbz-me/main/meowbox/pkg/mb-14-64c84bf6.apk"
   ],
-  "notes": "0.10.2\n\n这版一口气把「社交玩法」补齐了：聊天里的轻互动、关系养成、群互动都安排上，全部复用消息表已有的 kind 字段，不新建表、不动服务端结构，两端天然一致。\n\n一、聊天轻互动\n1. 闪照：更多面板选「闪照」发一张，对方收到是盖着遮罩的卡片，按住才显形、松手即焚（真实边界：图仍在媒体桶里以便传输，焚只发生在客户端——松手后本地永久标记已焚毁，不再展示）\n2. 炸屏：发一条 emoji 彩带，双方收到都会全屏炸开一次，约 1.1 秒自动收场\n3. 拍一拍升级：现在带随机俏皮后缀，不再是干巴巴的「拍了拍」\n\n二、关系养成\n4. 聊天情感条：顶栏下方一条轻量数据条，显示连续火花天数 🔥、累计消息条数 💬、亲密度等级 Lv.x —— 全部由聊天消息时间戳现算，两端各自算出来天然一致，服务端零改动\n\n三、个人主页\n5. 心情状态：个人卡签名下方多了一个心情气泡，可挑 emoji + 写一句话；点一下就能改（如实说明：这是纯本机偏好，只在自己手机展示，别的设备读不到，想做到好友可见得改云端结构，这版不承诺）\n\n四、群互动\n6. 群接龙：群聊更多面板里「接龙」可发起，填标题 + 若干选项；卡片式展示，群成员点「参与接龙」即报名，已报名人数和名单实时聚合\n\n仍然做不到的（如实写明）\n7. 陌生人注册仍未关闭，这是遗留的合规项\n8. 屏蔽仍是纯本机行为，不是服务端拉黑",
+  "notes": "0.11.0\n\n发现页新增「学习专区」——把原先独立的英语背单词应用「墨词」的核心能力整进了 MeowBox，并第一次给它加上社交属性。\n\n一、背单词（内嵌墨词核心）\n1. 内置 8 本词书、共 21709 词（高考 / 四级 / 六级 / 考研 / 雅思 / 托福 / 初中 / 小学），离线可用\n2. 单词卡片：轻点翻面看释义与例句，支持系统 TTS 发音（不需要任何 API Key）\n3. SM-2 间隔重复算法：四档反馈（不认识 / 模糊 / 认识 / 太简单）自动安排下次复习时间\n4. 今日进度：新学 + 复习计数、正确率、连续学习天数，纯本机存储、零云端结构改动\n\n二、社交功能（复用消息表 kind=study，不新建表）\n5. 学习圈战报：一键把「今日学 X 词 · 连续 Y 天 · 掌握 Z」发到学习圈\n6. 学习榜：所有用户的学习战报按词数聚合排名，看到同学进度一起卷\n7. 加油互动：给同学的战报点 💪（复用表情回应机制），战报下方显示加油数\n\n如实说明：\n- 学习进度存在本机（SharedPreferences），换设备不同步；社交相关（战报/榜单/加油）走云端消息，所以别人能看到\n- 陌生人注册仍未关闭、屏蔽仍是纯本机行为，这两项遗留合规问题本版未处理",
   "force": false,
   "minVersionCode": 0
 }
