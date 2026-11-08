@@ -424,7 +424,7 @@ footer{
     </p>
 
     <div class="status">
-      <span class="pill ok"><i class="dot"></i>最新 0.15.0</span>
+      <span class="pill ok"><i class="dot"></i>最新 0.16.2</span>
       <span class="pill warn"><i class="dot"></i>页面不提供下载</span>
       <span class="pill warn"><i class="dot"></i>未办理 ICP / App 备案</span>
       <span class="pill warn"><i class="dot"></i>未上架应用商店</span>
@@ -455,8 +455,8 @@ footer{
     <div class="dl-card dl-off">
       <div class="dl-info">
         <div class="dl-ver">Latest Release · 不公开下载</div>
-        <div class="dl-name">0.15.0</div>
-        <div class="dl-meta mono">versionCode 18 · debug 签名 · Android 7.0+</div>
+        <div class="dl-name">0.16.2</div>
+        <div class="dl-meta mono">versionCode 21 · debug 签名 · Android 7.0+</div>
       </div>
       <span class="dl-btn dl-btn-off" aria-disabled="true">
         <svg viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg>
@@ -478,12 +478,56 @@ footer{
 
     <div class="timeline">
 
+      <!-- 0.16.2 -->
+      <article class="ver">
+        <div class="ver-box">
+          <div class="ver-top">
+            <span class="ver-tag">v0.16.2</span>
+            <span class="ver-badge">最新</span>
+            <span class="ver-date">2026-11-08 · code 21</span>
+          </div>
+          <div class="ver-body">
+            <div class="ver-group add">
+              <h5>新增：搭子广场（找搭子）</h5>
+              <ul>
+                <li>入口在「发现」页第二张卡「找个人一起」。</li>
+                <li>按类型筛选：开黑 / 自习 / 干饭 / 看番 / 运动 / 其他。</li>
+                <li>发起搭子可填标题、备注、时间、人数（1~20）；报名 / 取消一键切换，人数实时统计，人满显示「人满了」。</li>
+                <li>自己发的搭子可撤回，已有人报名会二次确认，避免误删。</li>
+                <li>复用现有 buddies / buddy_joins 两张表，<strong>未新建任何表</strong>。</li>
+              </ul>
+            </div>
+            <div class="ver-group add">
+              <h5>界面：换新皮肤</h5>
+              <ul>
+                <li>全局换成更清爽的浅色毛玻璃风格，底部胶囊标签栏、卡片圆角与按压回弹统一。</li>
+              </ul>
+            </div>
+            <div class="ver-group fix">
+              <h5>修复：更新装包问题（这次是根因）</h5>
+              <ul>
+                <li><strong>镜像僵尸缓存</strong>：jsDelivr 分支缓存卡死在 0.8.0，旧逻辑「先连上谁信谁」会被带偏。现改为多源并行取最大版本号，镜像源改用 @latest。</li>
+                <li><strong>无安装权限被静默拦截</strong>：安装前三态判定，缺权限直接提示并给「去开启安装权限」一键跳转。</li>
+                <li><strong>装没装上有人管</strong>：唤起安装器前记下目标版本号，下次启动若仍是旧版就明确告知原因。</li>
+                <li><strong>完整性双保险 + 下载后验版本号</strong>：绝不把半个包或版本不符的包丢给安装器。</li>
+              </ul>
+            </div>
+            <div class="ver-group fix">
+              <h5>如实说明</h5>
+              <ul>
+                <li>未上架、未备案、个人非商业、不收费；搭子数据在 Appwrite（新加坡），属个人信息出境。</li>
+                <li>未做：段位排位赛 / 周榜月榜 / 校园榜、7 天组队挑战、学习小组、战报评论、关注好友、词汇量海报。</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </article>
+
       <!-- 0.15.0 -->
       <article class="ver">
         <div class="ver-box">
           <div class="ver-top">
             <span class="ver-tag">v0.15.0</span>
-            <span class="ver-badge">最新</span>
             <span class="ver-date">2026-11-08 · code 18</span>
           </div>
           <div class="ver-body">
