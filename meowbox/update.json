@@ -1,13 +1,13 @@
 {
-  "versionCode": 32,
-  "versionName": "0.27.0",
+  "versionCode": 33,
+  "versionName": "0.27.1",
   "distribution": "unlisted",
-  "apkUrl": "https://chuyangbz.me/meowbox/pkg/mb-32-c0615f14.apk",
+  "apkUrl": "https://chuyangbz.me/meowbox/pkg/mb-33-d109fcf3.apk",
   "apkUrlAlt": [
-    "https://gcore.jsdelivr.net/gh/mico-bz/chuyangbz-me@latest/meowbox/pkg/mb-32-c0615f14.apk",
-    "https://raw.githubusercontent.com/mico-bz/chuyangbz-me/main/meowbox/pkg/mb-32-c0615f14.apk"
+    "https://gcore.jsdelivr.net/gh/mico-bz/chuyangbz-me@latest/meowbox/pkg/mb-33-d109fcf3.apk",
+    "https://raw.githubusercontent.com/mico-bz/chuyangbz-me/main/meowbox/pkg/mb-33-d109fcf3.apk"
   ],
-  "notes": "0.27.0\n\n主题：终于有「会响、会弹」的提醒了，还多了一个能直接找我说话的地方。\n\n一、真正的系统通知（新）\n1. 收到新的点赞、评论时，通知栏会弹一条通知，不再只有一个底栏小红点。\n2. 通知带提示音 + 震动，点一下回到 App；Android 13+ 首次启动会问你要不要允许通知。\n3. 严格跟随设置里的「接收新消息通知 / 声音与震动」：关推送就彻底不发，关声音就静音不震。\n\n二、意见反馈入口（新）\n4. 设置页新增「意见反馈」，点一下直接拉起邮件，收件人、标题、版本/机型/系统都帮你预填好。\n5. 你只要写自己的话，把截图当附件加上就行；没有邮件 App 时会提示手动发到开发者邮箱。\n\n三、提醒修复\n6. 修掉了「一进 App 就为历史消息乱响一声」：第一次只记基准，之后真有新的才提醒。\n\n四、如实说明\n- 没接 FCM / 厂商推送：靠 App 轮询（20 秒一次）发现新互动后弹通知，进程活着（含后台）能弹；进程被系统杀掉就收不到。\n- 通知覆盖的是「你发的动态收到的赞和评论」，不是私聊未读。\n- 仍未新建云表、未新增字段；仍未上架商店、未备案，纯个人非商业、不收费。",
+  "notes": "0.27.1\n\n主题：让「提醒」这件事变得看得见、测得到。\n\n一、通知现在能自测了（新）\n1. 设置 → 消息 里新增「发送测试通知」：点一下立刻在通知栏弹一条测试通知并响一声，马上就能确认通知到底通不通，不用再等别人给你点赞。\n2. 如果系统通知权限没开，这一行会直接提示「通知权限未开启」，点一下自动跳到系统设置去开启。\n3. 通知严格跟随「接收新消息通知 / 声音与震动」：关推送就彻底不发，关声音就静音不震。\n\n二、意见反馈在哪\n4. 位置在：我的 → 设置 → 往下滑到「帮助与反馈 → 意见反馈」。\n5. 点一下直接拉起邮件，收件人、标题、版本/机型/系统都预填好；没有邮件 App 时会提示手动发到开发者邮箱。\n\n三、如实说明\n- 真实的新互动提醒（别人点赞/评论你的动态）仍是 App 在前台每 20 秒轮询发现后弹出，没接 FCM/厂商推送；进程被系统杀掉就收不到。\n- 通知覆盖的是「你发的动态收到的赞和评论」，不是私聊未读。\n- 仍未新建云表、未新增字段；仍未上架商店、未备案，纯个人非商业、不收费。",
   "force": false,
   "minVersionCode": 0
 }
