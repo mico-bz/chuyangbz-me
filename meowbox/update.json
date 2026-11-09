@@ -1,13 +1,13 @@
 {
-  "versionCode": 31,
-  "versionName": "0.26.0",
+  "versionCode": 32,
+  "versionName": "0.27.0",
   "distribution": "unlisted",
-  "apkUrl": "https://chuyangbz.me/meowbox/pkg/mb-31-92662a6f.apk",
+  "apkUrl": "https://chuyangbz.me/meowbox/pkg/mb-32-c0615f14.apk",
   "apkUrlAlt": [
-    "https://gcore.jsdelivr.net/gh/mico-bz/chuyangbz-me@latest/meowbox/pkg/mb-31-92662a6f.apk",
-    "https://raw.githubusercontent.com/mico-bz/chuyangbz-me/main/meowbox/pkg/mb-31-92662a6f.apk"
+    "https://gcore.jsdelivr.net/gh/mico-bz/chuyangbz-me@latest/meowbox/pkg/mb-32-c0615f14.apk",
+    "https://raw.githubusercontent.com/mico-bz/chuyangbz-me/main/meowbox/pkg/mb-32-c0615f14.apk"
   ],
-  "notes": "0.26.0\n\n主题：宠物「活」了 —— 一整套动作 + 神态，还能自己导入素材。\n\n一、宠物动作与神态（新）\n1. 7 种状态：待机、开心、饿了、睡觉、说话、被摸、被投喂，每种都有对应的小动作和表情。\n2. 呼吸起伏、上下浮动、按心情快慢摆动，被摸/被喂时开心地弹一下。\n3. 情绪粒子：快乐冒爱心、投喂飘食物、睡觉飘睡意，一眼看懂。\n4. 被摸/投喂/开心 2 秒后自己回神；空闲 25 秒会自己打瞌睡。\n5. 点「聊聊」能跟宠物说话，按关键词回应（吃/玩/睡/打招呼/夸夸），本地规则、不消耗 token。\n\n二、立绘与自定义素材（新）\n6. 内置 6 张全新 Q 版立绘：猫 / 狗 / 兔 / 狐狸 / 企鹅 / 小龙，圆形贴纸舞台呈现。\n7. 支持自己导入素材：GIF / 动态 WebP / APNG / PNG，单张或整套 zip 均可导入。\n8. 导入后云端同步，别人进你资料页、在宠物广场看到的也是同一套；随时可「恢复内置」。\n\n三、如实说明\n- 仍未新建云表、未新增字段：宠物沿用伪会话写法，自定义素材 zip 存进已有的 media 桶。\n- 宠物对话是本地关键词规则，不发网络请求、不消耗积分；动作靠本地动画，不调视觉大模型。",
+  "notes": "0.27.0\n\n主题：终于有「会响、会弹」的提醒了，还多了一个能直接找我说话的地方。\n\n一、真正的系统通知（新）\n1. 收到新的点赞、评论时，通知栏会弹一条通知，不再只有一个底栏小红点。\n2. 通知带提示音 + 震动，点一下回到 App；Android 13+ 首次启动会问你要不要允许通知。\n3. 严格跟随设置里的「接收新消息通知 / 声音与震动」：关推送就彻底不发，关声音就静音不震。\n\n二、意见反馈入口（新）\n4. 设置页新增「意见反馈」，点一下直接拉起邮件，收件人、标题、版本/机型/系统都帮你预填好。\n5. 你只要写自己的话，把截图当附件加上就行；没有邮件 App 时会提示手动发到开发者邮箱。\n\n三、提醒修复\n6. 修掉了「一进 App 就为历史消息乱响一声」：第一次只记基准，之后真有新的才提醒。\n\n四、如实说明\n- 没接 FCM / 厂商推送：靠 App 轮询（20 秒一次）发现新互动后弹通知，进程活着（含后台）能弹；进程被系统杀掉就收不到。\n- 通知覆盖的是「你发的动态收到的赞和评论」，不是私聊未读。\n- 仍未新建云表、未新增字段；仍未上架商店、未备案，纯个人非商业、不收费。",
   "force": false,
   "minVersionCode": 0
 }
