@@ -1,13 +1,13 @@
 {
-  "versionCode": 36,
-  "versionName": "0.30.0",
+  "versionCode": 37,
+  "versionName": "0.31.0",
   "distribution": "unlisted",
-  "apkUrl": "https://chuyangbz.me/meowbox/pkg/mb-36-cc7026d8.apk",
+  "apkUrl": "https://chuyangbz.me/meowbox/pkg/mb-37-79b99858.apk",
   "apkUrlAlt": [
-    "https://gcore.jsdelivr.net/gh/mico-bz/chuyangbz-me@latest/meowbox/pkg/mb-36-cc7026d8.apk",
-    "https://raw.githubusercontent.com/mico-bz/chuyangbz-me/main/meowbox/pkg/mb-36-cc7026d8.apk"
+    "https://gcore.jsdelivr.net/gh/mico-bz/chuyangbz-me@latest/meowbox/pkg/mb-37-79b99858.apk",
+    "https://raw.githubusercontent.com/mico-bz/chuyangbz-me/main/meowbox/pkg/mb-37-79b99858.apk"
   ],
-  "notes": "0.30.0\n\n主题：官方黄V账号 + 双云盘（内置轻量云盘 & 光鸭云盘接入）。\n\n一、官方账号（黄V · 新）\n1. 新增「喵盒官方」账号，昵称后带金色黄V认证标，一眼认出官方，别人无法冒充。\n2. 官方发的动态、评论一律置顶（稳定排序，官方内部仍按时间先后）。\n3. 官方可给全体用户发公告：聊天列表顶部固定「官方公告」入口，发布后所有人在线即弹系统通知。\n4. 官方身份用「激活码」升级，昵称「喵盒官方」被系统保留，普通用户改不了这个名字。\n\n二、内置轻量云盘（新）\n5. 发现页「我的云盘」：把任意文件（文档 / 图片 / 压缩包）传到云端，换手机登录还能取回。\n6. 文件字节存 Appwrite 存储桶，清单只你自己看得到；点开即打开 / 下载。\n\n三、接入光鸭云盘（新）\n7. 发现页「光鸭云盘」：用你自己的光鸭账号手机验证码登录，直接浏览、下载你光鸭网盘里的文件。\n8. 登录态只存本机；只读浏览与下载，不替你改动网盘内容。\n\n四、如实说明\n- 光鸭网盘走的是网页端接口（非官方开放平台），随服务端改动可能失效，界面已注明。\n- 内置云盘的扩展名/大小上限取决于 Appwrite 存储桶配置，管理员放开即可。\n- 仍未新建云表、未新增字段；仍未上架商店、未备案，纯个人非商业、不收费。\n\n下载：\n- apkUrl 主源 + apkUrlAlt 两个镜像，均为 mb-36-cc7026d8.apk。",
+  "notes": "0.31.0\n\n主题：官方身份防冒充加固 + 官方 AI 值班机器人上线。\n\n一、官方身份防冒充（安全 · 修复）\n1. 黄V与置顶的判定从「只看昵称」升级为「以官方账号固定 UID 为准」，昵称仅作老数据兜底。\n2. 修复前：改过的客户端只要把发帖的 authorName 伪造成「喵盒官方」，就能骗到黄V和置顶。\n3. 修复后：发帖 / 评论 / 私聊的作者 ID 一律由服务端取自当前登录会话、客户端改不了，ID 不是官方就绝不给黄V，彻底堵住伪冒。\n4. 覆盖动态、评论、聊天发言人、个人页四处黄V展示，口径统一。\n\n二、官方 AI 值班机器人（运营 · 新）\n5. 给官方号挂了自动值班机器人：定时发帖、约一分钟内回贴、回评论、只回发给官方的私聊。\n6. 已稳定运行，带去重与每小时动作上限，避免刷屏；不读写他人私聊。\n\n三、如实说明\n- 本次为安全加固与运维增强，界面功能无破坏性改动。\n- 仍未新建云表、未新增字段；仍未上架商店、未备案，纯个人非商业、不收费。\n\n下载：\n- apkUrl 主源 + apkUrlAlt 两个镜像，均为 mb-37-79b99858.apk。",
   "force": false,
   "minVersionCode": 0
 }
