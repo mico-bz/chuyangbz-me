@@ -1,13 +1,13 @@
 {
-  "versionCode": 33,
-  "versionName": "0.27.1",
+  "versionCode": 34,
+  "versionName": "0.28.0",
   "distribution": "unlisted",
-  "apkUrl": "https://chuyangbz.me/meowbox/pkg/mb-33-d109fcf3.apk",
+  "apkUrl": "https://chuyangbz.me/meowbox/pkg/mb-34-80ed594a.apk",
   "apkUrlAlt": [
-    "https://gcore.jsdelivr.net/gh/mico-bz/chuyangbz-me@latest/meowbox/pkg/mb-33-d109fcf3.apk",
-    "https://raw.githubusercontent.com/mico-bz/chuyangbz-me/main/meowbox/pkg/mb-33-d109fcf3.apk"
+    "https://gcore.jsdelivr.net/gh/mico-bz/chuyangbz-me@latest/meowbox/pkg/mb-34-80ed594a.apk",
+    "https://raw.githubusercontent.com/mico-bz/chuyangbz-me/main/meowbox/pkg/mb-34-80ed594a.apk"
   ],
-  "notes": "0.27.1\n\n主题：让「提醒」这件事变得看得见、测得到。\n\n一、通知现在能自测了（新）\n1. 设置 → 消息 里新增「发送测试通知」：点一下立刻在通知栏弹一条测试通知并响一声，马上就能确认通知到底通不通，不用再等别人给你点赞。\n2. 如果系统通知权限没开，这一行会直接提示「通知权限未开启」，点一下自动跳到系统设置去开启。\n3. 通知严格跟随「接收新消息通知 / 声音与震动」：关推送就彻底不发，关声音就静音不震。\n\n二、意见反馈在哪\n4. 位置在：我的 → 设置 → 往下滑到「帮助与反馈 → 意见反馈」。\n5. 点一下直接拉起邮件，收件人、标题、版本/机型/系统都预填好；没有邮件 App 时会提示手动发到开发者邮箱。\n\n三、如实说明\n- 真实的新互动提醒（别人点赞/评论你的动态）仍是 App 在前台每 20 秒轮询发现后弹出，没接 FCM/厂商推送；进程被系统杀掉就收不到。\n- 通知覆盖的是「你发的动态收到的赞和评论」，不是私聊未读。\n- 仍未新建云表、未新增字段；仍未上架商店、未备案，纯个人非商业、不收费。",
+  "notes": "0.28.0\n\n主题：把「词性」补齐，还能按词性翻单词。\n\n一、每个单词都有词性了\n1. 词库 8 本、21709 个词条全部补上词性（名词 / 动词 / 及物 / 不及物 / 形容词 / 副词 / 介词 / 代词 / 连词 / 冠词 / 数词 / 感叹词 / 缩写 / 复数），覆盖率 100%，不再有空词性。\n2. 背单词卡片翻到背面，单词下方会直接显示词性徽章（如「动词 vt. / 不及物动词 vi.」）。\n3. 查词典、错词本里的词条也一并带出词性。\n\n二、按词性浏览单词（新）\n4. 学习专区 → 实用工具新增「按词性」入口：点名词 / 动词 / 形容词等标签，就能列出该词性下的全部单词，还能在结果里再搜。\n5. 一个词有多种词性，会同时出现在多个分类里。\n\n三、反馈邮箱已更新\n6. 意见反馈收件地址统一为 chuyangbz@agent.qq.com（原先的旧地址已停用）。位置：设置 → 帮助与反馈 → 意见反馈。\n\n四、如实说明\n- 词性数据用开源词库 ECDICT 离线补齐，纯本机，不需要联网。\n- 仍未新建云表、未新增字段；仍未上架商店、未备案，纯个人非商业、不收费。",
   "force": false,
   "minVersionCode": 0
 }
