@@ -1,13 +1,13 @@
 {
-  "versionCode": 34,
-  "versionName": "0.28.0",
+  "versionCode": 35,
+  "versionName": "0.29.0",
   "distribution": "unlisted",
-  "apkUrl": "https://chuyangbz.me/meowbox/pkg/mb-34-80ed594a.apk",
+  "apkUrl": "https://chuyangbz.me/meowbox/pkg/mb-35-855e6da7.apk",
   "apkUrlAlt": [
-    "https://gcore.jsdelivr.net/gh/mico-bz/chuyangbz-me@latest/meowbox/pkg/mb-34-80ed594a.apk",
-    "https://raw.githubusercontent.com/mico-bz/chuyangbz-me/main/meowbox/pkg/mb-34-80ed594a.apk"
+    "https://gcore.jsdelivr.net/gh/mico-bz/chuyangbz-me@latest/meowbox/pkg/mb-35-855e6da7.apk",
+    "https://raw.githubusercontent.com/mico-bz/chuyangbz-me/main/meowbox/pkg/mb-35-855e6da7.apk"
   ],
-  "notes": "0.28.0\n\n主题：把「词性」补齐，还能按词性翻单词。\n\n一、每个单词都有词性了\n1. 词库 8 本、21709 个词条全部补上词性（名词 / 动词 / 及物 / 不及物 / 形容词 / 副词 / 介词 / 代词 / 连词 / 冠词 / 数词 / 感叹词 / 缩写 / 复数），覆盖率 100%，不再有空词性。\n2. 背单词卡片翻到背面，单词下方会直接显示词性徽章（如「动词 vt. / 不及物动词 vi.」）。\n3. 查词典、错词本里的词条也一并带出词性。\n\n二、按词性浏览单词（新）\n4. 学习专区 → 实用工具新增「按词性」入口：点名词 / 动词 / 形容词等标签，就能列出该词性下的全部单词，还能在结果里再搜。\n5. 一个词有多种词性，会同时出现在多个分类里。\n\n三、反馈邮箱已更新\n6. 意见反馈收件地址统一为 chuyangbz@agent.qq.com（原先的旧地址已停用）。位置：设置 → 帮助与反馈 → 意见反馈。\n\n四、如实说明\n- 词性数据用开源词库 ECDICT 离线补齐，纯本机，不需要联网。\n- 仍未新建云表、未新增字段；仍未上架商店、未备案，纯个人非商业、不收费。",
+  "notes": "0.29.0\n\n主题：四个学习新功能一次到位，还修好了「别人发消息不提醒」。\n\n一、拼写测验 / 听写（新）\n1. 学习专区 → 实用工具新增「拼写测验」：听发音、看释义，自己敲出单词再对照。\n2. 拼错的词自动进错词本，按 SM-2 算法重新排期，计入今日统计与连续打卡。\n\n二、词根词缀浏览（新）\n3. 内置 611 个词根 / 前缀 / 后缀（源自开源词库 ECDICT），拆词记忆更好记。\n4. 可按词根 / 前缀 / 后缀分类切换，也能直接搜含义或例词，纯本机、零联网。\n\n三、学习排行榜 / 周榜（新）\n5. 新增「排行榜」：本周学习榜 + 累计总榜，看看一起背单词的人排第几。\n6. 榜单只聚合学习圈里的战报，不新建云表、不新增字段。\n\n四、每日背单词提醒（新）\n7. 学习计划页新增「每日提醒」开关，可自选提醒时刻；到点弹通知，顺带告诉你今天还有多少词到期。\n8. 重启手机后会自动重新排程，提醒不会失效；关掉开关即取消。\n\n五、修复：别人给你发消息收不到通知\n9. 之前后台轮询只查动态点赞/评论，漏掉了聊天消息，所以别人发消息永远不弹通知、而自测却能过。\n10. 现在轮询同时检测聊天新消息，只要有未读，都会按设置的提示音与通知弹出。\n\n六、如实说明\n- 词根数据用开源词库 ECDICT 离线内置，纯本机，不需要联网。\n- 仍未新建云表、未新增字段；仍未上架商店、未备案，纯个人非商业、不收费。\n\n下载：\n- apkUrl 主源 + apkUrlAlt 两个镜像，均为 mb-35-855e6da7.apk。",
   "force": false,
   "minVersionCode": 0
 }
