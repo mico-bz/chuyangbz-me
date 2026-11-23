@@ -79,16 +79,20 @@ footer.end{max-width:1120px;margin:0 auto;padding:0 24px 70px;color:var(--dim2);
   <a class="btn pri" href="./">进入工作台</a>
 </div></div>
 <div class="wrap">
-  <nav class="toc"><b>目录</b><a href="#s1">一、打开与访问密码</a><a href="#s2">二、界面速览</a><a href="#s3">三、导入图片</a><a href="#s4">四、三种任务怎么用</a><a href="#s5">五、标注操作</a><a href="#s6">六、本地识别与 API 识别</a><a href="#s7">七、摄像头拍照与实时识别</a><a href="#s8">八、数据存在哪里</a><a href="#s9">九、统计与导出</a><a href="#s10">十、快捷键</a><a href="#s11">十一、常见问题</a><a href="#s12">十二、隐私与许可</a></nav>
+  <nav class="toc"><b>目录</b><a href="#s1">一、两种打开方式</a><a href="#s2">二、界面速览</a><a href="#s3">三、导入图片</a><a href="#s4">四、三种任务怎么用</a><a href="#s5">五、标注操作</a><a href="#s6">六、本地识别与 API 识别</a><a href="#s7">七、摄像头拍照与实时识别</a><a href="#s8">八、数据存在哪里</a><a href="#s9">九、统计与导出</a><a href="#s10">十、快捷键</a><a href="#s11">十一、常见问题</a><a href="#s12">十二、隐私与许可</a></nav>
   <article><h1>VisionLab 使用说明</h1>
-<p>VisionLab 是一个跑在浏览器里的<strong>图片识别与标注工作台</strong>。打开一个网址、输入访问密码，就能做三件事：判断图里是什么（图像分类）、找出有几个什么在哪（目标检测）、描出物体的轮廓（实例分割）。</p>
+<p>VisionLab 是一个跑在浏览器里的<strong>图片识别与标注工作台</strong>。双击本地文件，或者打开网页版输入访问密码，就能做三件事：判断图里是什么（图像分类）、找出有几个什么在哪（目标检测）、描出物体的轮廓（实例分割）。</p>
 <p>它不依赖后端，也不用安装任何软件。内置模型是 <strong>YOLO11n-seg</strong>（Ultralytics YOLO11 系列），以 ONNX 格式由 ONNX Runtime Web 在浏览器本地推理，认识 <strong>COCO 的 80 类</strong>常见物体：人、猫、狗、汽车、杯子、手机、笔记本电脑、苹果、香蕉等。除了你主动填 Key 调用在线 API，图片始终留在本机，断网也能完整使用。</p>
 <blockquote><p>一句话说清边界：它<strong>只认识 COCO 80 类</strong>。陌生品类不会凭空给出正确答案，通常提示「未识别到 COCO 80 类中的物体」。结果只是模型的猜测，预测和真值分开保存，只有点「采纳为真值」才会改写标注。</p></blockquote>
-<h2 id="s1">一、打开与访问密码</h2>
-<p>访问地址：<code>https://chuyangbz.me/visionlab/</code></p>
-<ol><li>页面会先显示一个密码框，输入访问密码后点「进入工作台」。</li><li>首次进入需要下载约 16 MB 的模型数据并解密，网络正常时几秒钟；进度条走完就直接进入工作台，状态条显示「YOLO11n-seg 就绪」后即可使用。</li><li>勾选「本次会话记住」后，同一个标签页内刷新不用重复输入；关掉浏览器再打开需要重新输入。</li><li>密码由发布者提供。输错只会提示「密码不正确」，连续手动重试即可，没有次数限制。</li></ol>
-<blockquote><p>为什么首次这么慢？整个工作台（程序、11.7 MB 的模型、ONNX Runtime 运行库、8 张演示照片）被打包在同一个文件里，页面需要在本地解密解压后运行。之后浏览器会缓存数据，第二次进入通常只需一两秒。</p></blockquote>
+<h2 id="s1">一、两种打开方式</h2>
+<p><strong>方式一：本地文件（推荐用于课堂演示）</strong></p>
+<p>双击 <code>VisionLab.html</code>（约 30.7 MB，Edge 或 Chrome 打开）。不需要密码、不需要联网，等状态条显示「YOLO11n-seg 就绪」即可使用。整个程序、模型和演示照片都在这一个文件里，拷到 U 盘、发给别人都能直接打开。</p>
+<p><strong>方式二：在线网页</strong></p>
+<p>访问 <code>https://chuyangbz.me/visionlab/</code>，输入访问密码后进入。</p>
+<ol><li>首次进入需要下载约 16 MB 的模型数据并在本地解密，进度条走完直接进入工作台。</li><li>勾选「本次会话记住」后，同一个标签页内刷新不用重复输入；关掉浏览器再打开需要重新输入。</li><li>密码由发布者提供。输错只会提示「密码不正确」，可以反复重试，没有次数限制。</li></ol>
+<blockquote><p>网络较慢时首次加载可能需要几分钟，这是 16 MB 数据在下载，不是卡死。之后再进入浏览器已有缓存，通常一两秒就绪。</p></blockquote>
 <p>建议使用较新的 <strong>Edge 或 Chrome</strong>（Chromium 内核，版本 90 以上）。Safari 16.4+、Firefox 113+ 也能运行；过旧的浏览器会在密码框下方直接提示升级。</p>
+<blockquote><p>两种方式的数据<strong>互不相通</strong>：本地文件（<code>file://</code>）和在线网页（<code>https://</code>）在浏览器里属于不同来源，各存各的图片库。要长期保存请用「导出完整备份」，再在另一边「导入备份」。</p></blockquote>
 <h2 id="s2">二、界面速览</h2>
 <ul><li><strong>顶部</strong>：三个任务标签（分类 / 检测 / 分割）、「数据概览」、「API 设置」。切换任务不会丢图片和标注。</li><li><strong>左侧</strong>：导入图片、载入真实样片、摄像头拍照、导入文件夹；搜索框；四种筛选；类别分布；图片缩略图列表。</li><li><strong>中间</strong>：当前任务名、操作提示和工具按钮；图片按窗口大小自适应显示；下方是模型状态。</li><li><strong>右侧</strong>：图片信息、真值标签、形状列表、模型预测、质量指标、导出按钮。</li><li><strong>底部</strong>：状态提示、批量进度、图片数与标注数统计。</li></ul>
 <h2 id="s3">三、导入图片</h2>
@@ -112,7 +116,7 @@ footer.end{max-width:1120px;margin:0 auto;padding:0 24px 70px;color:var(--dim2);
 <p>实时识别约每 0.3 秒尝试一帧，上一帧没算完就跳过；帧先缩到长边 480 像素再送模型，画面叠加框或多边形及类别、置信度。模型没就绪时暂用启发式果蔬识别，状态条会明确写「启发式实时」，不冒充 YOLO。底部可以暂停；关闭弹窗会停止所有摄像头轨道。点「拍照识别」会把当前帧存成 JPG（质量 0.92）入库。</p>
 <blockquote><p>网页版的摄像头必须满足两个条件：页面跑在 HTTPS 上（本站已满足），以及你点了浏览器的「允许」。如果按钮无反应，检查地址栏左侧的相机小图标或浏览器设置里的网站权限。</p></blockquote>
 <h2 id="s8">八、数据存在哪里</h2>
-<p>网页版没有服务器数据库，<strong>你的图片和标注全部存在当前浏览器的 IndexedDB</strong>（数据库名 <code>visionlab-db</code>，仓库 <code>images</code>），类别表存在 localStorage 的 <code>visionlab.classes.v1</code>。</p>
+<p>VisionLab 没有服务器数据库，<strong>你的图片和标注全部存在当前浏览器的 IndexedDB</strong>（数据库名 <code>visionlab-db</code>，仓库 <code>images</code>），类别表存在 localStorage 的 <code>visionlab.classes.v1</code>。程序不会把你的数据上传到任何地方。</p>
 <p>这意味着：</p>
 <ul><li>换浏览器、换设备、换电脑，看不到原来那批数据。</li><li>清理浏览器「站点数据 / Cookie 和网站数据」会把数据一起清掉，且不可恢复。</li><li>同一台电脑上的不同人使用同一个密码进入，看到的仍是各自浏览器里的数据，互不干扰。</li><li>重要数据请定期用「导出完整备份（含图片）」留一份到本地。</li></ul>
 <h2 id="s9">九、统计与导出</h2>
