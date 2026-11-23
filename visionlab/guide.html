@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex">
+<title>VisionLab 使用说明</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#05060a;--bg2:#0a0c12;--card:rgba(255,255,255,.028);--line:rgba(255,255,255,.08);
+--txt:#e8ecf4;--dim:#8b93a3;--dim2:#5a6274;--v:#7c5cff;--c:#22d3ee;--p:#f472b6;--g:#34d399;--ease:cubic-bezier(.22,1,.36,1)}
+body{background:var(--bg);color:var(--txt);line-height:1.78;-webkit-font-smoothing:antialiased;
+font-family:-apple-system,BlinkMacSystemFont,"SF Pro SC","PingFang SC","Microsoft YaHei",system-ui,sans-serif}
+a{color:#a78bfa;text-decoration:none;border-bottom:1px solid rgba(167,139,250,.28)}
+a:hover{color:#c4b5fd;border-bottom-color:rgba(196,181,253,.6)}
+.bg{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+.bg i{position:absolute;border-radius:50%;filter:blur(120px);opacity:.16;display:block}
+.bg i:nth-child(1){width:620px;height:620px;background:var(--v);top:-240px;left:-160px}
+.bg i:nth-child(2){width:520px;height:520px;background:var(--c);top:30%;right:-220px;opacity:.1}
+.top{position:sticky;top:0;z-index:30;backdrop-filter:blur(14px);background:rgba(5,6,10,.72);
+border-bottom:1px solid var(--line)}
+.top .row{max-width:1120px;margin:0 auto;display:flex;align-items:center;gap:14px;padding:14px 24px}
+.brand{display:flex;align-items:center;gap:10px;font-weight:700;letter-spacing:.2px;border:0}
+.mark{width:34px;height:34px;border-radius:10px;display:grid;place-items:center;font-size:13px;font-weight:800;
+background:linear-gradient(135deg,#7c5cff,#22d3ee);color:#05060a;letter-spacing:.5px}
+.top .sp{flex:1}
+.btn{display:inline-flex;align-items:center;gap:7px;height:36px;padding:0 15px;border-radius:11px;font-size:13.5px;
+font-weight:600;border:1px solid var(--line);background:rgba(255,255,255,.04);color:var(--txt);border-bottom:1px solid var(--line)}
+.btn:hover{background:rgba(255,255,255,.08);border-color:rgba(124,92,255,.4)}
+.btn.pri{background:linear-gradient(135deg,#7c5cff,#5b3dd6);border-color:transparent;color:#fff}
+.btn.pri:hover{filter:brightness(1.08)}
+.wrap{position:relative;z-index:1;max-width:1120px;margin:0 auto;padding:44px 24px 100px;display:grid;grid-template-columns:220px 1fr;gap:52px}
+nav.toc{position:sticky;top:88px;align-self:start;display:flex;flex-direction:column;gap:2px;border-left:1px solid var(--line);padding-left:16px}
+nav.toc b{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--dim2);margin-bottom:10px}
+nav.toc a{font-size:13.5px;color:var(--dim);border:0;padding:5px 0;line-height:1.45}
+nav.toc a:hover{color:#c4b5fd}
+article{min-width:0}
+article h1{font-size:clamp(28px,3.4vw,40px);line-height:1.25;letter-spacing:-.02em;margin-bottom:10px;
+background:linear-gradient(120deg,#fff 10%,#c4b5fd 55%,#67e8f9 95%);-webkit-background-clip:text;background-clip:text;color:transparent}
+article h1+p{color:var(--dim);margin-bottom:34px;font-size:15px}
+article h2{font-size:21px;margin:44px 0 14px;padding-top:12px;letter-spacing:-.01em}
+article h2::before{content:"";display:inline-block;width:4px;height:16px;border-radius:2px;margin-right:10px;vertical-align:-2px;
+background:linear-gradient(180deg,var(--v),var(--c))}
+article h3{font-size:16.5px;margin:26px 0 10px;color:#cfd6e6}
+article p{margin:10px 0;color:#c3cad8}
+article ul,article ol{margin:10px 0 10px 22px;color:#c3cad8}
+article li{margin:5px 0}
+article strong{color:#fff;font-weight:600}
+article code{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:.88em;padding:1.5px 6px;border-radius:6px;
+background:rgba(124,92,255,.14);color:#d8cffd;border:1px solid rgba(124,92,255,.18)}
+article pre{background:#0b0d14;border:1px solid var(--line);border-radius:12px;padding:14px 16px;overflow:auto;margin:14px 0}
+article pre code{background:none;border:0;padding:0;color:#cfd6e6;font-size:13px}
+article blockquote{margin:16px 0;padding:14px 18px;border-radius:14px;background:rgba(34,211,238,.06);
+border:1px solid rgba(34,211,238,.18);border-left:3px solid var(--c)}
+article blockquote p{color:#a9dcea;margin:4px 0}
+article hr{border:0;height:1px;background:var(--line);margin:38px 0}
+.tw{overflow-x:auto;margin:16px 0;border:1px solid var(--line);border-radius:14px}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th,td{padding:10px 14px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top}
+th{background:rgba(255,255,255,.04);color:#aeb7c8;font-weight:600;font-size:13px;letter-spacing:.02em}
+tr:last-child td{border-bottom:0}
+td code{white-space:nowrap}
+footer.end{max-width:1120px;margin:0 auto;padding:0 24px 70px;color:var(--dim2);font-size:12.5px;position:relative;z-index:1}
+@media(max-width:880px){
+  .wrap{grid-template-columns:1fr;padding-top:28px;gap:24px}
+  nav.toc{position:static;flex-direction:row;flex-wrap:wrap;gap:8px;border-left:0;padding-left:0;border-bottom:1px solid var(--line);padding-bottom:16px}
+  nav.toc b{width:100%;margin-bottom:2px}
+  nav.toc a{font-size:12.5px;padding:4px 10px;border:1px solid var(--line);border-radius:999px}
+  .top .row{padding:12px 16px}
+}
+</style>
+</head>
+<body>
+<div class="bg"><i></i><i></i></div>
+<div class="top"><div class="row">
+  <a class="brand" href="./"><span class="mark">VL</span><span>VisionLab · 使用说明</span></a>
+  <span class="sp"></span>
+  <a class="btn" href="../">作品集</a>
+  <a class="btn pri" href="./">进入工作台</a>
+</div></div>
+<div class="wrap">
+  <nav class="toc"><b>目录</b><a href="#s1">一、打开与访问密码</a><a href="#s2">二、界面速览</a><a href="#s3">三、导入图片</a><a href="#s4">四、三种任务怎么用</a><a href="#s5">五、标注操作</a><a href="#s6">六、本地识别与 API 识别</a><a href="#s7">七、摄像头拍照与实时识别</a><a href="#s8">八、数据存在哪里</a><a href="#s9">九、统计与导出</a><a href="#s10">十、快捷键</a><a href="#s11">十一、常见问题</a><a href="#s12">十二、隐私与许可</a></nav>
+  <article><h1>VisionLab 使用说明</h1>
+<p>VisionLab 是一个跑在浏览器里的<strong>图片识别与标注工作台</strong>。打开一个网址、输入访问密码，就能做三件事：判断图里是什么（图像分类）、找出有几个什么在哪（目标检测）、描出物体的轮廓（实例分割）。</p>
+<p>它不依赖后端，也不用安装任何软件。内置模型是 <strong>YOLO11n-seg</strong>（Ultralytics YOLO11 系列），以 ONNX 格式由 ONNX Runtime Web 在浏览器本地推理，认识 <strong>COCO 的 80 类</strong>常见物体：人、猫、狗、汽车、杯子、手机、笔记本电脑、苹果、香蕉等。除了你主动填 Key 调用在线 API，图片始终留在本机，断网也能完整使用。</p>
+<blockquote><p>一句话说清边界：它<strong>只认识 COCO 80 类</strong>。陌生品类不会凭空给出正确答案，通常提示「未识别到 COCO 80 类中的物体」。结果只是模型的猜测，预测和真值分开保存，只有点「采纳为真值」才会改写标注。</p></blockquote>
+<h2 id="s1">一、打开与访问密码</h2>
+<p>访问地址：<code>https://chuyangbz.me/visionlab/</code></p>
+<ol><li>页面会先显示一个密码框，输入访问密码后点「进入工作台」。</li><li>首次进入需要下载约 16 MB 的模型数据并解密，网络正常时几秒钟；进度条走完就直接进入工作台，状态条显示「YOLO11n-seg 就绪」后即可使用。</li><li>勾选「本次会话记住」后，同一个标签页内刷新不用重复输入；关掉浏览器再打开需要重新输入。</li><li>密码由发布者提供。输错只会提示「密码不正确」，连续手动重试即可，没有次数限制。</li></ol>
+<blockquote><p>为什么首次这么慢？整个工作台（程序、11.7 MB 的模型、ONNX Runtime 运行库、8 张演示照片）被打包在同一个文件里，页面需要在本地解密解压后运行。之后浏览器会缓存数据，第二次进入通常只需一两秒。</p></blockquote>
+<p>建议使用较新的 <strong>Edge 或 Chrome</strong>（Chromium 内核，版本 90 以上）。Safari 16.4+、Firefox 113+ 也能运行；过旧的浏览器会在密码框下方直接提示升级。</p>
+<h2 id="s2">二、界面速览</h2>
+<ul><li><strong>顶部</strong>：三个任务标签（分类 / 检测 / 分割）、「数据概览」、「API 设置」。切换任务不会丢图片和标注。</li><li><strong>左侧</strong>：导入图片、载入真实样片、摄像头拍照、导入文件夹；搜索框；四种筛选；类别分布；图片缩略图列表。</li><li><strong>中间</strong>：当前任务名、操作提示和工具按钮；图片按窗口大小自适应显示；下方是模型状态。</li><li><strong>右侧</strong>：图片信息、真值标签、形状列表、模型预测、质量指标、导出按钮。</li><li><strong>底部</strong>：状态提示、批量进度、图片数与标注数统计。</li></ul>
+<h2 id="s3">三、导入图片</h2>
+<p>三种入口：<strong>导入图片</strong>（可多选文件）、<strong>导入文件夹</strong>（收进整个目录）、<strong>载入真实样片</strong>（写入内置的 8 张真实照片）。</p>
+<p>支持 <strong>JPG / JPEG、PNG、WebP</strong>，其他格式会被过滤。导入逐张显示进度，某一张失败不会中断整批。每张图会生成最长边 320 像素的缩略图，原图、尺寸、文件名、拍摄时间和标注一起存进浏览器数据库。</p>
+<p>内置样片是真实公开照片（苹果、香蕉、人、猫、狗、杯子、汽车、笔记本电脑），来自 CC0 或公有领域，自带分类真值，并预分在 train / val / test 三集里，猫和汽车标记为难例。载入后自动选中第一张并识别一次，缩略图上带「演示」标记，可用「清除演示数据」单独删除。</p>
+<h2 id="s4">四、三种任务怎么用</h2>
+<p><strong>图像分类</strong>：选一张图点识别，右侧预测卡显示主体类别、置信度和最多四个候选条形。认同就点「采纳为真值」；不认同就点正确的类别标签。最高分低于 0.30 会提示「判定不确定」，前两名相差不到 0.1 会提示候选接近，建议换主体更单一的照片。</p>
+<p><strong>目标检测</strong>：识别后出现彩色矩形框，框上标类别和置信度，右侧列出「检测到 N 个目标」。手工补标时在空白处拖拽即可画框，点框选中后可改类别或删除。结果自动过滤：分数低于 0.24 的不要、不到最高分 45% 的不要、同类重叠按 IoU 0.45 抑制，画面最多展示 12 个目标。</p>
+<p><strong>实例分割</strong>：识别后出现半透明闭合多边形。手工描轮廓时单击加点，双击或按 Enter 闭合，Backspace 撤销最后一点，Esc 取消草稿，少于 3 个点不能闭合。选中后可改类别或删除；模型轮廓提取异常时会退化成由框四角组成的多边形。</p>
+<h2 id="s5">五、标注操作</h2>
+<p>核心原则：模型结果只写进「预测」，只有点「采纳为真值」或手工设置，真值才变化。</p>
+<ul><li><strong>画框</strong>：检测任务下在空白处拖拽，宽或高不足整图 0.5% 的框会被丢弃。已有框可以点选，但不能拖动改位置，要调整请删掉重画。</li><li><strong>缩放</strong>：画布随窗口自动缩放；当前版本没有滚轮缩放和平移。</li><li><strong>删除标注</strong>：选中框或轮廓后按 Delete / Backspace，或点右侧列表的「×」。只删标注，不动图片。</li><li><strong>删除图片</strong>：每张缩略图右上角有红色「×」，点击并确认后，这张图和它的全部标注一起删除，数据库同步删除，刷新也不会回来，不可撤销。</li><li><strong>类别</strong>：分类任务点标签即设真值；检测和分割任务点标签是切换「新画形状」的类别，已画好的要在右侧下拉框里改。默认 8 类果蔬：苹果、香蕉、橙子、柠檬、黄瓜、胡萝卜、茄子、青椒。</li><li><strong>标签集</strong>：输入名称后点「添加类别」，重名会被拒绝；类别保存在本地。模型识别出的 COCO 类别会自动补进列表，自定义类别不会被删。</li><li><strong>难例</strong>：勾选「标记难例」后缩略图显示徽章，并计入统计。</li><li><strong>数据划分</strong>：每张图带 train / val / test 字段，新导入默认 train，样片预分三集，缩略图显示「训练 / 验证 / 测试」。界面没有手动改划分或按划分筛选的入口；需要重划分可在导出的 JSON 里改 <code>split</code>，再用完整备份导回。</li></ul>
+<h2 id="s6">六、本地识别与 API 识别</h2>
+<p><strong>本地识别</strong>完全离线。没配 Key 时所有识别都走本地：「YOLO 识别」强制本地，「识别当前图」有 Key 时优先走 API，「批量识别」对当前筛选下所有可见图片顺序识别，单张失败不中断。</p>
+<p>模型输入固定 640×640：图片按比例缩放、灰边填充，结果再换算回原图。主体太小或只占画面一角容易漏检。入选线 0.24、低置信线 0.30、NMS IoU 0.45 都写在程序里，界面不提供调整。</p>
+<p><strong>API 识别</strong>（可选，默认关闭）：点「API 设置」，默认服务商是硅基流动，Base URL 为 <code>https://api.siliconflow.cn/v1</code>，模型为 <code>Qwen/Qwen2.5-VL-7B-Instruct</code>，Key 需要自己填。三项都可改，其他兼容 <code>/chat/completions</code> 的服务也能用，支持「测试连接」和「获取模型列表」，超时 60 秒。</p>
+<blockquote><p>隐私提醒：Key 默认只存在内存里，不写进 localStorage 和页面源码，刷新后需要重填；勾选「仅本会话记住 Key」才写入 sessionStorage，关闭标签页即失效。<strong>一旦使用 API，图片会以 base64 上传到服务商</strong>，处理他人肖像、未成年人照片或未公开资料前请先取得授权。</p></blockquote>
+<h2 id="s7">七、摄像头拍照与实时识别</h2>
+<p>点「摄像头拍照」会请求相机权限，优先后置摄像头、理想分辨率 1280×960、不采集声音。常见报错会被翻译成中文：权限被拒绝、未检测到摄像头、被其他程序占用、浏览器不支持。</p>
+<p>实时识别约每 0.3 秒尝试一帧，上一帧没算完就跳过；帧先缩到长边 480 像素再送模型，画面叠加框或多边形及类别、置信度。模型没就绪时暂用启发式果蔬识别，状态条会明确写「启发式实时」，不冒充 YOLO。底部可以暂停；关闭弹窗会停止所有摄像头轨道。点「拍照识别」会把当前帧存成 JPG（质量 0.92）入库。</p>
+<blockquote><p>网页版的摄像头必须满足两个条件：页面跑在 HTTPS 上（本站已满足），以及你点了浏览器的「允许」。如果按钮无反应，检查地址栏左侧的相机小图标或浏览器设置里的网站权限。</p></blockquote>
+<h2 id="s8">八、数据存在哪里</h2>
+<p>网页版没有服务器数据库，<strong>你的图片和标注全部存在当前浏览器的 IndexedDB</strong>（数据库名 <code>visionlab-db</code>，仓库 <code>images</code>），类别表存在 localStorage 的 <code>visionlab.classes.v1</code>。</p>
+<p>这意味着：</p>
+<ul><li>换浏览器、换设备、换电脑，看不到原来那批数据。</li><li>清理浏览器「站点数据 / Cookie 和网站数据」会把数据一起清掉，且不可恢复。</li><li>同一台电脑上的不同人使用同一个密码进入，看到的仍是各自浏览器里的数据，互不干扰。</li><li>重要数据请定期用「导出完整备份（含图片）」留一份到本地。</li></ul>
+<h2 id="s9">九、统计与导出</h2>
+<p>左侧类别分布按图片统计每个类别在真值中出现的次数。「数据概览」显示总图片、已标注、难例、预测覆盖率、类别分布和质量指标；指标只统计真值与预测同时存在的样本，没有可比样本时显示「—」，不是 0。</p>
+<p><strong>导出标注 JSON</strong>：包含应用名、版本、导出时间、类别表、每张图的元数据与完整真值、预测，以及总数、已标注、难例、预测覆盖率、每类统计、三集数量和质量指标。框是归一化的 <code>x, y, w, h</code>，轮廓是归一化点数组，<strong>文件不含图片二进制</strong>，适合交作业或交给其他程序读取。</p>
+<p><strong>导出完整备份（含图片）</strong>：把图片转成 base64 一起打包，可以完整恢复。<strong>导入备份</strong>会用备份整体替换数据库，不可撤销；文件非法或缺 <code>images</code> 数组时会报错并保留原数据。注意：单独导出的标注 JSON 不能当备份导入。</p>
+<p><strong>清除演示数据</strong>只删内置样片；<strong>清空数据库</strong>删除全部内容，需二次确认。</p>
+<h2 id="s10">十、快捷键</h2>
+<div class="tw"><table><thead><tr><th>按键</th><th>作用</th></tr></thead><tbody><tr><td><code>Alt+1</code> / <code>Alt+2</code> / <code>Alt+3</code></td><td>切换分类 / 检测 / 分割</td></tr><tr><td><code>Ctrl+I</code></td><td>导入图片</td></tr><tr><td><code>Ctrl+Enter</code></td><td>识别当前图</td></tr><tr><td><code>Delete</code> / <code>Backspace</code></td><td>删除选中的框或轮廓</td></tr><tr><td><code>Enter</code></td><td>分割时闭合多边形</td></tr><tr><td><code>Backspace</code></td><td>分割时撤销最后一个点</td></tr><tr><td><code>Esc</code></td><td>取消正在画的草稿</td></tr></tbody></table></div>
+<p>关键数值：输入 640×640；入选阈值 0.24；低置信线 0.30；NMS IoU 0.45；最多 12 个目标；实况间隔 300 ms、帧长边 480；拍照 JPEG 质量 0.92。</p>
+<h2 id="s11">十一、常见问题</h2>
+<p><strong>输密码一直提示不正确？</strong> 检查大小写和输入法全角状态，密码是纯小写英文；确实忘记就找发布者要。</p>
+<p><strong>进度条卡住或提示加载失败？</strong> 多半是网络中断，刷新重试即可。浏览器缓存被禁用（无痕模式）时每次都要重新下载 16 MB，属正常现象。</p>
+<p><strong>一直显示「模型加载失败」？</strong> 刷新页面重试；仍失败请换用较新的 Edge / Chrome，并确认网络能正常访问本站。</p>
+<p><strong>识别不出来或不准？</strong> 先确认物体属于 COCO 80 类，再看主体是不是太小、太偏、被遮挡或光线太暗。拍大一点、放中间、保证清晰后重试。提示「判定不确定」时不要直接采纳，也可以切到目标检测看看模型在哪些位置有反应。</p>
+<p><strong>为什么置信度不能调？</strong> 阈值固定为入选 0.24、低置信 0.30、NMS IoU 0.45，没有滑块，这样不同人、不同电脑的判定标准一致。</p>
+<p><strong>摄像头打不开？</strong> 依次排查：浏览器是否允许本站使用相机、系统里是否有摄像头、是否被视频会议或相机程序占用。手机浏览器需要 HTTPS，本站满足条件。</p>
+<p><strong>数据会丢吗？</strong> 只存在当前浏览器里，清理站点数据或换设备都会看不到，请用「导出完整备份」留底。</p>
+<p><strong>画布能缩放吗？</strong> 当前版本没有滚轮缩放、没有平移、不能拖动已有框，也不支持拖拽文件导入。这些都是「当前版本没有」，不是坏了。</p>
+<h2 id="s12">十二、隐私与许可</h2>
+<p>不使用 API 时，图片只在本机浏览器里解码、显示、标注和推理，不会离开你的电脑；页面除首次加载自身资源外不发起任何外部网络请求。</p>
+<p>内置模型是 Ultralytics 的 <strong>YOLO11n-seg</strong>，YOLO 系列采用 <strong>AGPL-3.0</strong> 许可：个人学习、研究和非商业用途一般可以直接使用；商业产品、闭源分发或对外提供服务需要遵守开源要求，或向 Ultralytics 购买商业授权。浏览器推理使用 ONNX Runtime Web，许可以其项目说明为准；内置演示照片来自公开图库，标注为 CC0 或公有领域。</p>
+<p>你自己导入的照片和标注数据由你自己保管，程序不会自动上传到任何地方。</p></article>
+</div>
+<footer class="end">VisionLab · 单文件视觉工作台 · 说明更新于 2026-11-23</footer>
+</body>
+</html>

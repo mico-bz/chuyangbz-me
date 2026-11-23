@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<meta name="theme-color" content="#05060a">
+<title>VisionLab · 请输入访问密码</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#05060a;--txt:#e8ecf4;--dim:#8b93a3;--dim2:#5a6274;
+  --line:rgba(255,255,255,.08);--v:#7c5cff;--c:#22d3ee;--err:#fb7185;--ok:#34d399;
+  --ease:cubic-bezier(.22,1,.36,1);
+}
+html,body{height:100%}
+body{
+  background:var(--bg);color:var(--txt);display:grid;place-items:center;padding:24px;
+  font-family:-apple-system,BlinkMacSystemFont,"SF Pro SC","PingFang SC","Microsoft YaHei",system-ui,sans-serif;
+  -webkit-font-smoothing:antialiased;overflow:hidden;
+}
+/* 背景 */
+.bg{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+.bg-grid{
+  position:absolute;inset:-50%;
+  background-image:linear-gradient(rgba(124,92,255,.06) 1px,transparent 1px),
+                   linear-gradient(90deg,rgba(124,92,255,.06) 1px,transparent 1px);
+  background-size:54px 54px;
+  transform:perspective(560px) rotateX(58deg) translateY(-16%);
+  mask-image:radial-gradient(ellipse 70% 55% at 50% 0%,#000 10%,transparent 75%);
+  -webkit-mask-image:radial-gradient(ellipse 70% 55% at 50% 0%,#000 10%,transparent 75%);
+  animation:drift 22s linear infinite;
+}
+@keyframes drift{to{background-position:0 54px,54px 0}}
+.bg i{position:absolute;border-radius:50%;filter:blur(110px);display:block}
+.g1{width:560px;height:560px;background:var(--v);opacity:.2;top:-200px;left:-140px;animation:f1 17s ease-in-out infinite}
+.g2{width:480px;height:480px;background:var(--c);opacity:.13;bottom:-200px;right:-120px;animation:f2 21s ease-in-out infinite}
+@keyframes f1{50%{transform:translate(60px,50px) scale(1.1)}}
+@keyframes f2{50%{transform:translate(-50px,-60px) scale(1.14)}}
+
+/* 卡片 */
+.shell{position:relative;z-index:1;width:100%;max-width:430px;display:flex;flex-direction:column;align-items:center;gap:18px}
+.card{
+  width:100%;min-height:412px;padding:34px 32px 26px;border-radius:24px;
+  background:linear-gradient(180deg,rgba(255,255,255,.055),rgba(255,255,255,.018));
+  border:1px solid var(--line);box-shadow:0 30px 80px -30px rgba(0,0,0,.9),0 2px 10px rgba(0,0,0,.4);
+  backdrop-filter:blur(18px);animation:in .55s var(--ease) both;
+}
+@keyframes in{from{opacity:0;transform:translateY(14px) scale(.985)}}
+.card.shake{animation:sh .42s cubic-bezier(.36,.07,.19,.97)}
+@keyframes sh{10%,90%{transform:translateX(-2px)}20%,80%{transform:translateX(4px)}30%,50%,70%{transform:translateX(-7px)}40%,60%{transform:translateX(7px)}}
+
+.mark{
+  width:56px;height:56px;border-radius:16px;display:grid;place-items:center;
+  font-weight:800;font-size:16px;letter-spacing:.6px;color:#05060a;
+  background:linear-gradient(135deg,#7c5cff,#22d3ee);
+  box-shadow:0 14px 34px -10px rgba(124,92,255,.85);margin-bottom:18px;
+}
+h1{
+  font-size:27px;letter-spacing:-.02em;line-height:1.2;
+  background:linear-gradient(110deg,#fff 20%,#c4b5fd 60%,#67e8f9 100%);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.sub{color:var(--dim);font-size:13.5px;margin-top:8px}
+.badges{display:flex;flex-wrap:wrap;gap:6px;margin-top:14px}
+.badges span{
+  font-size:11.5px;color:#a5b0c4;padding:3px 9px;border-radius:999px;
+  border:1px solid var(--line);background:rgba(255,255,255,.03);
+}
+form{margin-top:24px;display:flex;flex-direction:column;gap:12px}
+label.lb{font-size:12px;color:var(--dim2);letter-spacing:.08em;text-transform:uppercase;font-weight:600}
+.field{position:relative;display:flex;align-items:center}
+input[type=password],input[type=text]{
+  width:100%;height:48px;padding:0 46px 0 16px;border-radius:13px;font-size:15.5px;letter-spacing:.06em;
+  background:rgba(255,255,255,.045);border:1px solid var(--line);color:var(--txt);
+  outline:none;transition:border-color .18s,box-shadow .18s,background .18s;
+  font-family:inherit;
+}
+input::placeholder{color:#4d556a;letter-spacing:0}
+input:focus{border-color:rgba(124,92,255,.65);box-shadow:0 0 0 4px rgba(124,92,255,.14);background:rgba(255,255,255,.06)}
+.eye{
+  position:absolute;right:6px;width:36px;height:36px;border-radius:10px;display:grid;place-items:center;
+  background:none;border:0;cursor:pointer;color:var(--dim2);transition:color .15s,background .15s;
+}
+.eye:hover{color:#c4b5fd;background:rgba(255,255,255,.06)}
+.eye svg{width:17px;height:17px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.go{
+  height:48px;border-radius:13px;border:0;cursor:pointer;font-size:15px;font-weight:650;color:#fff;
+  background:linear-gradient(135deg,#7c5cff,#5b3dd6);box-shadow:0 12px 26px -12px rgba(124,92,255,.95);
+  transition:transform .15s var(--ease),filter .15s,box-shadow .15s;font-family:inherit;
+  display:flex;align-items:center;justify-content:center;gap:8px;
+}
+.go:hover{filter:brightness(1.1);transform:translateY(-1px);box-shadow:0 16px 32px -14px rgba(124,92,255,1)}
+.go:active{transform:translateY(0) scale(.995)}
+.go[disabled]{opacity:.6;cursor:not-allowed;transform:none;filter:none}
+.remember{display:flex;align-items:center;gap:8px;font-size:12.5px;color:var(--dim2);cursor:pointer;user-select:none}
+.remember input{width:14px;height:14px;accent-color:#7c5cff;cursor:pointer}
+.err{display:flex;align-items:center;gap:7px;font-size:13px;color:var(--err);
+  background:rgba(251,113,133,.09);border:1px solid rgba(251,113,133,.22);
+  padding:9px 12px;border-radius:11px;animation:in .2s var(--ease)}
+.err[hidden]{display:none}
+.err svg{width:14px;height:14px;flex:none;stroke:currentColor;fill:none;stroke-width:2}
+
+/* 进度 */
+.prog{display:flex;flex-direction:column;gap:9px;margin-top:24px}
+.prog[hidden]{display:none}
+.bar{height:5px;border-radius:99px;background:rgba(255,255,255,.07);overflow:hidden}
+.bar i{display:block;height:100%;width:0;border-radius:99px;
+  background:linear-gradient(90deg,#7c5cff,#22d3ee);transition:width .25s ease;
+  box-shadow:0 0 14px rgba(124,92,255,.7)}
+.ptxt{font-size:12.5px;color:var(--dim);display:flex;justify-content:space-between;gap:10px}
+.ptxt b{color:#c4b5fd;font-weight:600;font-variant-numeric:tabular-nums}
+
+footer.foot{display:flex;align-items:center;gap:10px;font-size:12.5px;color:var(--dim2)}
+footer.foot a{color:var(--dim);text-decoration:none;border-bottom:1px solid rgba(255,255,255,.12);padding-bottom:1px}
+footer.foot a:hover{color:#c4b5fd;border-bottom-color:rgba(196,181,253,.5)}
+footer.foot i{width:3px;height:3px;border-radius:50%;background:var(--dim2);display:block}
+.hint{font-size:11.5px;color:#6b7488;text-align:center;line-height:1.6;max-width:400px}
+@media(max-width:480px){
+  body{padding:18px}
+  .card{padding:28px 22px 22px;border-radius:20px}
+  h1{font-size:24px}
+}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div class="bg"><div class="bg-grid"></div><i class="g1"></i><i class="g2"></i></div>
+
+<main class="shell">
+  <section class="card" id="card">
+    <div class="mark">VL</div>
+    <h1>VisionLab 视觉工作台</h1>
+    <p class="sub">图片识别 · 目标检测 · 实例分割</p>
+    <div class="badges">
+      <span>YOLO11n-seg</span><span>COCO 80 类</span><span>本地推理</span><span>不联网可用</span>
+    </div>
+
+    <form id="form" autocomplete="off" novalidate>
+      <label class="lb" for="pw">访问密码</label>
+      <div class="field">
+        <input id="pw" type="password" autocomplete="current-password" spellcheck="false"
+               placeholder="请输入访问密码" aria-describedby="err">
+        <button class="eye" id="eye" type="button" aria-label="显示密码">
+          <svg viewBox="0 0 24 24"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg>
+        </button>
+      </div>
+      <p class="err" id="err" hidden>
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 8v4.5M12 16h.01"/></svg>
+        <span id="errTxt">密码不正确</span>
+      </p>
+      <button class="go" id="go" type="submit">进入工作台</button>
+      <label class="remember"><input type="checkbox" id="rm" checked> 本次会话记住，免重复输入</label>
+    </form>
+
+    <div class="prog" id="prog" hidden>
+      <div class="bar"><i id="bar"></i></div>
+      <div class="ptxt"><span id="ptxt">正在获取数据…</span><b id="ppct">0%</b></div>
+    </div>
+  </section>
+
+  <footer class="foot">
+    <a href="guide.html">使用说明</a><i></i><a href="../">返回作品集</a>
+  </footer>
+  <p class="hint">首次进入需加载 15.6 MB 模型数据 · 图片与标注只保存在你自己的浏览器</p>
+</main>
+
+<script>
+(() => {
+  'use strict';
+  const FORM = document.getElementById('form');
+  const PW = document.getElementById('pw');
+  const GO = document.getElementById('go');
+  const ERR = document.getElementById('err');
+  const ERRTXT = document.getElementById('errTxt');
+  const CARD = document.getElementById('card');
+  const PROG = document.getElementById('prog');
+  const BAR = document.getElementById('bar');
+  const PTXT = document.getElementById('ptxt');
+  const PPCT = document.getElementById('ppct');
+  const EYE = document.getElementById('eye');
+  const RM = document.getElementById('rm');
+  const SS_KEY = 'visionlab.web.key.v1';
+
+  if (!window.crypto?.subtle || !('DecompressionStream' in window)) {
+    fail('浏览器版本过低，请用较新的 Edge / Chrome 打开');
+  }
+
+  // 显示/隐藏密码
+  let shown = false;
+  EYE.addEventListener('click', () => {
+    shown = !shown;
+    PW.type = shown ? 'text' : 'password';
+    EYE.style.color = shown ? '#c4b5fd' : '';
+    PW.focus();
+  });
+
+  const b64 = (u8) => btoa(String.fromCharCode(...u8));
+  const unb64 = (s) => Uint8Array.from(atob(s), c => c.charCodeAt(0));
+
+  function fail(msg, shake = true) {
+    ERRTXT.textContent = msg;
+    ERR.hidden = false;
+    if (shake) { CARD.classList.remove('shake'); void CARD.offsetWidth; CARD.classList.add('shake'); }
+  }
+  function clearErr() { ERR.hidden = true; }
+
+  function setProgress(pct, text) {
+    BAR.style.width = Math.max(0, Math.min(100, pct)) + '%';
+    PPCT.textContent = Math.round(pct) + '%';
+    if (text) PTXT.textContent = text;
+  }
+
+  async function deriveKey(password, salt, iterations) {
+    const base = await crypto.subtle.importKey('raw', new TextEncoder().encode(password),
+      'PBKDF2', false, ['deriveBits']);
+    const bits = await crypto.subtle.deriveBits(
+      { name: 'PBKDF2', salt, iterations, hash: 'SHA-256' }, base, 256);
+    return new Uint8Array(bits);
+  }
+
+  async function download(onProgress) {
+    const res = await fetch('app.bin', { cache: 'force-cache' });
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    const total = Number(res.headers.get('content-length')) || 16346166;
+    if (!res.body) return new Uint8Array(await res.arrayBuffer());
+    const reader = res.body.getReader();
+    const chunks = [];
+    let got = 0;
+    for (;;) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      chunks.push(value);
+      got += value.length;
+      onProgress(got / total);
+    }
+    const out = new Uint8Array(got);
+    let off = 0;
+    for (const c of chunks) { out.set(c, off); off += c.length; }
+    return out;
+  }
+
+  async function unlock(rawKey, prefetched) {
+    const bin = prefetched || await download(r => setProgress(r * 70, '正在下载工作台数据…'));
+
+    // 头部：magic(4) + iterations(4) + salt(16) + iv(12)，末尾 16 B 为 GCM tag
+    const magic = String.fromCharCode(bin[0], bin[1], bin[2], bin[3]);
+    if (magic !== 'VLB1') throw new Error('数据格式不正确');
+    const dv = new DataView(bin.buffer, bin.byteOffset);
+    const iterations = dv.getUint32(4);
+    const salt = bin.subarray(8, 24);
+    const iv = bin.subarray(24, 36);
+
+    setProgress(74, '正在校验密码…');
+    const keyBytes = rawKey || await deriveKey(PW.value, salt, iterations);
+
+    const cipher = await crypto.subtle.importKey('raw', keyBytes, 'AES-GCM', false, ['decrypt']);
+    let plain;
+    try {
+      plain = await crypto.subtle.decrypt(
+        { name: 'AES-GCM', iv, tagLength: 128 }, cipher, bin.subarray(36));
+    } catch (e) {
+      try { sessionStorage.removeItem(SS_KEY); } catch (_) {}
+      throw new Error('BAD_PASSWORD');
+    }
+
+    setProgress(86, '正在解压…');
+    const text = await new Response(
+      new Blob([plain]).stream().pipeThrough(new DecompressionStream('gzip'))
+    ).text();
+
+    if (RM.checked) {
+      try { sessionStorage.setItem(SS_KEY, b64(keyBytes)); } catch (_) {}
+    } else {
+      try { sessionStorage.removeItem(SS_KEY); } catch (_) {}
+    }
+
+    setProgress(100, '准备就绪…');
+    // 同源写入：保留 origin，IndexedDB / 摄像头都正常工作
+    document.open();
+    document.write(text);
+    document.close();
+  }
+
+  async function boot() {
+    // 先看本次会话是否已解锁
+    let cached = null;
+    try { cached = sessionStorage.getItem(SS_KEY); } catch (_) {}
+    if (cached) {
+      try {
+        const raw = unb64(cached);
+        PROG.hidden = false; FORM.style.display = 'none';
+        setProgress(4, '正在恢复本次会话…');
+        await unlock(raw, null);
+        return;
+      } catch (e) {
+        try { sessionStorage.removeItem(SS_KEY); } catch (_) {}
+        PROG.hidden = true; FORM.style.display = '';
+        PW.focus();
+        return;
+      }
+    }
+    PW.focus();
+  }
+
+  FORM.addEventListener('submit', async (ev) => {
+    ev.preventDefault();
+    clearErr();
+    const pw = PW.value.trim();
+    if (!pw) { fail('请先输入访问密码'); PW.focus(); return; }
+
+    GO.disabled = true;
+    GO.textContent = '正在解锁…';
+    FORM.style.display = 'none';
+    PROG.hidden = false;
+    setProgress(3, '正在下载工作台数据…');
+
+    try {
+      // 下载与密钥派生并行，省 1 次等待
+      const dl = download(r => setProgress(3 + r * 67, '正在下载工作台数据…'));
+      const bin = await dl;
+      await unlock(null, bin);
+    } catch (e) {
+      PROG.hidden = true;
+      FORM.style.display = '';
+      GO.disabled = false;
+      GO.textContent = '进入工作台';
+      if (e && e.message === 'BAD_PASSWORD') {
+        fail('密码不正确，请重新输入');
+        PW.select();
+      } else {
+        fail('加载失败：' + (e && e.message ? e.message : '未知错误') + '（检查网络后重试）');
+      }
+    }
+  });
+
+  boot();
+})();
+</script>
+</body>
+</html>
